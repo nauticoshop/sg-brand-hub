@@ -7,23 +7,28 @@
 
 import { Dropbox } from "dropbox";
 
-const CLIENTS_ROOT = process.env.DROPBOX_ROOT_PATH || "/Clients";
+// SG's client folders live under "/NN x SG/" in the team Dropbox.
+// Override via env var if the path ever changes.
+const CLIENTS_ROOT = process.env.DROPBOX_ROOT_PATH || "/NN x SG";
 
-// Per-brand folder tree (relative to /Clients/[Business Name]/).
-const SUBFOLDERS = [
-  "01_Brand Assets",
-  "01_Brand Assets/Logos",
-  "01_Brand Assets/Fonts",
-  "01_Brand Assets/Photos",
-  "01_Brand Assets/Inspiration",
-  "02_Video Assets",
-  "02_Video Assets/Intros & Outros - Social Vertical",
-  "02_Video Assets/Intros & Outros - Horizontal",
-  "02_Video Assets/Lower Thirds - Social",
-  "02_Video Assets/Lower Thirds - Horizontal",
-  "03_Active Projects",
-  "04_Delivered",
-] as const;
+// Per-client folder tree (relative to /NN x SG/[Business Name]/).
+// Matches the existing convention seen in clients like AER Tampa:
+//   [Client]/
+//     {currentYear}/
+//     Assets/
+//       Logo/
+//       Deliverables/
+// Year folder uses the year at creation time; AM can add future years
+// manually when needed.
+function subfoldersForClient(): string[] {
+  const year = new Date().getFullYear();
+  return [
+    String(year),
+    "Assets",
+    "Assets/Logo",
+    "Assets/Deliverables",
+  ];
+}
 
 function getClient(): Dropbox {
   const clientId = process.env.DROPBOX_APP_KEY;
@@ -70,13 +75,13 @@ export async function ensureBrandFolderTree(businessName: string): Promise<{
   const folder = safeName(businessName);
   const parentPath = `${CLIENTS_ROOT}/${folder}`;
 
-  // Build the full list of paths in creation order: the root /Clients first,
-  // then the brand parent, then all the subfolders (sorted by depth so
-  // parents always come before children).
+  // Build the full list of paths in creation order: the root first, then
+  // the client parent, then all the subfolders (sorted by depth so parents
+  // come before children).
   const allPaths = [
     CLIENTS_ROOT,
     parentPath,
-    ...SUBFOLDERS.map((sub) => `${parentPath}/${sub}`),
+    ...subfoldersForClient().map((sub) => `${parentPath}/${sub}`),
   ];
 
   // Create one at a time in order. create_folder_batch turned out to be
