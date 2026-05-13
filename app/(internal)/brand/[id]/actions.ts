@@ -17,6 +17,7 @@ import {
   PROJECT_TYPE_VIDEO_ASSETS_INDEX,
   ALL_PROJECTS_COLUMNS,
 } from "@/lib/monday/client";
+import { ensureBrandFolderTree } from "@/lib/dropbox/client";
 
 // Display name for the default editor used in @ mentions on Monday updates.
 // Kept in code rather than env to make the HTML mention copy obvious.
@@ -159,7 +160,30 @@ export async function approveBrand(id: string) {
   const shareUrl = `${appUrl}/share/${b.share_token}`;
   const syncWarnings: string[] = [];
 
-  // 3) Monday — Client Onboarding Asset Intake board.
+  // 3) Dropbox — create the parent folder tree if we don't already have one
+  //    on the brand. Idempotent (Dropbox returns existing folders / share
+  //    link if they already exist). Run before Monday so the Intake sync
+  //    can include the fresh Dropbox URL.
+  let effectiveDropboxUrl = b.dropbox_folder_url;
+  if (
+    !effectiveDropboxUrl &&
+    process.env.DROPBOX_REFRESH_TOKEN &&
+    process.env.DROPBOX_APP_KEY &&
+    process.env.DROPBOX_APP_SECRET
+  ) {
+    try {
+      const tree = await ensureBrandFolderTree(b.business_name);
+      effectiveDropboxUrl = tree.shareUrl;
+      await supabase
+        .from("brands")
+        .update({ dropbox_folder_url: tree.shareUrl })
+        .eq("id", id);
+    } catch (e) {
+      syncWarnings.push(`Dropbox folder creation failed: ${(e as Error).message}`);
+    }
+  }
+
+  // 4) Monday — Client Onboarding Asset Intake board.
   //    If we already know the Monday item ID, UPDATE it. Otherwise CREATE.
   if (intakeBoardId && process.env.MONDAY_API_TOKEN) {
     try {
@@ -169,7 +193,7 @@ export async function approveBrand(id: string) {
           brand_guideline_pdf_url: b.brand_guideline_pdf_url,
           share_token: b.share_token,
           website: b.website,
-          dropbox_folder_url: b.dropbox_folder_url,
+          dropbox_folder_url: effectiveDropboxUrl,
           overview_polished: b.overview_polished,
           audience_type: b.audience_type,
           music_notes: b.music_notes,
@@ -253,7 +277,7 @@ export async function approveBrand(id: string) {
         brandName: b.business_name,
         shareUrl,
         pdfUrl: b.brand_guideline_pdf_url,
-        dropboxUrl: b.dropbox_folder_url,
+        dropboxUrl: effectiveDropboxUrl,
       });
       const tag = defaultEditorId ? `Hi ${mention(defaultEditorId, DEFAULT_EDITOR_NAME)} — ` : "";
       try {
