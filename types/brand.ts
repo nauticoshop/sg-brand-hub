@@ -4,7 +4,7 @@ export type EngagementType = "retainer" | "project" | "inactive";
 
 export const ENGAGEMENT_LABELS: Record<EngagementType, string> = {
   retainer: "Retainer",
-  project: "Project",
+  project: "Non-Retainer",
   inactive: "Inactive",
 };
 
