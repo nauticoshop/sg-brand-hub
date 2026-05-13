@@ -17,7 +17,7 @@ const CLIENTS_ROOT = process.env.DROPBOX_ROOT_PATH || "/NN x SG";
 //     {currentYear}/
 //     Assets/
 //       Logo/
-//       Deliverables/
+//       Video Assets/
 // Year folder uses the year at creation time; AM can add future years
 // manually when needed.
 function subfoldersForClient(): string[] {
@@ -26,7 +26,7 @@ function subfoldersForClient(): string[] {
     String(year),
     "Assets",
     "Assets/Logo",
-    "Assets/Deliverables",
+    "Assets/Video Assets",
   ];
 }
 
