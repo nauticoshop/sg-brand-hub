@@ -11,9 +11,11 @@ import {
   buildIntakeColumnValues,
   buildSubitemDescription,
   mention,
+  findUserByName,
   ALL_PROJECTS_INTAKE_GROUP_ID,
   ALL_PROJECTS_PROJECT_TYPE_COLUMN,
   PROJECT_TYPE_VIDEO_ASSETS_INDEX,
+  ALL_PROJECTS_COLUMNS,
 } from "@/lib/monday/client";
 
 // Display name for the default editor used in @ mentions on Monday updates.
@@ -210,13 +212,40 @@ export async function approveBrand(id: string) {
     process.env.MONDAY_API_TOKEN
   ) {
     try {
+      // Look up the AM by name so we can assign the AM/BD person column
+      // and pre-fill primary contact info from their Monday profile.
+      let amUser: { id: string; name: string; email: string | null; phone: string | null } | null = null;
+      if (b.account_manager?.trim()) {
+        try {
+          amUser = await findUserByName(b.account_manager);
+        } catch (amErr) {
+          syncWarnings.push(
+            `Couldn't look up AM "${b.account_manager}": ${(amErr as Error).message}`
+          );
+        }
+      }
+
+      const columnValues: Record<string, unknown> = {
+        [ALL_PROJECTS_PROJECT_TYPE_COLUMN]: { index: PROJECT_TYPE_VIDEO_ASSETS_INDEX },
+        // Client dropdown — Monday will reuse an existing label of this name
+        // or create one if it doesn't exist (create_labels_if_missing: true).
+        [ALL_PROJECTS_COLUMNS.client]: { labels: [b.business_name] },
+      };
+
+      if (amUser) {
+        columnValues[ALL_PROJECTS_COLUMNS.amBd] = {
+          personsAndTeams: [{ id: Number(amUser.id), kind: "person" }],
+        };
+        columnValues[ALL_PROJECTS_COLUMNS.primaryName] = amUser.name;
+        if (amUser.email) columnValues[ALL_PROJECTS_COLUMNS.primaryEmail] = amUser.email;
+        if (amUser.phone) columnValues[ALL_PROJECTS_COLUMNS.primaryPhone] = amUser.phone;
+      }
+
       const parent = await createAllProjectsParent({
         boardId: allProjectsBoardId,
         itemName: `${b.business_name} — Brand Video Asset Build`,
         groupId: ALL_PROJECTS_INTAKE_GROUP_ID,
-        columnValues: {
-          [ALL_PROJECTS_PROJECT_TYPE_COLUMN]: { index: PROJECT_TYPE_VIDEO_ASSETS_INDEX },
-        },
+        columnValues,
       });
 
       // Post an update on the parent tagging Rendi with the project details.

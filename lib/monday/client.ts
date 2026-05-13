@@ -89,9 +89,17 @@ export async function createAllProjectsParent(opts: {
   groupId?: string;
   columnValues?: Record<string, unknown>;
 }): Promise<{ id: string }> {
+  // create_labels_if_missing: true lets us pass a brand-new client name to the
+  // Client dropdown without first defining it on the board.
   const data = await mondayFetch<{ create_item: { id: string } }>(
     `mutation Create($boardId: ID!, $itemName: String!, $groupId: String, $columnValues: JSON) {
-      create_item(board_id: $boardId, item_name: $itemName, group_id: $groupId, column_values: $columnValues) {
+      create_item(
+        board_id: $boardId,
+        item_name: $itemName,
+        group_id: $groupId,
+        column_values: $columnValues,
+        create_labels_if_missing: true
+      ) {
         id
       }
     }`,
@@ -105,12 +113,47 @@ export async function createAllProjectsParent(opts: {
   return { id: data.create_item.id };
 }
 
+// Look up a Monday user by name (fuzzy match). Returns the closest match's
+// profile so we can populate the AM/BD person column + contact text fields
+// on the All Projects parent item.
+export async function findUserByName(name: string): Promise<
+  { id: string; name: string; email: string | null; phone: string | null } | null
+> {
+  const cleaned = name.trim();
+  if (!cleaned) return null;
+  const data = await mondayFetch<{
+    users: Array<{ id: string; name: string; email: string | null; phone: string | null }>;
+  }>(
+    `query Users($name: String, $limit: Int) {
+      users(name: $name, limit: $limit) {
+        id
+        name
+        email
+        phone
+      }
+    }`,
+    { name: cleaned, limit: 5 }
+  );
+  if (!data.users || data.users.length === 0) return null;
+  const exact = data.users.find((u) => u.name.toLowerCase() === cleaned.toLowerCase());
+  return exact ?? data.users[0];
+}
+
 // Project Intake group on the All Projects board (where new approved brands land).
 export const ALL_PROJECTS_INTAKE_GROUP_ID = "new_group_mkkykw5r";
 
 // Project Type column + "Video Assets" label index.
 export const ALL_PROJECTS_PROJECT_TYPE_COLUMN = "status__1";
 export const PROJECT_TYPE_VIDEO_ASSETS_INDEX = 104;
+
+// All Projects board: additional column IDs we populate on a new parent.
+export const ALL_PROJECTS_COLUMNS = {
+  client: "dropdown",        // Client dropdown (label = brand name)
+  amBd: "people",            // AM/BD person column
+  primaryName: "text0",      // Primary Name
+  primaryEmail: "text4",     // Primary Email
+  primaryPhone: "text49",    // Primary Phone
+} as const;
 
 /**
  * Build an HTML mention that Monday will render as a clickable tag and fire
