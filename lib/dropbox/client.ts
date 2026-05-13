@@ -60,7 +60,7 @@ function safeName(name: string): string {
 }
 
 /**
- * Idempotent: creates /Clients/[Business Name]/ and the full subfolder tree.
+ * Idempotent: creates /NN x SG/[Business Name]/ and the full subfolder tree.
  * Returns a shareable Dropbox URL for the parent folder.
  *
  * If the folder tree already exists (created previously), this still returns
@@ -75,11 +75,13 @@ export async function ensureBrandFolderTree(businessName: string): Promise<{
   const folder = safeName(businessName);
   const parentPath = `${CLIENTS_ROOT}/${folder}`;
 
-  // Build the full list of paths in creation order: the root first, then
-  // the client parent, then all the subfolders (sorted by depth so parents
-  // come before children).
+  // Build the full list of paths in creation order: the client parent first,
+  // then all the subfolders (sorted by depth so parents come before children).
+  //
+  // We DON'T try to create CLIENTS_ROOT itself — `/NN x SG` is a team folder
+  // mount that already exists at the top of the team Dropbox, and trying to
+  // create it via filesCreateFolderV2 returns a 400 (not a normal path/conflict).
   const allPaths = [
-    CLIENTS_ROOT,
     parentPath,
     ...subfoldersForClient().map((sub) => `${parentPath}/${sub}`),
   ];
