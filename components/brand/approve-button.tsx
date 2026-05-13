@@ -10,13 +10,20 @@ export function ApproveButton({ brandId }: { brandId: string }) {
 
   function handleClick() {
     startTransition(async () => {
-      toast.loading("Generating PDF and approving…", { id: "approve" });
+      toast.loading("Generating PDF, syncing to Monday…", { id: "approve" });
       const res = await approveBrand(brandId);
-      if (res.ok) {
-        toast.success("Brand approved. PDF saved.", { id: "approve" });
-      } else {
+      if (!res.ok) {
         toast.error(`Approval failed: ${res.error ?? "unknown error"}`, { id: "approve" });
+        return;
       }
+      if (res.warnings && res.warnings.length > 0) {
+        toast.warning(
+          `Approved, but ${res.warnings.length} sync issue${res.warnings.length === 1 ? "" : "s"}: ${res.warnings[0]}`,
+          { id: "approve", duration: 8000 }
+        );
+        return;
+      }
+      toast.success("Approved. PDF saved + Monday tasks created.", { id: "approve" });
     });
   }
 

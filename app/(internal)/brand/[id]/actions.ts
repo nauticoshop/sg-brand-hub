@@ -2,7 +2,17 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import type { BrandColor, BrandFont } from "@/types/brand";
+import type { Brand, BrandColor, BrandFont } from "@/types/brand";
+import {
+  createIntakeItem,
+  updateIntakeColumns,
+  createAllProjectsParent,
+  createSubitem,
+  postUpdate,
+  buildIntakeColumnValues,
+  buildSubitemDescription,
+  BASE_VIDEO_SUBITEMS,
+} from "@/lib/monday/client";
 
 type BrandPatch = Partial<{
   business_name: string;
@@ -116,18 +126,133 @@ export async function approveBrand(id: string) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Phase 1 scope: generate + save PDF, flip status, log it.
-  // Monday + Dropbox sync land in Phase 2.
-  const pdfRes = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}/api/brands/${id}/pdf?save=1`,
-    { method: "POST" }
-  );
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const intakeBoardId = process.env.MONDAY_BOARD_ID_INTAKE;
+  const allProjectsBoardId = process.env.MONDAY_BOARD_ID_ALL_PROJECTS;
+  const defaultEditorId = process.env.MONDAY_DEFAULT_EDITOR_USER_ID;
+
+  // 1) Generate + save the brand guideline PDF.
+  const pdfRes = await fetch(`${appUrl}/api/brands/${id}/pdf?save=1`, { method: "POST" });
   if (!pdfRes.ok) {
     const text = await pdfRes.text();
     return { ok: false as const, error: `PDF generation failed: ${text}` };
   }
 
-  const { error } = await supabase
+  // 2) Fetch the fresh brand record (with the new PDF URL).
+  const { data: brandRow, error: fetchErr } = await supabase
+    .from("brands")
+    .select("*")
+    .eq("id", id)
+    .single();
+  if (fetchErr || !brandRow) {
+    return { ok: false as const, error: fetchErr?.message ?? "Brand not found" };
+  }
+  const b = brandRow as Brand;
+  const shareUrl = `${appUrl}/share/${b.share_token}`;
+  const syncWarnings: string[] = [];
+
+  // 3) Monday — Client Onboarding Asset Intake board.
+  //    If we already know the Monday item ID, UPDATE it. Otherwise CREATE.
+  if (intakeBoardId && process.env.MONDAY_API_TOKEN) {
+    try {
+      const columnValues = buildIntakeColumnValues(
+        {
+          business_name: b.business_name,
+          brand_guideline_pdf_url: b.brand_guideline_pdf_url,
+          share_token: b.share_token,
+          website: b.website,
+          dropbox_folder_url: b.dropbox_folder_url,
+          overview_polished: b.overview_polished,
+          audience_type: b.audience_type,
+          music_notes: b.music_notes,
+          colors: b.colors,
+          fonts: b.fonts,
+        },
+        appUrl
+      );
+
+      if (b.monday_intake_item_id) {
+        await updateIntakeColumns({
+          boardId: intakeBoardId,
+          itemId: b.monday_intake_item_id,
+          columnValues,
+        });
+      } else {
+        const created = await createIntakeItem({
+          boardId: intakeBoardId,
+          itemName: b.business_name,
+          columnValues,
+        });
+        await supabase
+          .from("brands")
+          .update({ monday_intake_item_id: created.id })
+          .eq("id", id);
+      }
+    } catch (e) {
+      syncWarnings.push(`Intake board sync failed: ${(e as Error).message}`);
+    }
+  }
+
+  // 4) Monday — All Projects parent + 4 video subitems (idempotent).
+  //    Only create if we haven't already.
+  if (
+    !b.monday_all_projects_item_id &&
+    allProjectsBoardId &&
+    process.env.MONDAY_API_TOKEN
+  ) {
+    try {
+      const parent = await createAllProjectsParent({
+        boardId: allProjectsBoardId,
+        itemName: `${b.business_name} — Brand Video Asset Build`,
+      });
+
+      // Subitem column_values for the default editor. The "person" column on
+      // subitems is conventionally `person` (Monday's default). If the team
+      // renamed it, this still won't error — Monday just skips unknown columns.
+      const subitemPersonValue = defaultEditorId
+        ? { person: { personsAndTeams: [{ id: Number(defaultEditorId), kind: "person" }] } }
+        : undefined;
+
+      for (const subName of BASE_VIDEO_SUBITEMS) {
+        try {
+          await createSubitem({
+            parentItemId: parent.id,
+            itemName: `${b.business_name} — ${subName}`,
+            columnValues: subitemPersonValue,
+          });
+        } catch (subErr) {
+          syncWarnings.push(`Couldn't create subitem "${subName}": ${(subErr as Error).message}`);
+        }
+      }
+
+      // Post an update on the parent tagging the default editor.
+      const description = buildSubitemDescription({
+        brandName: b.business_name,
+        shareUrl,
+        pdfUrl: b.brand_guideline_pdf_url,
+        dropboxUrl: b.dropbox_folder_url,
+      });
+      const tag = defaultEditorId ? `Hi @${defaultEditorId} — ` : "";
+      try {
+        await postUpdate({
+          itemId: parent.id,
+          body: `${tag}Brand approved and ready to start video assets.\n\n${description}`,
+        });
+      } catch (updateErr) {
+        syncWarnings.push(`Couldn't post update: ${(updateErr as Error).message}`);
+      }
+
+      await supabase
+        .from("brands")
+        .update({ monday_all_projects_item_id: parent.id })
+        .eq("id", id);
+    } catch (e) {
+      syncWarnings.push(`All Projects sync failed: ${(e as Error).message}`);
+    }
+  }
+
+  // 5) Flip status to approved + log it.
+  const { error: updErr } = await supabase
     .from("brands")
     .update({
       status: "approved",
@@ -135,17 +260,20 @@ export async function approveBrand(id: string) {
       approved_by: user?.id,
     })
     .eq("id", id);
-
-  if (error) return { ok: false as const, error: error.message };
+  if (updErr) return { ok: false as const, error: updErr.message };
 
   await supabase.from("brand_activity_log").insert({
     brand_id: id,
     event_type: "approved",
     user_id: user?.id,
+    metadata: { sync_warnings: syncWarnings.length > 0 ? syncWarnings : undefined },
   });
 
   revalidatePath(`/brand/${id}`);
-  return { ok: true as const };
+  revalidatePath(`/share/${b.share_token}`);
+  revalidatePath("/dashboard");
+
+  return { ok: true as const, warnings: syncWarnings };
 }
 
 export async function deleteBrand(id: string) {

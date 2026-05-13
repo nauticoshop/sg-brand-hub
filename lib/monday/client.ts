@@ -1,0 +1,227 @@
+// Minimal Monday.com GraphQL client. Wraps the few operations the approve
+// flow needs: create/update an item on the Intake board, create a parent
+// item on the All Projects board, create subitems, and post an update.
+
+const MONDAY_API_URL = "https://api.monday.com/v2";
+
+function token() {
+  const t = process.env.MONDAY_API_TOKEN;
+  if (!t) throw new Error("MONDAY_API_TOKEN is not set");
+  return t;
+}
+
+async function mondayFetch<T>(query: string, variables?: Record<string, unknown>): Promise<T> {
+  const res = await fetch(MONDAY_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token(),
+      "API-Version": "2024-10",
+    },
+    body: JSON.stringify({ query, variables }),
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`Monday API HTTP ${res.status}: ${text.slice(0, 400)}`);
+  }
+
+  const body = (await res.json()) as { data?: T; errors?: Array<{ message: string }> };
+  if (body.errors && body.errors.length > 0) {
+    throw new Error(`Monday API: ${body.errors.map((e) => e.message).join("; ")}`);
+  }
+  if (!body.data) throw new Error("Monday API returned no data");
+  return body.data;
+}
+
+export type IntakeColumnValues = {
+  // Map to Monday column IDs on the Client Onboarding Asset Intake board.
+  // Filled by `buildIntakeColumnValues` below.
+  [key: string]: unknown;
+};
+
+// ---------- Intake board (Client Onboarding Asset Intake, 8012504126) ----------
+
+export async function createIntakeItem(opts: {
+  boardId: string;
+  itemName: string;
+  columnValues: IntakeColumnValues;
+}): Promise<{ id: string }> {
+  const data = await mondayFetch<{ create_item: { id: string } }>(
+    `mutation Create($boardId: ID!, $itemName: String!, $columnValues: JSON) {
+      create_item(board_id: $boardId, item_name: $itemName, column_values: $columnValues) {
+        id
+      }
+    }`,
+    {
+      boardId: opts.boardId,
+      itemName: opts.itemName,
+      columnValues: JSON.stringify(opts.columnValues),
+    }
+  );
+  return { id: data.create_item.id };
+}
+
+export async function updateIntakeColumns(opts: {
+  boardId: string;
+  itemId: string;
+  columnValues: IntakeColumnValues;
+}): Promise<void> {
+  await mondayFetch(
+    `mutation Update($boardId: ID!, $itemId: ID!, $columnValues: JSON!) {
+      change_multiple_column_values(board_id: $boardId, item_id: $itemId, column_values: $columnValues) {
+        id
+      }
+    }`,
+    {
+      boardId: opts.boardId,
+      itemId: opts.itemId,
+      columnValues: JSON.stringify(opts.columnValues),
+    }
+  );
+}
+
+// ---------- All Projects board ----------
+
+export async function createAllProjectsParent(opts: {
+  boardId: string;
+  itemName: string;
+  groupId?: string;
+}): Promise<{ id: string }> {
+  const data = await mondayFetch<{ create_item: { id: string } }>(
+    `mutation Create($boardId: ID!, $itemName: String!, $groupId: String) {
+      create_item(board_id: $boardId, item_name: $itemName, group_id: $groupId) {
+        id
+      }
+    }`,
+    {
+      boardId: opts.boardId,
+      itemName: opts.itemName,
+      groupId: opts.groupId,
+    }
+  );
+  return { id: data.create_item.id };
+}
+
+export async function createSubitem(opts: {
+  parentItemId: string;
+  itemName: string;
+  columnValues?: Record<string, unknown>;
+}): Promise<{ id: string }> {
+  const data = await mondayFetch<{ create_subitem: { id: string } }>(
+    `mutation CreateSub($parentItemId: ID!, $itemName: String!, $columnValues: JSON) {
+      create_subitem(parent_item_id: $parentItemId, item_name: $itemName, column_values: $columnValues) {
+        id
+      }
+    }`,
+    {
+      parentItemId: opts.parentItemId,
+      itemName: opts.itemName,
+      columnValues: opts.columnValues ? JSON.stringify(opts.columnValues) : undefined,
+    }
+  );
+  return { id: data.create_subitem.id };
+}
+
+export async function postUpdate(opts: {
+  itemId: string;
+  body: string;
+}): Promise<void> {
+  await mondayFetch(
+    `mutation Post($itemId: ID!, $body: String!) {
+      create_update(item_id: $itemId, body: $body) { id }
+    }`,
+    opts
+  );
+}
+
+// ---------- Helpers to format Monday column values ----------
+
+/**
+ * Build the column_values payload for the Client Onboarding Asset Intake board
+ * based on a brand record. Pulls only what we want to push back to Monday.
+ *
+ * Column IDs come from the board metadata we fetched earlier:
+ *   link_mkv84m88        Brand Guideline (link)
+ *   link_mkqgc924        DB Parent Folder (link)
+ *   short_textl2prmqt6   Website
+ *   text_Mjj2kdtv        Brand Color 1 (comma hex list)
+ *   text_1_Mjj2woeO      Brand Color 2 (comma hex list)
+ *   text_2_Mjj2PJRM      Font Family
+ *   long_text_Mjj24ZDl   Additional Info / overview
+ *   long_text9qcmxe7t    Target Audience
+ *   text_2_Mjj2yQkE      Music
+ */
+export function buildIntakeColumnValues(brand: {
+  business_name: string;
+  brand_guideline_pdf_url: string | null;
+  share_token: string;
+  website: string | null;
+  dropbox_folder_url: string | null;
+  overview_polished: string | null;
+  audience_type: string | null;
+  music_notes: string | null;
+  colors: Array<{ name: string; hex: string; role: string }>;
+  fonts: Array<{ name: string; role: string }>;
+}, appUrl: string): IntakeColumnValues {
+  const primaryHexes = brand.colors
+    .filter((c) => c.role === "primary")
+    .map((c) => c.hex)
+    .join(", ");
+  const secondaryHexes = brand.colors
+    .filter((c) => c.role === "secondary")
+    .map((c) => c.hex)
+    .join(", ");
+  const primaryFont = brand.fonts.find((f) => f.role === "primary")?.name ?? "";
+  const secondaryFont = brand.fonts.find((f) => f.role === "secondary")?.name ?? "";
+  const fontLine = [primaryFont, secondaryFont].filter(Boolean).join(" / ");
+
+  // The Brand Guideline column should now point at the SG Brand Hub share page
+  // — that's the new canonical brand guideline.
+  const shareUrl = `${appUrl}/share/${brand.share_token}`;
+  const guidelineText = `${brand.business_name} brand guidelines`;
+
+  const cv: IntakeColumnValues = {
+    link_mkv84m88: { url: shareUrl, text: guidelineText },
+  };
+
+  if (brand.dropbox_folder_url) {
+    cv.link_mkqgc924 = { url: brand.dropbox_folder_url, text: "Dropbox folder" };
+  }
+  if (brand.website) {
+    cv.short_textl2prmqt6 = brand.website;
+  }
+  if (primaryHexes) cv.text_Mjj2kdtv = primaryHexes;
+  if (secondaryHexes) cv.text_1_Mjj2woeO = secondaryHexes;
+  if (fontLine) cv.text_2_Mjj2PJRM = fontLine;
+  if (brand.overview_polished) cv.long_text_Mjj24ZDl = brand.overview_polished;
+  if (brand.audience_type) cv.long_text9qcmxe7t = brand.audience_type;
+  if (brand.music_notes) cv.text_2_Mjj2yQkE = brand.music_notes;
+
+  return cv;
+}
+
+// ---------- Subitem template ----------
+
+/**
+ * The 4 baseline video asset subitems Rendi gets when a brand is approved.
+ * Names match the spec; AM can rename in Monday after creation.
+ */
+export const BASE_VIDEO_SUBITEMS = [
+  "Social Vertical Intro & Outro",
+  "Horizontal Intro & Outro",
+  "Social Vertical Lower Thirds",
+  "Horizontal Lower Thirds",
+] as const;
+
+export function buildSubitemDescription(opts: {
+  brandName: string;
+  shareUrl: string;
+  pdfUrl: string | null;
+  dropboxUrl: string | null;
+}) {
+  const lines = [`Brand: ${opts.brandName}`, `Share page: ${opts.shareUrl}`];
+  if (opts.pdfUrl) lines.push(`Brand guidelines PDF: ${opts.pdfUrl}`);
+  if (opts.dropboxUrl) lines.push(`Dropbox folder: ${opts.dropboxUrl}`);
+  return lines.join("\n");
+}
