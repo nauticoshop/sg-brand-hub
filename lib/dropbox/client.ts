@@ -69,9 +69,36 @@ function getClient(): Dropbox {
  */
 async function getRootedClient(): Promise<Dropbox> {
   const config = getClientConfig();
+
+  // Allow the team root namespace to be provided directly via env var as an
+  // escape hatch — if the Dropbox app's OAuth scopes don't include
+  // `account_info.read`, the discovery call below will fail.
+  const explicitRoot = process.env.DROPBOX_TEAM_NAMESPACE_ID;
+  if (explicitRoot) {
+    return new Dropbox({
+      ...config,
+      pathRoot: JSON.stringify({ ".tag": "root", root: explicitRoot }),
+    });
+  }
+
   const probe = new Dropbox(config);
-  const account = await probe.usersGetCurrentAccount();
-  const rootNamespaceId = account.result.root_info.root_namespace_id;
+  let rootNamespaceId: string;
+  try {
+    const account = await probe.usersGetCurrentAccount();
+    rootNamespaceId = account.result.root_info.root_namespace_id;
+  } catch (err: unknown) {
+    const errObj = err as {
+      error?: { error_summary?: string };
+      status?: number;
+      message?: string;
+    };
+    const summary = errObj.error?.error_summary ?? errObj.message ?? String(err);
+    throw new Error(
+      `Failed to fetch account info (probe call): ${summary}. ` +
+        `If this is a scope issue, add account_info.read to the Dropbox app and re-OAuth, ` +
+        `or set DROPBOX_TEAM_NAMESPACE_ID to skip discovery.`
+    );
+  }
   return new Dropbox({
     ...config,
     pathRoot: JSON.stringify({ ".tag": "root", root: rootNamespaceId }),
