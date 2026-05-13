@@ -243,7 +243,7 @@ export async function approveBrand(id: string) {
 
       const parent = await createAllProjectsParent({
         boardId: allProjectsBoardId,
-        itemName: `${b.business_name} — Brand Video Asset Build`,
+        itemName: `${b.business_name} | Video Assets`,
         groupId: ALL_PROJECTS_INTAKE_GROUP_ID,
         columnValues,
       });
