@@ -41,6 +41,7 @@ type BrandPatch = Partial<{
   fonts: BrandFont[];
   internal_notes: string | null;
   status: "draft" | "submitted" | "in_review" | "approved" | "archived";
+  engagement_type: "retainer" | "project" | "inactive";
 }>;
 
 export async function updateBrand(id: string, patch: BrandPatch) {

@@ -17,7 +17,7 @@ import { PdfLinkField } from "@/components/brand/pdf-link-field";
 import { ShareLinkButton } from "@/components/brand/share-link-button";
 import { DeleteBrandButton } from "@/components/brand/delete-brand-button";
 import { updateBrand, deleteLogo, reorderLogos } from "./actions";
-import { VERTICAL_LABELS, type Brand, type BrandLogo, type BrandActivityLog } from "@/types/brand";
+import { VERTICAL_LABELS, ENGAGEMENT_LABELS, type Brand, type BrandLogo, type BrandActivityLog } from "@/types/brand";
 import { formatRelativeDate } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -113,7 +113,15 @@ export default async function BrandDetailPage({ params }: { params: { id: string
                   <EditableField label="Vertical (other)" field="vertical_other" initialValue={b.vertical_other ?? ""} brandId={b.id} onSave={updateBrand} />
                 )}
                 <EditableField label="Account manager (SG)" field="account_manager" initialValue={b.account_manager ?? ""} brandId={b.id} onSave={updateBrand} placeholder="e.g. Billy Pavlock" />
-                <EditableField label="Client asset folder (from intake)" field="client_asset_folder_url" type="url" initialValue={b.client_asset_folder_url ?? ""} brandId={b.id} onSave={updateBrand} placeholder="https://" />
+                <EditableSelect
+                  label="Engagement type"
+                  field="engagement_type"
+                  initialValue={b.engagement_type}
+                  brandId={b.id}
+                  options={Object.entries(ENGAGEMENT_LABELS).map(([value, label]) => ({ value, label }))}
+                  onSave={updateBrand}
+                />
+                <EditableField label="Client asset folder (from intake)" field="client_asset_folder_url" type="url" initialValue={b.client_asset_folder_url ?? ""} brandId={b.id} onSave={updateBrand} placeholder="https://" className="md:col-span-2" />
               </FieldGrid>
             </FormSection>
 

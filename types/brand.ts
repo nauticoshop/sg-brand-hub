@@ -1,5 +1,19 @@
 export type BrandStatus = "draft" | "submitted" | "in_review" | "approved" | "archived";
 
+export type EngagementType = "retainer" | "project" | "inactive";
+
+export const ENGAGEMENT_LABELS: Record<EngagementType, string> = {
+  retainer: "Retainer",
+  project: "Project",
+  inactive: "Inactive",
+};
+
+export const ENGAGEMENT_DESCRIPTIONS: Record<EngagementType, string> = {
+  retainer: "Ongoing retainer client",
+  project: "One-off / non-retainer project",
+  inactive: "No longer active",
+};
+
 export type BrandVertical =
   | "marine"
   | "private_aviation"
@@ -66,6 +80,7 @@ export type Brand = {
   created_by: string | null;
 
   status: BrandStatus;
+  engagement_type: EngagementType;
   approved_at: string | null;
   approved_by: string | null;
 
