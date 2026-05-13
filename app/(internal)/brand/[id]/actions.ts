@@ -7,12 +7,18 @@ import {
   createIntakeItem,
   updateIntakeColumns,
   createAllProjectsParent,
-  createSubitem,
   postUpdate,
   buildIntakeColumnValues,
   buildSubitemDescription,
-  BASE_VIDEO_SUBITEMS,
+  mention,
+  ALL_PROJECTS_INTAKE_GROUP_ID,
+  ALL_PROJECTS_PROJECT_TYPE_COLUMN,
+  PROJECT_TYPE_VIDEO_ASSETS_INDEX,
 } from "@/lib/monday/client";
+
+// Display name for the default editor used in @ mentions on Monday updates.
+// Kept in code rather than env to make the HTML mention copy obvious.
+const DEFAULT_EDITOR_NAME = "Rendi Andrianto";
 
 type BrandPatch = Partial<{
   business_name: string;
@@ -193,8 +199,11 @@ export async function approveBrand(id: string) {
     }
   }
 
-  // 4) Monday — All Projects parent + 4 video subitems (idempotent).
-  //    Only create if we haven't already.
+  // 4) Monday — All Projects: create parent item in the Project Intake group
+  //    with Project Type set to "Video Assets". Subitems are intentionally NOT
+  //    created here — the user has their own Monday automation that fires when
+  //    Project Type = Video Assets to spawn the subitems.
+  //    Idempotent: only runs if monday_all_projects_item_id is null on the brand.
   if (
     !b.monday_all_projects_item_id &&
     allProjectsBoardId &&
@@ -204,35 +213,20 @@ export async function approveBrand(id: string) {
       const parent = await createAllProjectsParent({
         boardId: allProjectsBoardId,
         itemName: `${b.business_name} — Brand Video Asset Build`,
+        groupId: ALL_PROJECTS_INTAKE_GROUP_ID,
+        columnValues: {
+          [ALL_PROJECTS_PROJECT_TYPE_COLUMN]: { index: PROJECT_TYPE_VIDEO_ASSETS_INDEX },
+        },
       });
 
-      // Subitem column_values for the default editor. The "person" column on
-      // subitems is conventionally `person` (Monday's default). If the team
-      // renamed it, this still won't error — Monday just skips unknown columns.
-      const subitemPersonValue = defaultEditorId
-        ? { person: { personsAndTeams: [{ id: Number(defaultEditorId), kind: "person" }] } }
-        : undefined;
-
-      for (const subName of BASE_VIDEO_SUBITEMS) {
-        try {
-          await createSubitem({
-            parentItemId: parent.id,
-            itemName: `${b.business_name} — ${subName}`,
-            columnValues: subitemPersonValue,
-          });
-        } catch (subErr) {
-          syncWarnings.push(`Couldn't create subitem "${subName}": ${(subErr as Error).message}`);
-        }
-      }
-
-      // Post an update on the parent tagging the default editor.
+      // Post an update on the parent tagging Rendi with the project details.
       const description = buildSubitemDescription({
         brandName: b.business_name,
         shareUrl,
         pdfUrl: b.brand_guideline_pdf_url,
         dropboxUrl: b.dropbox_folder_url,
       });
-      const tag = defaultEditorId ? `Hi @${defaultEditorId} — ` : "";
+      const tag = defaultEditorId ? `Hi ${mention(defaultEditorId, DEFAULT_EDITOR_NAME)} — ` : "";
       try {
         await postUpdate({
           itemId: parent.id,

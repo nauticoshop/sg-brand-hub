@@ -87,10 +87,11 @@ export async function createAllProjectsParent(opts: {
   boardId: string;
   itemName: string;
   groupId?: string;
+  columnValues?: Record<string, unknown>;
 }): Promise<{ id: string }> {
   const data = await mondayFetch<{ create_item: { id: string } }>(
-    `mutation Create($boardId: ID!, $itemName: String!, $groupId: String) {
-      create_item(board_id: $boardId, item_name: $itemName, group_id: $groupId) {
+    `mutation Create($boardId: ID!, $itemName: String!, $groupId: String, $columnValues: JSON) {
+      create_item(board_id: $boardId, item_name: $itemName, group_id: $groupId, column_values: $columnValues) {
         id
       }
     }`,
@@ -98,9 +99,26 @@ export async function createAllProjectsParent(opts: {
       boardId: opts.boardId,
       itemName: opts.itemName,
       groupId: opts.groupId,
+      columnValues: opts.columnValues ? JSON.stringify(opts.columnValues) : undefined,
     }
   );
   return { id: data.create_item.id };
+}
+
+// Project Intake group on the All Projects board (where new approved brands land).
+export const ALL_PROJECTS_INTAKE_GROUP_ID = "new_group_mkkykw5r";
+
+// Project Type column + "Video Assets" label index.
+export const ALL_PROJECTS_PROJECT_TYPE_COLUMN = "status__1";
+export const PROJECT_TYPE_VIDEO_ASSETS_INDEX = 104;
+
+/**
+ * Build an HTML mention that Monday will render as a clickable tag and fire
+ * a notification on. The `data-mention-type="User"` + `data-mention-id` attrs
+ * are what Monday's update parser looks for.
+ */
+export function mention(userId: string, displayName: string): string {
+  return `<a data-mention-type="User" data-mention-id="${userId}" data-mention-name="${displayName}" href="https://nauticalnetwork.monday.com/users/${userId}">@${displayName}</a>`;
 }
 
 export async function createSubitem(opts: {
