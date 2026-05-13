@@ -12,6 +12,7 @@ type Item = {
   status: ItemStatus;
   brandId?: string;
   brandName?: string;
+  merged?: boolean;
   error?: string;
 };
 
@@ -25,8 +26,13 @@ async function processItem(item: Item): Promise<Partial<Item>> {
       const body = await res.json().catch(() => ({}));
       throw new Error(body.error ?? `Import failed (${res.status})`);
     }
-    const data = (await res.json()) as { id: string; business_name: string };
-    return { status: "done", brandId: data.id, brandName: data.business_name };
+    const data = (await res.json()) as { id: string; business_name: string; merged?: boolean };
+    return {
+      status: "done",
+      brandId: data.id,
+      brandName: data.business_name,
+      merged: data.merged,
+    };
   } catch (e) {
     return { status: "error", error: (e as Error).message };
   }
@@ -119,7 +125,8 @@ function ItemRow({ item }: { item: Item }) {
         )}
         {item.status === "done" && item.brandName && (
           <div className="text-xs text-muted-foreground">
-            Imported as <span className="font-medium text-foreground">{item.brandName}</span> ·{" "}
+            {item.merged ? "Merged into" : "Imported as"}{" "}
+            <span className="font-medium text-foreground">{item.brandName}</span> ·{" "}
             <Link href={`/brand/${item.brandId}`} className="text-foreground underline underline-offset-2">
               Review →
             </Link>
