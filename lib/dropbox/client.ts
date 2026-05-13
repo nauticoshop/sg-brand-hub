@@ -30,7 +30,7 @@ function subfoldersForClient(): string[] {
   ];
 }
 
-function getClient(): Dropbox {
+function getClientConfig() {
   const clientId = process.env.DROPBOX_APP_KEY;
   const clientSecret = process.env.DROPBOX_APP_SECRET;
   const refreshToken = process.env.DROPBOX_REFRESH_TOKEN;
@@ -41,11 +41,40 @@ function getClient(): Dropbox {
     );
   }
 
-  return new Dropbox({
+  return {
     clientId,
     clientSecret,
     refreshToken,
     fetch: globalThis.fetch as unknown as typeof fetch,
+  };
+}
+
+function getClient(): Dropbox {
+  return new Dropbox(getClientConfig());
+}
+
+/**
+ * Return a Dropbox client whose path-root is set to the team's root namespace.
+ *
+ * Why this exists: SG's client folders live in `/NN x SG`, which is a Dropbox
+ * team folder mounted into the OAuth user's personal namespace. The default
+ * namespace for a user-token call is the personal one, where `/NN x SG` is
+ * just a "shared mount" link — writing into it (creating subfolders) returns
+ * a 400. To actually write inside team folders, the API call has to specify
+ * the team's root namespace via the `Dropbox-API-Path-Root` header.
+ *
+ * We discover the right namespace ID by calling `users/get_current_account`,
+ * which returns the user's `root_info.root_namespace_id` (the team's root for
+ * team members; the user's personal namespace for solo accounts).
+ */
+async function getRootedClient(): Promise<Dropbox> {
+  const config = getClientConfig();
+  const probe = new Dropbox(config);
+  const account = await probe.usersGetCurrentAccount();
+  const rootNamespaceId = account.result.root_info.root_namespace_id;
+  return new Dropbox({
+    ...config,
+    pathRoot: JSON.stringify({ ".tag": "root", root: rootNamespaceId }),
   });
 }
 
@@ -71,7 +100,9 @@ export async function ensureBrandFolderTree(businessName: string): Promise<{
   parentPath: string;
   shareUrl: string;
 }> {
-  const dbx = getClient();
+  // Use a path-rooted client so writes land inside the team folder namespace,
+  // not the user's personal namespace.
+  const dbx = await getRootedClient();
   const folder = safeName(businessName);
   const parentPath = `${CLIENTS_ROOT}/${folder}`;
 
