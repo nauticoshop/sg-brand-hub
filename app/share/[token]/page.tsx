@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { unstable_noStore as noStore } from "next/cache";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Folder, Video, FileText, ExternalLink, Palette } from "lucide-react";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { isEmailAllowed } from "@/lib/auth/domain";
@@ -162,6 +162,14 @@ export default async function SharePage({ params }: { params: { token: string } 
           <ShareActionBar shareUrl={shareUrl} pdfUrl={pdfUrl} editUrl={editUrl} canEdit={canEdit} />
         </div>
       </div>
+
+      {/* RESOURCES — quick-access cards for editors / freelancers */}
+      <ResourcesStrip
+        dropbox={b.dropbox_folder_url}
+        videoAssets={b.video_assets_folder_url}
+        canvaKit={b.canva_brand_kit_url}
+        clientFolder={b.client_asset_folder_url}
+      />
 
       {/* BODY */}
       <main className="mx-auto max-w-[1080px] px-6 md:px-12">
@@ -375,6 +383,85 @@ function Meta({
         )}
       </div>
     </div>
+  );
+}
+
+function ResourcesStrip({
+  dropbox,
+  videoAssets,
+  canvaKit,
+  clientFolder,
+}: {
+  dropbox: string | null;
+  videoAssets: string | null;
+  canvaKit: string | null;
+  clientFolder: string | null;
+}) {
+  const items: Array<{ label: string; sub: string; href: string; Icon: typeof Folder }> = [];
+
+  if (dropbox) {
+    items.push({
+      label: "Brand Asset Library",
+      sub: "Parent Dropbox folder — logos, photos, source files",
+      href: dropbox,
+      Icon: Folder,
+    });
+  }
+  if (videoAssets) {
+    items.push({
+      label: "Video Assets",
+      sub: "Intros, outros, lower thirds — Dropbox",
+      href: videoAssets,
+      Icon: Video,
+    });
+  }
+  if (canvaKit) {
+    items.push({
+      label: "Brand Guideline (Canva)",
+      sub: "Original Canva brand kit",
+      href: canvaKit,
+      Icon: FileText,
+    });
+  }
+  if (clientFolder && clientFolder !== dropbox) {
+    items.push({
+      label: "Client Folder",
+      sub: "Original assets shared by the client",
+      href: clientFolder,
+      Icon: Palette,
+    });
+  }
+
+  if (items.length === 0) return null;
+
+  return (
+    <section className="border-b border-border bg-secondary/30">
+      <div className="mx-auto max-w-[1080px] px-6 py-8 md:px-12">
+        <div className="mb-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+          Quick access
+        </div>
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+          {items.map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-3 rounded-xl border border-border bg-panel px-4 py-3.5 transition-shadow hover:shadow-panel-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-secondary text-foreground">
+                <item.Icon className="h-4 w-4" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="truncate text-sm font-medium">{item.label}</div>
+                <div className="truncate text-xs text-muted-foreground">{item.sub}</div>
+              </div>
+              <ExternalLink className="h-4 w-4 flex-shrink-0 text-muted-foreground transition-colors group-hover:text-foreground" />
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
