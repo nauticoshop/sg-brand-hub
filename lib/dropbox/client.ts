@@ -153,14 +153,32 @@ export async function ensureBrandFolderTree(businessName: string): Promise<{
       await dbx.filesCreateFolderV2({ path, autorename: false });
     } catch (innerErr: unknown) {
       const errObj = innerErr as {
-        error?: { error_summary?: string; error?: { ".tag"?: string } };
+        error?: unknown;
+        status?: number;
         message?: string;
       };
-      const summary =
-        errObj.error?.error_summary ?? errObj.message ?? String(innerErr);
+      // Pull out as much detail as Dropbox returned: error_summary if present,
+      // otherwise the raw error body JSON, otherwise the message.
+      const errAny = errObj.error as
+        | { error_summary?: string; error?: unknown; user_message?: { text?: string } }
+        | string
+        | undefined;
+      let summary: string;
+      if (typeof errAny === "string") {
+        summary = errAny;
+      } else if (errAny && typeof errAny === "object") {
+        summary =
+          errAny.error_summary ??
+          errAny.user_message?.text ??
+          JSON.stringify(errAny).slice(0, 500);
+      } else {
+        summary = errObj.message ?? String(innerErr);
+      }
       // "path/conflict/folder" means the folder already exists — that's fine.
       if (/path\/conflict|already_exists|path_conflict/i.test(summary)) continue;
-      throw new Error(`Folder create failed for "${path}": ${summary}`);
+      throw new Error(
+        `Folder create failed for "${path}" (HTTP ${errObj.status ?? "?"}): ${summary}`
+      );
     }
   }
 
