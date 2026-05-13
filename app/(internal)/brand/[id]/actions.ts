@@ -46,7 +46,24 @@ type BrandPatch = Partial<{
 
 export async function updateBrand(id: string, patch: BrandPatch) {
   const supabase = createSupabaseServerClient();
-  const { error } = await supabase.from("brands").update(patch).eq("id", id);
+
+  // Auto-flip: if this edit didn't include a status change, and the brand is
+  // still sitting in `submitted` or `draft`, the AM is actively working on
+  // it now — bump to `in_review`. One-shot transition, happens silently on
+  // the first edit after a public form submission.
+  let effectivePatch: BrandPatch = patch;
+  if (!patch.status) {
+    const { data: current } = await supabase
+      .from("brands")
+      .select("status")
+      .eq("id", id)
+      .single();
+    if (current?.status === "submitted" || current?.status === "draft") {
+      effectivePatch = { ...patch, status: "in_review" };
+    }
+  }
+
+  const { error } = await supabase.from("brands").update(effectivePatch).eq("id", id);
   if (error) return { ok: false as const, error: error.message };
 
   await supabase.from("brand_activity_log").insert({

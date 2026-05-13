@@ -5,7 +5,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { PageContainer } from "@/components/shell/page-container";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { StatusPill } from "@/components/dashboard/status-pill";
+import { StatusEditor } from "@/components/brand/status-editor";
 import { FormSection, FieldGrid } from "@/components/brand/section";
 import { EditableField } from "@/components/brand/editable-field";
 import { EditableSelect } from "@/components/brand/editable-select";
@@ -61,7 +61,7 @@ export default async function BrandDetailPage({ params }: { params: { id: string
       <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
         <div className="flex items-center gap-3">
           <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">{b.business_name}</h1>
-          <StatusPill status={b.status} />
+          <StatusEditor brandId={b.id} status={b.status} />
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <ShareLinkButton shareToken={b.share_token} />

@@ -23,9 +23,7 @@ const supabase = createClient(
 );
 
 const PAIRS = [
-  { keep: "Bertram", drop: "Bertram Yachts" },
-  { keep: "Ryan Hughes Design", drop: "Ryan Hughes Design Build" },
-  { keep: "Solana", drop: "Solana Outdoor Living" },
+  { keep: "CYM Charters", drop: "CYM Charter" },
 ];
 
 const FILL_IF_EMPTY = [
