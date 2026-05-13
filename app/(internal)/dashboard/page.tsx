@@ -1,4 +1,5 @@
 import { Plus, Upload } from "lucide-react";
+import { IntakeFormShare } from "@/components/dashboard/intake-form-share";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PageContainer, PageHeader } from "@/components/shell/page-container";
@@ -38,7 +39,8 @@ export default async function DashboardPage({
         title="Brand Hub"
         description="Client brand records — intake, review, approve, ship."
         actions={
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <IntakeFormShare />
             <Button variant="outline" asChild>
               <Link href="/import">
                 <Upload className="h-4 w-4" />
