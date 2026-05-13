@@ -70,55 +70,67 @@ export async function ensureBrandFolderTree(businessName: string): Promise<{
   const folder = safeName(businessName);
   const parentPath = `${CLIENTS_ROOT}/${folder}`;
 
-  // Build the full list of paths we want to ensure exist.
-  const allPaths = [parentPath, ...SUBFOLDERS.map((sub) => `${parentPath}/${sub}`)];
+  // Build the full list of paths in creation order: the root /Clients first,
+  // then the brand parent, then all the subfolders (sorted by depth so
+  // parents always come before children).
+  const allPaths = [
+    CLIENTS_ROOT,
+    parentPath,
+    ...SUBFOLDERS.map((sub) => `${parentPath}/${sub}`),
+  ];
 
-  // create_folder_batch accepts up to 1000 paths and is idempotent if
-  // autorename:false + we ignore the "path/conflict" error.
-  try {
-    await dbx.filesCreateFolderBatch({
-      paths: allPaths,
-      autorename: false,
-      force_async: false,
-    });
-  } catch (e) {
-    // Dropbox returns 409 / path_conflict if a folder already exists. The
-    // batch API generally tolerates conflicts within the batch, but if the
-    // whole call fails, fall back to creating one at a time and skipping
-    // conflicts.
-    for (const path of allPaths) {
-      try {
-        await dbx.filesCreateFolderV2({ path, autorename: false });
-      } catch (innerErr) {
-        const msg = (innerErr as Error).message ?? "";
-        if (!/path\/conflict|already_exists/i.test(msg)) {
-          // Anything other than "already exists" is a real failure.
-          throw innerErr;
-        }
-      }
+  // Create one at a time in order. create_folder_batch turned out to be
+  // finicky with scopes/path-conflict handling — the one-at-a-time approach
+  // is slightly slower (~10 sequential requests) but works reliably and lets
+  // us cleanly distinguish "already exists" from real errors.
+  for (const path of allPaths) {
+    try {
+      await dbx.filesCreateFolderV2({ path, autorename: false });
+    } catch (innerErr: unknown) {
+      const errObj = innerErr as {
+        error?: { error_summary?: string; error?: { ".tag"?: string } };
+        message?: string;
+      };
+      const summary =
+        errObj.error?.error_summary ?? errObj.message ?? String(innerErr);
+      // "path/conflict/folder" means the folder already exists — that's fine.
+      if (/path\/conflict|already_exists|path_conflict/i.test(summary)) continue;
+      throw new Error(`Folder create failed for "${path}": ${summary}`);
     }
   }
 
   // Get or create a shareable URL for the parent folder. If a shared link
-  // already exists, Dropbox returns 409 with the existing link in the error
-  // — we extract it.
+  // already exists, Dropbox 409s — in that case fetch the existing one.
   let shareUrl: string;
   try {
-    // Use the team's default sharing policy (no explicit settings — the SDK
-    // types are strict about enum values so we just omit them).
     const linkRes = await dbx.sharingCreateSharedLinkWithSettings({
       path: parentPath,
     });
     shareUrl = linkRes.result.url;
-  } catch (e) {
-    // Try fetching existing shared links instead.
+  } catch (e: unknown) {
+    const errObj = e as {
+      error?: { error_summary?: string };
+      message?: string;
+    };
+    const summary = errObj.error?.error_summary ?? errObj.message ?? String(e);
+    // Look up the existing link instead.
     try {
-      const existing = await dbx.sharingListSharedLinks({ path: parentPath, direct_only: true });
+      const existing = await dbx.sharingListSharedLinks({
+        path: parentPath,
+        direct_only: true,
+      });
       const link = existing.result.links[0];
-      if (!link) throw e;
+      if (!link) throw new Error(`Couldn't create or find shared link: ${summary}`);
       shareUrl = link.url;
-    } catch {
-      throw e;
+    } catch (innerErr) {
+      const innerSummary =
+        (innerErr as { error?: { error_summary?: string }; message?: string }).error
+          ?.error_summary ??
+        (innerErr as { message?: string }).message ??
+        String(innerErr);
+      throw new Error(
+        `Shared link creation failed: ${summary}. Fallback list failed: ${innerSummary}`
+      );
     }
   }
 
