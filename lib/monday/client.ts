@@ -153,7 +153,30 @@ export const ALL_PROJECTS_COLUMNS = {
   primaryName: "text0",      // Primary Name
   primaryEmail: "text4",     // Primary Email
   primaryPhone: "text49",    // Primary Phone
+  dbParentFolder: "link8",   // DB Parent Folder (link to Dropbox client folder)
 } as const;
+
+// Update arbitrary column values on an existing All Projects item. Used to
+// back-fill the Dropbox folder link on a re-approve when the parent item
+// already exists.
+export async function updateAllProjectsColumns(opts: {
+  boardId: string;
+  itemId: string;
+  columnValues: Record<string, unknown>;
+}): Promise<void> {
+  await mondayFetch(
+    `mutation Update($boardId: ID!, $itemId: ID!, $columnValues: JSON!) {
+      change_multiple_column_values(board_id: $boardId, item_id: $itemId, column_values: $columnValues) {
+        id
+      }
+    }`,
+    {
+      boardId: opts.boardId,
+      itemId: opts.itemId,
+      columnValues: JSON.stringify(opts.columnValues),
+    }
+  );
+}
 
 /**
  * Build an HTML mention that Monday will render as a clickable tag and fire

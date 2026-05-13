@@ -7,6 +7,7 @@ import {
   createIntakeItem,
   updateIntakeColumns,
   createAllProjectsParent,
+  updateAllProjectsColumns,
   postUpdate,
   buildIntakeColumnValues,
   buildSubitemDescription,
@@ -229,7 +230,40 @@ export async function approveBrand(id: string) {
   //    with Project Type set to "Video Assets". Subitems are intentionally NOT
   //    created here — the user has their own Monday automation that fires when
   //    Project Type = Video Assets to spawn the subitems.
-  //    Idempotent: only runs if monday_all_projects_item_id is null on the brand.
+  //
+  //    Idempotent behaviour:
+  //    - monday_all_projects_item_id null → create + populate columns
+  //    - monday_all_projects_item_id "external" → skip (imported brands have
+  //      their own pre-existing items not tracked by ID)
+  //    - monday_all_projects_item_id is a real ID → back-fill the DB Parent
+  //      Folder column if we now have a Dropbox URL but didn't when the item
+  //      was created. Leaves all other columns untouched to avoid overwriting
+  //      manual edits.
+  if (
+    b.monday_all_projects_item_id &&
+    b.monday_all_projects_item_id !== "external" &&
+    effectiveDropboxUrl &&
+    allProjectsBoardId &&
+    process.env.MONDAY_API_TOKEN
+  ) {
+    try {
+      await updateAllProjectsColumns({
+        boardId: allProjectsBoardId,
+        itemId: b.monday_all_projects_item_id,
+        columnValues: {
+          [ALL_PROJECTS_COLUMNS.dbParentFolder]: {
+            url: effectiveDropboxUrl,
+            text: "Dropbox folder",
+          },
+        },
+      });
+    } catch (e) {
+      syncWarnings.push(
+        `Couldn't back-fill DB Parent Folder on All Projects: ${(e as Error).message}`
+      );
+    }
+  }
+
   if (
     !b.monday_all_projects_item_id &&
     allProjectsBoardId &&
@@ -263,6 +297,13 @@ export async function approveBrand(id: string) {
         columnValues[ALL_PROJECTS_COLUMNS.primaryName] = amUser.name;
         if (amUser.email) columnValues[ALL_PROJECTS_COLUMNS.primaryEmail] = amUser.email;
         if (amUser.phone) columnValues[ALL_PROJECTS_COLUMNS.primaryPhone] = amUser.phone;
+      }
+
+      if (effectiveDropboxUrl) {
+        columnValues[ALL_PROJECTS_COLUMNS.dbParentFolder] = {
+          url: effectiveDropboxUrl,
+          text: "Dropbox folder",
+        };
       }
 
       const parent = await createAllProjectsParent({
