@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Canvas — warm light gray app background */
+    --canvas: 40 16% 95%;
+    /* Panel — white cards/forms */
+    --panel: 0 0% 100%;
+
+    --background: 40 16% 95%;
+    --foreground: 0 0% 7%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 7%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 7%;
+
+    /* Primary — near-black for CTAs */
+    --primary: 0 0% 9%;
+    --primary-foreground: 40 16% 97%;
+
+    --secondary: 40 14% 92%;
+    --secondary-foreground: 0 0% 12%;
+
+    --muted: 40 12% 93%;
+    --muted-foreground: 30 4% 42%;
+
+    /* Accent — violet/indigo for active tab + info banners */
+    --accent: 250 70% 65%;
+    --accent-foreground: 250 70% 20%;
+    --accent-soft: 250 70% 96%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 36 14% 89%;
+    --input: 36 14% 89%;
+    --ring: 250 70% 65%;
+
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    @apply bg-canvas text-foreground font-sans;
+    font-feature-settings: "rlig" 1, "calt" 1, "cv11" 1;
+  }
+}
+
+@layer components {
+  .eyebrow {
+    @apply text-eyebrow uppercase text-muted-foreground tracking-wider;
+  }
+  .panel {
+    @apply bg-panel rounded-xl shadow-panel;
+  }
+  .section-divider {
+    @apply border-t border-border;
+  }
+}

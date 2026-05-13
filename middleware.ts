@@ -1,0 +1,47 @@
+import { NextResponse, type NextRequest } from "next/server";
+import { updateSession } from "@/lib/supabase/middleware";
+import { isEmailAllowed } from "@/lib/auth/domain";
+
+const PUBLIC_PATHS = [
+  "/intake",
+  "/thanks",
+  "/login",
+  "/auth/callback",
+  "/api/intake",
+  "/share",
+  "/api/share",
+];
+
+function isPublicPath(pathname: string): boolean {
+  return PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));
+}
+
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const { response, user } = await updateSession(request);
+
+  // Public routes: pass through.
+  if (isPublicPath(pathname)) return response;
+
+  // Unauthenticated → /login
+  if (!user) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    url.searchParams.set("next", pathname);
+    return NextResponse.redirect(url);
+  }
+
+  // Wrong domain → /login with error
+  if (!isEmailAllowed(user.email)) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    url.searchParams.set("error", "domain");
+    return NextResponse.redirect(url);
+  }
+
+  return response;
+}
+
+export const config = {
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:png|jpg|jpeg|gif|svg|webp|ico)$).*)"],
+};
