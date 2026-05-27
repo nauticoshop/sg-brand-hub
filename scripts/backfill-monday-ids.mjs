@@ -4,9 +4,12 @@
 // metadata.monday_item_id set.
 //
 // Run:
-//   set -a && source .env.local && set +a && node scripts/backfill-monday-ids.mjs
+//   node scripts/backfill-monday-ids.mjs
 
 import { createClient } from "@supabase/supabase-js";
+import { loadEnv } from "./_load-env.mjs";
+
+loadEnv();
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,

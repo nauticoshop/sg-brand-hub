@@ -3,8 +3,8 @@
 // Reads scripts/monday-data.json (cached MCP output), maps Monday columns to
 // the brand schema, and inserts records into Supabase as `in_review`.
 //
-// Run from project root with .env.local loaded:
-//   node --env-file=.env.local scripts/import-from-monday.mjs
+// Run from project root:
+//   node scripts/import-from-monday.mjs
 //
 // Logos are NOT downloaded in this pass — Monday's protected_static URLs need
 // signed auth. Each record gets a note pointing back at the Monday item so the
@@ -14,6 +14,9 @@ import { createClient } from "@supabase/supabase-js";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { loadEnv } from "./_load-env.mjs";
+
+loadEnv();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -30,9 +33,33 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
 });
 
 const data = JSON.parse(readFileSync(join(__dirname, "monday-data.json"), "utf8"));
-const items = data.items.filter((i) => i.column_values?.link_mkv84m88);
 
-console.log(`Found ${items.length} items with Brand Guideline filled in Monday.\n`);
+// Default to importing only items in the "Intake" group — that's the forward
+// workflow (new clients land there via the legacy Monday form, we pull them
+// into Brand Hub, generate the guideline, then approve to send back).
+//
+// Pass --all to grab everything that has a Brand Guideline PDF set (the
+// original back-import behaviour for already-completed brands).
+//
+// Pass --everything to import from ALL groups regardless of Brand Guideline
+// status — dedup-by-name handles skipping anything already in Brand Hub.
+const importAll = process.argv.includes("--all");
+const importEverything = process.argv.includes("--everything");
+
+let items;
+let label;
+if (importEverything) {
+  items = data.items;
+  label = "items across all groups";
+} else if (importAll) {
+  items = data.items.filter((i) => i.column_values?.link_mkv84m88);
+  label = "items with Brand Guideline filled";
+} else {
+  items = data.items.filter((i) => i.group?.title === "Intake");
+  label = "items in the Intake group";
+}
+
+console.log(`Found ${items.length} ${label}.\n`);
 
 // ---------- Parsers ----------
 

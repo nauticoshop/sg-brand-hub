@@ -1,65 +1,878 @@
 {
-  "2185629541": { "name": "Tide Updated Logo 12.24.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2185629541/Tide%20Updated%20Logo%2012.24.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=7b5f3696d349a1fcc8997f983d623ac2416038ea4ace9af4b46f021b109f7608" },
-  "2300163581": { "name": "mp-logo-design-standard-rgb.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300163581/mp-logo-design-standard-rgb.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=f9c5293166489874ac328fbe2bf002cbf10ae525d7df99810d0e08064566efb4" },
-  "2300167157": { "name": "mp-logo-design-standard-black-cmyk.jpg", "ext": ".jpg", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300167157/mp-logo-design-standard-black-cmyk.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=ca3db12c06f1fb62abc527bc2019d0e0150c192fb329f871f2ce13a05ac60810" },
-  "2300167586": { "name": "mp-logo-design-standard-white-rgb.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300167586/mp-logo-design-standard-white-rgb.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=3f8b7632e68789f86a0263e8d8bfdabff17b855eb0df8fdc13ca536b9cec1f50" },
-  "2300172076": { "name": "mp-logo-design-icon-black-rgb.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300172076/mp-logo-design-icon-black-rgb.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=be0a30154b7a7e5956917240b17f0e77a63eb4816f33dd5f331782495e030c08" },
-  "2300441735": { "name": "Solana-Outdoor-Logo-Reversed.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300441735/Solana-Outdoor-Logo-Reversed.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=0a6704b39256fc70fc9c6aa459af010fe44284100207f7cb3fdf92d94a99906a" },
-  "2300441877": { "name": "Solana-Logo-No-Subtext.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300441877/Solana-Logo-No-Subtext.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=b80724001407afabead1b09ccb68e7f3f87af009c6afa3bbeb8e54b47f94c044" },
-  "2300442010": { "name": "Solana-Logo-No-Subtext-Reversed (1).png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300442010/Solana-Logo-No-Subtext-Reversed%20%281%29.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=dd997ab2093b15b7497800ace1a29bd379e42b9e0aedb03b02547a87068c62f4" },
-  "2300442152": { "name": "Solana-By-Ryan-Hughes-Design-Logo.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300442152/Solana-By-Ryan-Hughes-Design-Logo.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=c160b8241a12c8c9e7761137a81ba84aabb58d7971ce7fcfcb68ccd2b29dc525" },
-  "2300442274": { "name": "Solana-By-Ryan-Hughes-Design-Logo-Reversed.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300442274/Solana-By-Ryan-Hughes-Design-Logo-Reversed.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=ee54a1657f8442fa5d574fdfec3e90b371628aa9d7323b1861587c1f47e7087a" },
-  "2300820861": { "name": "RHD logo.ai", "ext": ".ai", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300820861/RHD%20logo.ai?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=254252e914e50d16f4b19435218c3e7139dbc1efb744b356a8a422db968e76f0" },
-  "2300820888": { "name": "RHD logo.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300820888/RHD%20logo.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=4ab8c71e37b96498f5b3446c7dfecf87076b117c8d6b08881cbf62f5d7160adf" },
-  "2300820899": { "name": "RHD Outdoor Living Redefined Horizontal.ai", "ext": ".ai", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300820899/RHD%20Outdoor%20Living%20Redefined%20Horizontal.ai?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=ba724c6626e9a8c1ca56afd794ca072612d37e415d571ee21f744a0711a3a198" },
-  "2300820901": { "name": "RHD Outdoor Living Redefined and Website.ai", "ext": ".ai", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300820901/RHD%20Outdoor%20Living%20Redefined%20and%20Website.ai?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=837e74e3bd7e7f00122b75eb514291b4276e014d71179c1b55ca208277c704b8" },
-  "2300820915": { "name": "RHD Outdoor Living Redefined.ai", "ext": ".ai", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300820915/RHD%20Outdoor%20Living%20Redefined.ai?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=3e49f2dd6cb572cddfb067c1ed22255f29119ffd4d3ab87152f503fa1b510348" },
-  "2300877765": { "name": "Zen Outro.mp4", "ext": ".mp4", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300877765/Zen%20Outro.mp4?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=d70dd1fb32fb906de378c4a356f0c122d3a61fa834d3515b46cba482faaf7261" },
-  "2330147391": { "name": "Untitled design-75.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2330147391/Untitled%20design-75.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=382c0891837a79e495ee903701cfcf61b266e793f668b272ad9e76d7217f0edd" },
-  "2330242271": { "name": "Untitled design-76.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2330242271/Untitled%20design-76.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=fc8d06583baf0f71f79c8cee49fe692da7afad5fb2a6b410d812ec6c8f5ac86b" },
-  "2330287907": { "name": "Untitled design-77.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2330287907/Untitled%20design-77.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=1d5adfd4b92d97a21064adc00cc0d09f9e6113d10f3db8fde41037f2cdcc9d03" },
-  "2339473048": { "name": "Aqualux (1).png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2339473048/Aqualux%20%281%29.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=7f167bf179de477dadc8521fd4f41e49f78367c4c4d10872ddb49b9b528fe4b6" },
-  "2346014870": { "name": "MariTeak Logo.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2346014870/MariTeak%20Logo.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=7dfc206b906facac95052af371dfbb82ecbb4445ecae03aa624966d04e19cb0f" },
-  "2346014898": { "name": "3.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2346014898/3.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=851bf2b2e0a054b39971733daf0a172444aed2a5ca8a55959c13e554e533f56e" },
-  "2346014908": { "name": "2.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2346014908/2.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=de94349919e4805ba3fa33acfad6db8aeb0e7afc32d0f03a23b0c68fcf726210" },
-  "2346014926": { "name": "MariTeak Circle Logo.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2346014926/MariTeak%20Circle%20Logo.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=50135ce03c34cf296c0d2eed144a5b2572c86d8621e06d32d2d80afdd9db0a84" },
-  "2355787414": { "name": "Blackfin Boats Logo (Black).PNG", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2355787414/Blackfin%20Boats%20Logo%20%28Black%29.PNG?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=2bd42a516c1c789f7cfdd4a2eef07ef6a5f2dc4dffd99fee58eb865cde6af174" },
-  "2355787458": { "name": "Blackfin Boats Logo (White).PNG", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2355787458/Blackfin%20Boats%20Logo%20%28White%29.PNG?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=4ee7ff3a4d25cd78ecc326ac95700de17ec906f94429392021c36736e33e9795" },
-  "2355820324": { "name": "Monterey_MY26_Revised_Logo_4D Chromes_R0_012725-1.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2355820324/Monterey_MY26_Revised_Logo_4D%20Chromes_R0_012725-1.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=21a79508417dd83f7b8e33855e2e29df77147cdef925d2a8a3419450b742697c" },
-  "2355820602": { "name": "Monterey_MY26_Revised_Logo_Flat Navy_R0_012725-3.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2355820602/Monterey_MY26_Revised_Logo_Flat%20Navy_R0_012725-3.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=6a40a5fbc62a7ccd85d84f2c8138f405d2f87aa1def19c5d9388acf948fcaa75" },
-  "2355820934": { "name": "Monterey_MY26_Revised_Logo_White_R0_012725.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2355820934/Monterey_MY26_Revised_Logo_White_R0_012725.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=eea5946d12c30419ffb6579e4b9b6a12c0e55f11750bdd9730329a781eb09d55" },
-  "2355821920": { "name": "Monterey_MY26_Revised_Logo_Flat Silver_R0_012725-2.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2355821920/Monterey_MY26_Revised_Logo_Flat%20Silver_R0_012725-2.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=772325027af1c86abbf1660a2c6eab021543ba5e1cb9a12e1c56508a31720361" },
-  "2362813282": { "name": "Artboard 1.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2362813282/Artboard%201.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=0945e8c345534181bf501dc0fdaa2a6f797aedd3b6dce1587d3492fdba83a184" },
-  "2363146938": { "name": "FINAL-NorthHaven-BrandingKit.pdf", "ext": ".pdf", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2363146938/FINAL-NorthHaven-BrandingKit.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=0cbef34a193bd8967be0fbf7224dcde3c7c198daed61af9a0360b1bbf6014651" },
-  "2363164304": { "name": "Northhaven Strategy-3.pdf", "ext": ".pdf", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2363164304/Northhaven%20Strategy-3.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=a8d714f88aac2f3bfdd43ad6066e71030ad853cbbab0e324cff7e48cf1c9a247" },
-  "2376580197": { "name": "Photo Sep 04 2024_ 4 22 52 PM 2.JPG", "ext": ".jpg", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2376580197/Photo%20Sep%2004%202024_%204%2022%2052%20PM%202.JPG?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=ee497e5dbbe9c2884ece9be94ac0fd934618624d952ac14ae979d75d93c8b485" },
-  "2381377035": { "name": "GJS_1906-0007 Brand Guide V1c (1).pdf", "ext": ".pdf", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2381377035/GJS_1906-0007%20Brand%20Guide%20V1c%20%281%29.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=6bbee918144fc0207e899ca3eb2533efc7ed34e9bbe188db7c80c4c45bcaf46d" },
-  "2381380203": { "name": "GJS Logo Files.zip", "ext": ".zip", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2381380203/GJS%20Logo%20Files.zip?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=b34675e22faa97717c8bb11e36f07f90d6db0c7f39a4a13a38f5922501eb60cc" },
-  "2381395164": { "name": "Bertram Yachts Logos.zip", "ext": ".zip", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2381395164/Bertram%20Yachts%20Logos.zip?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=7f2d034456f4464a7133216d23494d7102c7202aa8d440fd4e23062b8c8dbe9c" },
-  "2382784481": { "name": "Palmetto Yachts Logo (White).PNG", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2382784481/Palmetto%20Yachts%20Logo%20%28White%29.PNG?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=b7ea60fdaf13299d21940bc85c8f2d2fc8da2c8eb71a3f15c35bf1d1543df172" },
-  "2382784538": { "name": "Palmetto Yachts Logo (Black).PNG", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2382784538/Palmetto%20Yachts%20Logo%20%28Black%29.PNG?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=ef76a9515a7b199588bf2d56e577b6c4d3408a9da2d0907f61c4630288628a5e" },
-  "2449412251": { "name": "Phil_Kean_Logo_SimpleWithLine_300dpi - 2025.jpg", "ext": ".jpg", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2449412251/Phil_Kean_Logo_SimpleWithLine_300dpi%20-%202025.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=8f0fcaf95f8e2752457aee5159f6bba1ed5b514f6bac8ef5277d9ca406d5aec9" },
-  "2449422613": { "name": "Photo Aug 21 2024_ 10 37 03 AM (1).png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2449422613/Photo%20Aug%2021%202024_%2010%2037%2003%20AM%20%281%29.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=92063b49f9f6000d39c86935d0c2ad7b5e5000510ad278ea2e2e5b5f6727000e" },
-  "2449563101": { "name": "MarineConnection-2.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2449563101/MarineConnection-2.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=833e4a43a1860f0558a9c5901f7c2880a350a4bd39a65ba4addd84635a4e08db" },
-  "2452853365": { "name": "Aster _ Links Logo Combo - Black Transparent (Vertical) _1080_.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2452853365/Aster%20_%20Links%20Logo%20Combo%20-%20Black%20Transparent%20%28Vertical%29%20_1080_.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=714887c934030979f7d096f2bbd31b29b983fc279b985a5ed94b3d801e7d40ba" },
-  "2452866555": { "name": "Aster Logo - Black Transparent (Vertical) _1080_.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2452866555/Aster%20Logo%20-%20Black%20Transparent%20%28Vertical%29%20_1080_.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=cbecca6f4c5a69c3a67ccdfc7d1bf56114caba0d4f48b91a16e59db8bc47f0f0" },
-  "2452866576": { "name": "Links Logo - Gold on White (Vertical) _1080_.jpg", "ext": ".jpg", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2452866576/Links%20Logo%20-%20Gold%20on%20White%20%28Vertical%29%20_1080_.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=3f62b4097e598a1bbd1c224370196c4c7c615be5a9ec0eef13184c76f6afbf09" },
-  "2463001662": { "name": "Logos.zip", "ext": ".zip", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2463001662/Logos.zip?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=5f48e99b4597fac620115020fc9ac61759b7986d7adc24214a7d65b55c1337d8" },
-  "2463016539": { "name": "Assets (MAN Engines).zip", "ext": ".zip", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2463016539/Assets%20%28MAN%20Engines%29.zip?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=da479d17d0c6ca30723e64a03da66ab1edaf91cfb073fbd9bda60b3a5075fcbf" },
-  "2466745215": { "name": "ATS_Ba-2a.PNG", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2466745215/ATS_Ba-2a.PNG?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=65e9f5499bd4c2cce510f11172acb391503292e607a1c0c1ea95af12885ddf73" },
-  "2487914460": { "name": "viv_tagline-lockup-olive.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2487914460/viv_tagline-lockup-olive.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=03216d481dc987e7f00fb2d581eefe74d7ad06b3c5ddb0c7561159409b80f7ab" },
-  "2487914465": { "name": "viv_tagline-lockup-linen.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2487914465/viv_tagline-lockup-linen.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=fd5dbf82d0dd2fd8a2ab1909088f5c280331c7acbd1a9e85eac41885b78ea151" },
-  "2487914466": { "name": "viv_tagline-lockup-olive.jpg", "ext": ".jpg", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2487914466/viv_tagline-lockup-olive.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=c48fd07e4a56a09ca1d47068cab226aaeb7b4ab35fc179ed51017700560004df" },
-  "2487920916": { "name": "Viv_BrandGuide.pdf", "ext": ".pdf", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2487920916/Viv_BrandGuide.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=438ac0ae2fa1756e20085359640a28b36eb3dd2b463389077c4fe636eeb15d70" },
-  "2490412689": { "name": "Arcadia 331 Logo.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2490412689/Arcadia%20331%20Logo.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=fed1c6181be44a53dc987a2f8b03189aa906f9cd312f5174e674a632f9a0acc4" },
-  "2490425287": { "name": "Screenshot 2025-10-16 at 10.11.06 AM.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2490425287/Screenshot%202025-10-16%20at%2010.11.06%E2%80%AFAM.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=13332f81076d054de89b11ce6c0ddf3483ec0a733bea2443949c0a5d7b925e6f" },
-  "2528536949": { "name": "Galati_Logo_Vector_Navy-CMYK-01.PNG", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2528536949/Galati_Logo_Vector_Navy-CMYK-01.PNG?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=51953c67f88655a9a7a8520aad874a560bb56d3e2c364dc25b9dd2a55776edc0" },
-  "2528546516": { "name": "AM_Logo_Color.JPG", "ext": ".jpg", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2528546516/AM_Logo_Color.JPG?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=36a9608b0265a71f205877a9ec63b4267c92f686738ca58dd97731d12885edc4" },
-  "2591885658": { "name": "SurroundingsGroup_Logo_White.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2591885658/SurroundingsGroup_Logo_White.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=51a832779b1711b4d5fc8677854001f1fcecf714fcc0c3fdb948f1ba1fef6d39" },
-  "2591885660": { "name": "SurroundingsGroup_Logo_TagLine_Black.jpg", "ext": ".jpg", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2591885660/SurroundingsGroup_Logo&TagLine_Black.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=6d824a5bc90553cf14408dc69ea5349205f7bf2d6375d05da809dcb989f8cde7" },
-  "2591885675": { "name": "SurroundingsGroup_Logo_TagLine_Black.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2591885675/SurroundingsGroup_Logo&TagLine_Black.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=e4a926fe7f0fcd28acb1061f6d47904585f7192fe8b56da9aeee953eaaedd9c0" },
-  "2591885686": { "name": "SurroundingsGroup_TagLine_Black.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2591885686/SurroundingsGroup_TagLine_Black.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=a29e0f05d8ad8d8a718d865b64b7ba6500a37ee1fa035caa441ac54c9dfe30b6" },
-  "2591885694": { "name": "SurroundingsGroup_Logo_Black.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2591885694/SurroundingsGroup_Logo_Black.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=6ccd024827134a0b4743342fa32e5cc82e3dc3a3312128083cca9b3ad240d363" },
-  "2591885882": { "name": "SurroundingsGroup_Logo_Gold.png", "ext": ".png", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2591885882/SurroundingsGroup_Logo_Gold.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122411Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=dc4e0c6244705c9d7f001c3e4a1668ff52af5ee91b59645ec917f23500f77c40" },
-  "2591941437": { "name": "ExclusiveVacations_BrandGuidelines(F) (5).pdf", "ext": ".pdf", "url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2591941437/ExclusiveVacations_BrandGuidelines%28F%29%20%285%29.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260513%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260513T122430Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=1b95af56c6a3452cdd0c515423b405407344c977ab8146f462de4c8e25e1cd94" }
+  "2179474904": {
+    "name": "SJYS Logo.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2179474904/SJYS%20Logo.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2179474904/SJYS%20Logo.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=96547ee6b850255448a12863903666fed167dde8d2688e85c2811a23fcc330f1"
+  },
+  "2185629541": {
+    "name": "Tide Updated Logo 12.24.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2185629541/Tide%20Updated%20Logo%2012.24.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2185629541/Tide%20Updated%20Logo%2012.24.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=f9482d23221ea73dfb4a5b661ca68f3b67d5c31512878e05112afdd9009f584b"
+  },
+  "2188568006": {
+    "name": "Screenshot 2025-05-07 at 8.29.17 PM.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2188568006/Screenshot%202025-05-07%20at%208.29.17%E2%80%AFPM.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2188568006/Screenshot%202025-05-07%20at%208.29.17%E2%80%AFPM.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=748806da18de5da64b9be1999258c99c159d6b1f94360b7aa31b7ab868f10c26"
+  },
+  "2188568013": {
+    "name": "L_L_WynwoodPlazaResidences_Logo_Black_2024.11.26-01.jpg",
+    "ext": ".jpg",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2188568013/L_L_WynwoodPlazaResidences_Logo_Black_2024.11.26-01.jpg",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2188568013/L_L_WynwoodPlazaResidences_Logo_Black_2024.11.26-01.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=a3eaf5fbbdaf5234d2ef4ee2ed9e971b3c183b6659dd56c5d00fc05f5892738e"
+  },
+  "2220634916": {
+    "name": "DEF Logo - Antudo con bandiera copia 2.pdf",
+    "ext": ".pdf",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2220634916/DEF%20Logo%20-%20Antudo%20con%20bandiera%20copia%202.pdf",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2220634916/DEF%20Logo%20-%20Antudo%20con%20bandiera%20copia%202.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=0b3524817979b60a3def493aa017026a641c9dc4330bef545004ad8c876ae570"
+  },
+  "2260017928": {
+    "name": "BLUE HERON LOGO.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2260017928/BLUE%20HERON%20LOGO.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2260017928/BLUE%20HERON%20LOGO.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=5356f9b4ced6ea9010c720984b8a7b6d3af425babe9449ba3f130d8f699a245e"
+  },
+  "2271699412": {
+    "name": "253B9A2C-6252-44C3-B165-F6E018015A4B.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2271699412/253B9A2C-6252-44C3-B165-F6E018015A4B.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2271699412/253B9A2C-6252-44C3-B165-F6E018015A4B.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=eb56a97b614bd9a472853c935420da7a4df478c68ed5e46eeaf8e2c57749ce4f"
+  },
+  "2283419567": {
+    "name": "Burnewiin logo 1 BOW.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2283419567/Burnewiin%20logo%201%20BOW.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2283419567/Burnewiin%20logo%201%20BOW.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=61eaa72c5ec0d46c019d56a5bf5455adbbee0b7e0c5b2dd359947aed3d985d41"
+  },
+  "2283420810": {
+    "name": "Burnewiin Logo 1 BOW.ai",
+    "ext": ".ai",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2283420810/Burnewiin%20Logo%201%20BOW.ai",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2283420810/Burnewiin%20Logo%201%20BOW.ai?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=215a06ec4fa19febf47a1abb3a929d0b2aa6a6bec78ceaa72a9f89a6c0c7546f"
+  },
+  "2283421869": {
+    "name": "Burnewiin Logo 1 WOB.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2283421869/Burnewiin%20Logo%201%20WOB.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2283421869/Burnewiin%20Logo%201%20WOB.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=7791f2070dff56b6d0c25c4d0b60f16d6d6c0a4450f8cb48980c44272321f2ba"
+  },
+  "2283460199": {
+    "name": "Burnewiin Logo 2 WOB HighRes.ai",
+    "ext": ".ai",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2283460199/Burnewiin%20Logo%202%20WOB%20HighRes.ai",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2283460199/Burnewiin%20Logo%202%20WOB%20HighRes.ai?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=6fb7a30c0747178614e802b88577c6cae430c0f27cb0fd6b72b8a9b80d832761"
+  },
+  "2300163581": {
+    "name": "mp-logo-design-standard-rgb.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2300163581/mp-logo-design-standard-rgb.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300163581/mp-logo-design-standard-rgb.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=025c722f193b4e5e6e07f272e9bd17a4dd70a41579a2a2bb05dff245a694ff2c"
+  },
+  "2300167157": {
+    "name": "mp-logo-design-standard-black-cmyk.jpg",
+    "ext": ".jpg",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2300167157/mp-logo-design-standard-black-cmyk.jpg",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300167157/mp-logo-design-standard-black-cmyk.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=f80819381e89f16d8d007c0517deccf6ab41b956574b6cced19709907000fdf2"
+  },
+  "2300167586": {
+    "name": "mp-logo-design-standard-white-rgb.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2300167586/mp-logo-design-standard-white-rgb.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300167586/mp-logo-design-standard-white-rgb.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=7836f8a32e8a719ed79897087f06f7564742458595f264d06ca93c7de239fa29"
+  },
+  "2300172076": {
+    "name": "mp-logo-design-icon-black-rgb.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2300172076/mp-logo-design-icon-black-rgb.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300172076/mp-logo-design-icon-black-rgb.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=4500f2f65f774fdb9b2c15238688969f51fb7676386d136694ccf0b4eb48088a"
+  },
+  "2300441735": {
+    "name": "Solana-Outdoor-Logo-Reversed.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2300441735/Solana-Outdoor-Logo-Reversed.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300441735/Solana-Outdoor-Logo-Reversed.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=22af31690d67b8c8b824b51f0e11ca475af5459a0370d1e820b42192c175bc07"
+  },
+  "2300441877": {
+    "name": "Solana-Logo-No-Subtext.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2300441877/Solana-Logo-No-Subtext.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300441877/Solana-Logo-No-Subtext.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=c8d01c74d3b3d0c82c1496622971279c03ac9264d6a2443e95d3a4a30ef921f3"
+  },
+  "2300442010": {
+    "name": "Solana-Logo-No-Subtext-Reversed (1).png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2300442010/Solana-Logo-No-Subtext-Reversed%20%281%29.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300442010/Solana-Logo-No-Subtext-Reversed%20%281%29.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=cb6baeb1f85a44012a1ff4f881de4d63a9183f15a0da511359a642ec8a827d5d"
+  },
+  "2300442152": {
+    "name": "Solana-By-Ryan-Hughes-Design-Logo.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2300442152/Solana-By-Ryan-Hughes-Design-Logo.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300442152/Solana-By-Ryan-Hughes-Design-Logo.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=2ab0d5a5a31302c451d7f0171c95d108035928c51bb712fcc11b286467c11a3e"
+  },
+  "2300442274": {
+    "name": "Solana-By-Ryan-Hughes-Design-Logo-Reversed.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2300442274/Solana-By-Ryan-Hughes-Design-Logo-Reversed.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300442274/Solana-By-Ryan-Hughes-Design-Logo-Reversed.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=9dce40e4d6575b2cbc982a4ff8acafc1e1c703362521abf95b64ca062bbf94b9"
+  },
+  "2300820861": {
+    "name": "RHD logo.ai",
+    "ext": ".ai",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2300820861/RHD%20logo.ai",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300820861/RHD%20logo.ai?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=d4e1b0a422a2ac3f1c4492ab61701666b2195684bb1cec141bee7b6e7f86a1dd"
+  },
+  "2300820888": {
+    "name": "RHD logo.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2300820888/RHD%20logo.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300820888/RHD%20logo.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=ac424d61f6be6018c95ef064824f5bc7427ea871912b29303e93f8b7b133e90d"
+  },
+  "2300820899": {
+    "name": "RHD Outdoor Living Redefined Horizontal.ai",
+    "ext": ".ai",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2300820899/RHD%20Outdoor%20Living%20Redefined%20Horizontal.ai",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300820899/RHD%20Outdoor%20Living%20Redefined%20Horizontal.ai?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=7d14af4bf61f6736577c01a6093a1fa4cddbff38eec8bc79fec25e5c4ec595c4"
+  },
+  "2300820901": {
+    "name": "RHD Outdoor Living Redefined and Website.ai",
+    "ext": ".ai",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2300820901/RHD%20Outdoor%20Living%20Redefined%20and%20Website.ai",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300820901/RHD%20Outdoor%20Living%20Redefined%20and%20Website.ai?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=c91dfa7a9c888ef986952730049cdb13c64f31cadbdb0081191264aa9a9005c1"
+  },
+  "2300820915": {
+    "name": "RHD Outdoor Living Redefined.ai",
+    "ext": ".ai",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2300820915/RHD%20Outdoor%20Living%20Redefined.ai",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300820915/RHD%20Outdoor%20Living%20Redefined.ai?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=1318748d0ad097f682c1197f40a43f05fe1f42517a6c817a11ec1bcb3e87a89c"
+  },
+  "2300877765": {
+    "name": "Zen Outro.mp4",
+    "ext": ".mp4",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2300877765/Zen%20Outro.mp4",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2300877765/Zen%20Outro.mp4?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=408106802e4b7a719b6105455fe689a1dcbcfd7dd568024dfece54452c0f5951"
+  },
+  "2327052407": {
+    "name": "logo.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2327052407/logo.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2327052407/logo.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=9f4964a821a09fef1c8fd51de2d7f774c4f197b3187f809aa99950b2c99f329e"
+  },
+  "2330147391": {
+    "name": "Untitled design-75.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2330147391/Untitled%20design-75.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2330147391/Untitled%20design-75.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=d1b8dd546ac5f9e320da659114692339db2725db7e05c4544ac02653ca01d4c5"
+  },
+  "2330242271": {
+    "name": "Untitled design-76.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2330242271/Untitled%20design-76.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2330242271/Untitled%20design-76.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=c0a5a9e2065f096eec0d0ae16a65a09bbb38d8f73122af938f391e679215a8ad"
+  },
+  "2330287907": {
+    "name": "Untitled design-77.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2330287907/Untitled%20design-77.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2330287907/Untitled%20design-77.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=4070482a9fbff9a23dd079d683e48b02e8901236afec1294c8d3f28c02971feb"
+  },
+  "2339473048": {
+    "name": "Aqualux (1).png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2339473048/Aqualux%20%281%29.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2339473048/Aqualux%20%281%29.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=03caf0088c9f12171e76cb20b097965d5b224fabf9f7973d600f042c27190478"
+  },
+  "2340994763": {
+    "name": "AbsoluteLogoColor_500.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2340994763/AbsoluteLogoColor_500.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2340994763/AbsoluteLogoColor_500.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=da1ecb031ca9ed6f760d47f8884e3ab93bf2a0af6755112a29eca4a87dd03103"
+  },
+  "2346014870": {
+    "name": "MariTeak Logo.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2346014870/MariTeak%20Logo.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2346014870/MariTeak%20Logo.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=f689a869bd8548b65a6db57d37f71a8c8776965ce0f57a3f1190a7ab77aadfaa"
+  },
+  "2346014898": {
+    "name": "3.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2346014898/3.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2346014898/3.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=868c01f0b32080fdadb8453cde05179c7a7028ad5a26bb21c809766cc854ada8"
+  },
+  "2346014908": {
+    "name": "2.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2346014908/2.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2346014908/2.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=39d36b428d86dd59294208473d2dbeebf54e6c11bdfd08c4f2a67321f1ed4d86"
+  },
+  "2346014926": {
+    "name": "MariTeak Circle Logo.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2346014926/MariTeak%20Circle%20Logo.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2346014926/MariTeak%20Circle%20Logo.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=5174835ced5ea5fc0c26e26196fc8334067fa045b7f832060200f83b9da3150d"
+  },
+  "2348682915": {
+    "name": "HighNetWorthAG_logo_RGB.emf",
+    "ext": ".emf",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2348682915/HighNetWorthAG_logo_RGB.emf",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2348682915/HighNetWorthAG_logo_RGB.emf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=a95aa2b460d154fc3529657a5b3427dab995f1e74315f4e748e2f60b6f2ff169"
+  },
+  "2355787414": {
+    "name": "Blackfin Boats Logo (Black).PNG",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2355787414/Blackfin%20Boats%20Logo%20%28Black%29.PNG",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2355787414/Blackfin%20Boats%20Logo%20%28Black%29.PNG?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=31919d36c33d538acd9c6e0ffee56a7bece5a3c04c70607dfb061814355ff19b"
+  },
+  "2355787458": {
+    "name": "Blackfin Boats Logo (White).PNG",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2355787458/Blackfin%20Boats%20Logo%20%28White%29.PNG",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2355787458/Blackfin%20Boats%20Logo%20%28White%29.PNG?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=a07cea1d36fa4265f929469c981ff6e11ef802478261d740668db48e16b5600f"
+  },
+  "2355820324": {
+    "name": "Monterey_MY26_Revised_Logo_4D Chromes_R0_012725-1.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2355820324/Monterey_MY26_Revised_Logo_4D%20Chromes_R0_012725-1.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2355820324/Monterey_MY26_Revised_Logo_4D%20Chromes_R0_012725-1.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=b6402173b939d228734fcb9b33fac7c658795db56b787e852c027bd13974ecd6"
+  },
+  "2355820602": {
+    "name": "Monterey_MY26_Revised_Logo_Flat Navy_R0_012725-3.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2355820602/Monterey_MY26_Revised_Logo_Flat%20Navy_R0_012725-3.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2355820602/Monterey_MY26_Revised_Logo_Flat%20Navy_R0_012725-3.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=663937bf66549f3f45ae47ee3079dcada83c5c3b9efd98994263ef202440ca07"
+  },
+  "2355820934": {
+    "name": "Monterey_MY26_Revised_Logo_White_R0_012725.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2355820934/Monterey_MY26_Revised_Logo_White_R0_012725.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2355820934/Monterey_MY26_Revised_Logo_White_R0_012725.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=d88ba8fbf7e92c2b96adfda61ed23f5a60694eaf82194a8cd995c3c41f099668"
+  },
+  "2355821920": {
+    "name": "Monterey_MY26_Revised_Logo_Flat Silver_R0_012725-2.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2355821920/Monterey_MY26_Revised_Logo_Flat%20Silver_R0_012725-2.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2355821920/Monterey_MY26_Revised_Logo_Flat%20Silver_R0_012725-2.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=2f5f00f6c758c2ad0aa8c654fe38b09faa67dcb0b25749ea868752f176a52446"
+  },
+  "2362813282": {
+    "name": "Artboard 1.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2362813282/Artboard%201.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2362813282/Artboard%201.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=bbe4546e8e1b613f6efd3579b2871f27273e98848652c3361dc4f31801eb78a1"
+  },
+  "2363146938": {
+    "name": "FINAL-NorthHaven-BrandingKit.pdf",
+    "ext": ".pdf",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2363146938/FINAL-NorthHaven-BrandingKit.pdf",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2363146938/FINAL-NorthHaven-BrandingKit.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=a2ad7ca872b369e69a423a763448f104d7e10d1261c1679bf70c068f86240eb5"
+  },
+  "2363164304": {
+    "name": "Northhaven Strategy-3.pdf",
+    "ext": ".pdf",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2363164304/Northhaven%20Strategy-3.pdf",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2363164304/Northhaven%20Strategy-3.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=c6998ef027194023398f50b8fc24f02b5853975d448a119b447c577c55f8bd14"
+  },
+  "2376580197": {
+    "name": "Photo Sep 04 2024_ 4 22 52 PM 2.JPG",
+    "ext": ".jpg",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2376580197/Photo%20Sep%2004%202024_%204%2022%2052%20PM%202.JPG",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2376580197/Photo%20Sep%2004%202024_%204%2022%2052%20PM%202.JPG?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=f893d1af79aee1b2c5d5c9fd2773f98289fff0bb3e4592a776e1c0fd34badcfb"
+  },
+  "2381377035": {
+    "name": "GJS_1906-0007 Brand Guide V1c (1).pdf",
+    "ext": ".pdf",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2381377035/GJS_1906-0007%20Brand%20Guide%20V1c%20%281%29.pdf",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2381377035/GJS_1906-0007%20Brand%20Guide%20V1c%20%281%29.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=1f60e10bfcf13ac0fbdb7cc54bba402443b35beb7ced997513b68815142ea14e"
+  },
+  "2381380203": {
+    "name": "GJS Logo Files.zip",
+    "ext": ".zip",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2381380203/GJS%20Logo%20Files.zip",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2381380203/GJS%20Logo%20Files.zip?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=6b6bbf10a7a7ca65a8f5b027d0972364c48e89c537721653a77d8591c1618c1b"
+  },
+  "2381395164": {
+    "name": "Bertram Yachts Logos.zip",
+    "ext": ".zip",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2381395164/Bertram%20Yachts%20Logos.zip",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2381395164/Bertram%20Yachts%20Logos.zip?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=db45a8b9a86ed3f910e127a4623f5395aea4add76b89e9201c2da46d0d4eda7f"
+  },
+  "2382784481": {
+    "name": "Palmetto Yachts Logo (White).PNG",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2382784481/Palmetto%20Yachts%20Logo%20%28White%29.PNG",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2382784481/Palmetto%20Yachts%20Logo%20%28White%29.PNG?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=0167a9c16bb6e56d08ad8210cb5e4212de3a8be45d589825c0f8e51ffb79b999"
+  },
+  "2382784538": {
+    "name": "Palmetto Yachts Logo (Black).PNG",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2382784538/Palmetto%20Yachts%20Logo%20%28Black%29.PNG",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2382784538/Palmetto%20Yachts%20Logo%20%28Black%29.PNG?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=d1bfef43f1746318348fc967330c9091b34496b7b54aec1dc41eee29bf0b844f"
+  },
+  "2399716232": {
+    "name": "DarthCraft_1.svg",
+    "ext": ".svg",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2399716232/DarthCraft_1.svg",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2399716232/DarthCraft_1.svg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=abea40a0d6b0d227548a0f67b6e775917c0c29192ad9455cdbe3e59f74539408"
+  },
+  "2399716236": {
+    "name": "DarthCraft_2.svg",
+    "ext": ".svg",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2399716236/DarthCraft_2.svg",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2399716236/DarthCraft_2.svg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=6e5d0ad2901796c0677e691660cf4a747d43af6f9423f4032e84749d234fd12c"
+  },
+  "2399716252": {
+    "name": "DarthCraft_1.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2399716252/DarthCraft_1.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2399716252/DarthCraft_1.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=a587c0e5379fd654ce9832c95c2362ca73536b0833104370a7dc8da46ef166ac"
+  },
+  "2399716267": {
+    "name": "DarthCraft_2.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2399716267/DarthCraft_2.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2399716267/DarthCraft_2.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=1bc28dd1e124563c604b27b567c914c1355fe132d76314c53c3404ab5b059bf2"
+  },
+  "2399716585": {
+    "name": "DarthCraft Brand Guide (short).pdf",
+    "ext": ".pdf",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2399716585/DarthCraft%20Brand%20Guide%20%28short%29.pdf",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2399716585/DarthCraft%20Brand%20Guide%20%28short%29.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=6a7d1bd56ab28f1ae205d4c3b41e966ef18d748129bb38bbf0e3e2e93c44277d"
+  },
+  "2406224209": {
+    "name": "3015002-Zipwake_ Identity_Guidelines_for_Distributors-R2C.pdf",
+    "ext": ".pdf",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2406224209/3015002-Zipwake_%20Identity_Guidelines_for_Distributors-R2C.pdf",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2406224209/3015002-Zipwake_%20Identity_Guidelines_for_Distributors-R2C.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=bbaff0eafb1ee755aaa579fae9d94a72b85a96d20a26d5f7c894a1c68d606ee6"
+  },
+  "2406224218": {
+    "name": "3015001-Zipwake_Visual_Identity_Guidelines-R2C.pdf",
+    "ext": ".pdf",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2406224218/3015001-Zipwake_Visual_Identity_Guidelines-R2C.pdf",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2406224218/3015001-Zipwake_Visual_Identity_Guidelines-R2C.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=91cd0ce037f5aced46b29a203f052eea9a78524f6640f1c4f16eb46068baf3eb"
+  },
+  "2406224526": {
+    "name": "Zipwake logo WHITE.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2406224526/Zipwake%20logo%20WHITE.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2406224526/Zipwake%20logo%20WHITE.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=d4a9e463fe9d93d78bf75ad244a3bd0cfb836f4ae9b543a8b719d430995d6ae9"
+  },
+  "2406224527": {
+    "name": "Zipwake logo svart.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2406224527/Zipwake%20logo%20svart.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2406224527/Zipwake%20logo%20svart.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=3a20d50ca36b694ca5bbebd218d75535301792716ada0e02d86d8af64865b073"
+  },
+  "2406353204": {
+    "name": "Majesty.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2406353204/Majesty.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2406353204/Majesty.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=c9d4abcdf5dfa2a9788c7c71d0c37d38581bb4fd3f3a99d5ad8f21ddc3734e36"
+  },
+  "2406353725": {
+    "name": "Majesty.ai",
+    "ext": ".ai",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2406353725/Majesty.ai",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2406353725/Majesty.ai?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=cf08c51c87553298a7c749a9831e185451eacc5ade67153020d709745da0731f"
+  },
+  "2406354067": {
+    "name": "Majesty.ai",
+    "ext": ".ai",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2406354067/Majesty.ai",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2406354067/Majesty.ai?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=c56977082398ed30d86a7776f295c64d8f220ea168fff1136785bf3327275f91"
+  },
+  "2406354076": {
+    "name": "Majesty_Black.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2406354076/Majesty_Black.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2406354076/Majesty_Black.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=c57a47cdab887d39cb09271e3925cc08b5393713e54819409a8c43486e9b5773"
+  },
+  "2406354082": {
+    "name": "Majesty_White.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2406354082/Majesty_White.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2406354082/Majesty_White.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=31ae179fe9767bbc74ffa342ff082183ed2ec7e167e704c73e45a56bb2a195d2"
+  },
+  "2406354356": {
+    "name": "Majesty_Mark_White.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2406354356/Majesty_Mark_White.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2406354356/Majesty_Mark_White.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=c869dbc733f98ec8e405fa135fffb54a56858ad33c68829d0d351c8e93e7245f"
+  },
+  "2406354366": {
+    "name": "Majesty_Mark_Black.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2406354366/Majesty_Mark_Black.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2406354366/Majesty_Mark_Black.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=b60790b7486e53973df9c9b087dc447e15665a2871bada9298b2dc1305ccb65f"
+  },
+  "2406354370": {
+    "name": "Majesty_Mark_White.ai",
+    "ext": ".ai",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2406354370/Majesty_Mark_White.ai",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2406354370/Majesty_Mark_White.ai?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=f1657aa76836d38ce1644e53bde63d276450af18e188eec3e0f7ea658f95c3e9"
+  },
+  "2406354375": {
+    "name": "Majesty_Mark_Black.ai",
+    "ext": ".ai",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2406354375/Majesty_Mark_Black.ai",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2406354375/Majesty_Mark_Black.ai?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=b1b6414435c55e47cd03bd7f224b2319ca332baf0f01027d96e335bf42ab25d0"
+  },
+  "2406354476": {
+    "name": "Majesty.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2406354476/Majesty.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2406354476/Majesty.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=b160317947fb97d9114b24062169fce2b8e382d0d4fe38018663e0967ff69721"
+  },
+  "2406354492": {
+    "name": "Majesty.ai",
+    "ext": ".ai",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2406354492/Majesty.ai",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2406354492/Majesty.ai?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=c3ca5e3d8639f9cc0b464df4e0db0928c07498407a9d6743c591bfe53ab3a169"
+  },
+  "2449412251": {
+    "name": "Phil_Kean_Logo_SimpleWithLine_300dpi - 2025.jpg",
+    "ext": ".jpg",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2449412251/Phil_Kean_Logo_SimpleWithLine_300dpi%20-%202025.jpg",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2449412251/Phil_Kean_Logo_SimpleWithLine_300dpi%20-%202025.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=2e85684fb87d488c2fe56aa40f207a2b6e55de222b5cd9351cb2c923690e9824"
+  },
+  "2449422613": {
+    "name": "Photo Aug 21 2024_ 10 37 03 AM (1).png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2449422613/Photo%20Aug%2021%202024_%2010%2037%2003%20AM%20%281%29.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2449422613/Photo%20Aug%2021%202024_%2010%2037%2003%20AM%20%281%29.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=25a3c37dd76dced03c134066f5fbee27f8cf1a7e55f5e08172adfcc8e8bb01bb"
+  },
+  "2449563101": {
+    "name": "MarineConnection-2.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2449563101/MarineConnection-2.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2449563101/MarineConnection-2.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=9a45cb1d1ce265ede30c6ab7346b198d3d0f3f1cb0b744d8f36bc548ea4b19f5"
+  },
+  "2452853365": {
+    "name": "Aster _ Links Logo Combo - Black Transparent (Vertical) _1080_.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2452853365/Aster%20_%20Links%20Logo%20Combo%20-%20Black%20Transparent%20%28Vertical%29%20_1080_.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2452853365/Aster%20_%20Links%20Logo%20Combo%20-%20Black%20Transparent%20%28Vertical%29%20_1080_.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=5377da3fe0d4c8b3215e3a08c07306cbdb777fe874068fe3eee6a35a374306e4"
+  },
+  "2452866555": {
+    "name": "Aster Logo - Black Transparent (Vertical) _1080_.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2452866555/Aster%20Logo%20-%20Black%20Transparent%20%28Vertical%29%20_1080_.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2452866555/Aster%20Logo%20-%20Black%20Transparent%20%28Vertical%29%20_1080_.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=a7a15e3030e2ccc6ce11fd571073cd1774b11dcbef8575ab0638ee6805e96e14"
+  },
+  "2452866576": {
+    "name": "Links Logo - Gold on White (Vertical) _1080_.jpg",
+    "ext": ".jpg",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2452866576/Links%20Logo%20-%20Gold%20on%20White%20%28Vertical%29%20_1080_.jpg",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2452866576/Links%20Logo%20-%20Gold%20on%20White%20%28Vertical%29%20_1080_.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=5412a8a45eb9d981ee911713f7bf4026ff9b4f999e9d0db5b5934115a46764ba"
+  },
+  "2455426992": {
+    "name": "Marchio HERTZ_payoff.eps",
+    "ext": ".eps",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2455426992/Marchio%20HERTZ_payoff.eps",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2455426992/Marchio%20HERTZ_payoff.eps?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=0dfce59be3316ee70ab976f7250586309780cf62aad1d1f956b24c767fab9987"
+  },
+  "2463001662": {
+    "name": "Logos.zip",
+    "ext": ".zip",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2463001662/Logos.zip",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2463001662/Logos.zip?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=c8c97cee9546ba0868e32b2dcd6606bd84096bc84d09debccddc26d715c512fb"
+  },
+  "2463016539": {
+    "name": "Assets (MAN Engines).zip",
+    "ext": ".zip",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2463016539/Assets%20%28MAN%20Engines%29.zip",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2463016539/Assets%20%28MAN%20Engines%29.zip?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=e2d9c57ef5057aacd4ee3424e421f651c856538d248dd8f648642a5abd300f1b"
+  },
+  "2466745215": {
+    "name": "ATS_Ba-2a.PNG",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2466745215/ATS_Ba-2a.PNG",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2466745215/ATS_Ba-2a.PNG?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=6e4e43435a5d54ba3d625198dce97f38395247162f65e9dbd4735f1f695427d8"
+  },
+  "2477578518": {
+    "name": "Pardo_logo_CMYK.pdf",
+    "ext": ".pdf",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2477578518/Pardo_logo_CMYK.pdf",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2477578518/Pardo_logo_CMYK.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=22f2ca79af67b68115b99242c874383ee05fc99b3a81542076a6c1f1223418c0"
+  },
+  "2477712823": {
+    "name": "Pardo_logo.eps",
+    "ext": ".eps",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2477712823/Pardo_logo.eps",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2477712823/Pardo_logo.eps?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=b0f649456988886cbe510ca653a5c657b77ede625ef3437626dbc6f6d468b9a3"
+  },
+  "2487914460": {
+    "name": "viv_tagline-lockup-olive.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2487914460/viv_tagline-lockup-olive.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2487914460/viv_tagline-lockup-olive.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=de0c21a0c8b7074ea761790ee9509eb7c9916a9a6c9d168e6513b5711b31b4e6"
+  },
+  "2487914465": {
+    "name": "viv_tagline-lockup-linen.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2487914465/viv_tagline-lockup-linen.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2487914465/viv_tagline-lockup-linen.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=74a56f3c503e7ba8da22fdb477afcb394dabbed3f83ecccaeaae6eef8e964c5e"
+  },
+  "2487914466": {
+    "name": "viv_tagline-lockup-olive.jpg",
+    "ext": ".jpg",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2487914466/viv_tagline-lockup-olive.jpg",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2487914466/viv_tagline-lockup-olive.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=0a0314fc33cfd35aee16f94788cb676356719ab5778566f213c844b3b396767d"
+  },
+  "2487920916": {
+    "name": "Viv_BrandGuide.pdf",
+    "ext": ".pdf",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2487920916/Viv_BrandGuide.pdf",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2487920916/Viv_BrandGuide.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=da4cbc4929ecad15560095570ec0b0f205d5c938a02098a2e75c8d54b03e7fe0"
+  },
+  "2490412689": {
+    "name": "Arcadia 331 Logo.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2490412689/Arcadia%20331%20Logo.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2490412689/Arcadia%20331%20Logo.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=181c464e9f079c001a1ada0e382ea322a285e4e67474c8406b9df66a88978f09"
+  },
+  "2490425287": {
+    "name": "Screenshot 2025-10-16 at 10.11.06 AM.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2490425287/Screenshot%202025-10-16%20at%2010.11.06%E2%80%AFAM.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2490425287/Screenshot%202025-10-16%20at%2010.11.06%E2%80%AFAM.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=7c96c1711a315d2d93729aa6223add6c7fb7fe0f39d7bd6bf87fe4e938de66d6"
+  },
+  "2528536949": {
+    "name": "Galati_Logo_Vector_Navy-CMYK-01.PNG",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2528536949/Galati_Logo_Vector_Navy-CMYK-01.PNG",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2528536949/Galati_Logo_Vector_Navy-CMYK-01.PNG?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=c5d9e707283b279c891b188a5214af1ac47b9bd055e1e619d332974f422df406"
+  },
+  "2528546516": {
+    "name": "AM_Logo_Color.JPG",
+    "ext": ".jpg",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2528546516/AM_Logo_Color.JPG",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2528546516/AM_Logo_Color.JPG?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=754a5f96b935d0d4a41130cb51b8aeb75c5875be2f062b47c3ea33796a0ff0b8"
+  },
+  "2591885658": {
+    "name": "SurroundingsGroup_Logo_White.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2591885658/SurroundingsGroup_Logo_White.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2591885658/SurroundingsGroup_Logo_White.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=0a2b71b7b966d7fcc0f67fee3576861d20379dd9eb62ff80913a790a4b08b95d"
+  },
+  "2591885660": {
+    "name": "SurroundingsGroup_Logo&TagLine_Black.jpg",
+    "ext": ".jpg",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2591885660/SurroundingsGroup_Logo&TagLine_Black.jpg",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2591885660/SurroundingsGroup_Logo%26TagLine_Black.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=ab057cf01c69081b205249556c1f59f5570464a2e69be2cdd41fa1fb09440907"
+  },
+  "2591885675": {
+    "name": "SurroundingsGroup_Logo&TagLine_Black.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2591885675/SurroundingsGroup_Logo&TagLine_Black.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2591885675/SurroundingsGroup_Logo%26TagLine_Black.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=4cd764f7ca5eb5778b79645dcedbad13e15c19ff70473acfded4aaa10ad9d7a7"
+  },
+  "2591885686": {
+    "name": "SurroundingsGroup_TagLine_Black.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2591885686/SurroundingsGroup_TagLine_Black.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2591885686/SurroundingsGroup_TagLine_Black.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=e90a56641571a3f1622563c524218a471c86bd3c42f7cc0be86cee8c048f93f9"
+  },
+  "2591885694": {
+    "name": "SurroundingsGroup_Logo_Black.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2591885694/SurroundingsGroup_Logo_Black.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2591885694/SurroundingsGroup_Logo_Black.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=46fc9962d77400afbdc538643360ec8012458862907f1aa1deab2cdf763d4a31"
+  },
+  "2591885882": {
+    "name": "SurroundingsGroup_Logo_Gold.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2591885882/SurroundingsGroup_Logo_Gold.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2591885882/SurroundingsGroup_Logo_Gold.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=8afc7417bc49d979cdd196fea8f662847264d1b573cdfd7b092a19bbdef2500d"
+  },
+  "2591941437": {
+    "name": "ExclusiveVacations_BrandGuidelines(F) (5).pdf",
+    "ext": ".pdf",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2591941437/ExclusiveVacations_BrandGuidelines%28F%29%20%285%29.pdf",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2591941437/ExclusiveVacations_BrandGuidelines%28F%29%20%285%29.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=c939b7a344bcc4df93e85ce6c4e1d37a11da1847fdc21cc097da4c81cd986a16"
+  },
+  "2604456071": {
+    "name": "Black and White Minimalist Luxury fashion Logo.pdf",
+    "ext": ".pdf",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2604456071/Black%20and%20White%20Minimalist%20Luxury%20fashion%20Logo.pdf",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2604456071/Black%20and%20White%20Minimalist%20Luxury%20fashion%20Logo.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=b9b120697ac5b1f61afc7d6147bcc414724350c6201b12ed7b262f15360db12e"
+  },
+  "2749527666": {
+    "name": "C0DD52C5-7B59-43D0-B8C2-8942AA3DD3E5.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2749527666/C0DD52C5-7B59-43D0-B8C2-8942AA3DD3E5.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2749527666/C0DD52C5-7B59-43D0-B8C2-8942AA3DD3E5.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=75bc6d383370492c50eea6ad9a4a334f8ac38cb52c91093731106381847063f5"
+  },
+  "2752905137": {
+    "name": "Riviera LMY - Horizontal Corporate Blue.ai",
+    "ext": ".ai",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2752905137/Riviera%20LMY%20-%20Horizontal%20Corporate%20Blue.ai",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2752905137/Riviera%20LMY%20-%20Horizontal%20Corporate%20Blue.ai?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=8d816b7ab18490b4cbd9b634f8f7fb189ecb9aed317d89e2b490b02723d53af8"
+  },
+  "2779370684": {
+    "name": "gsyf-logo-dark-left.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2779370684/gsyf-logo-dark-left.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2779370684/gsyf-logo-dark-left.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=4e5fb956790f040aab035743a75e9209a897737f98f64744700c99840f2dbc88"
+  },
+  "2779370686": {
+    "name": "gsyf-logo-dark-center.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2779370686/gsyf-logo-dark-center.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2779370686/gsyf-logo-dark-center.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=3e3dbba1d55e151c8ff273ba35051c4a94b33f66d67fac92148d5ea5d8b5dd09"
+  },
+  "2779370689": {
+    "name": "gsyf-logo-white-center.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2779370689/gsyf-logo-white-center.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2779370689/gsyf-logo-white-center.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=161d095fcc77bc24192cf1e5c48d63ba89b7708f569ab104a43bd319ee987735"
+  },
+  "2779370754": {
+    "name": "gsyf-logo-white-left.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2779370754/gsyf-logo-white-left.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2779370754/gsyf-logo-white-left.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=1b6017770d3b62d19b1a4c9fdd0d777ca04e9ad5ae236a4e73b37d1c0458df5a"
+  },
+  "2780002830": {
+    "name": "PANTONE 276C PNG.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2780002830/PANTONE%20276C%20PNG.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2780002830/PANTONE%20276C%20PNG.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=3b7b4388629c29dd0698ba2a9324249ec08c9be8f9dc882da25028c525f644c5"
+  },
+  "2786043726": {
+    "name": "galeon yachts_logo-White.eps",
+    "ext": ".eps",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2786043726/galeon%20yachts_logo-White.eps",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2786043726/galeon%20yachts_logo-White.eps?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=5c0ba54452500fa7935103249199f344bbffa01ff204f0ebe9b14a00a3af8943"
+  },
+  "2786043729": {
+    "name": "galeon yachts_logo-White.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2786043729/galeon%20yachts_logo-White.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2786043729/galeon%20yachts_logo-White.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=46b525e636b9b7a134feb37324900fd9b86618ce3813600c88e1df970c9ee56d"
+  },
+  "2786044779": {
+    "name": "Meyer Shank Racing 2020 4c.eps",
+    "ext": ".eps",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2786044779/Meyer%20Shank%20Racing%202020%204c.eps",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2786044779/Meyer%20Shank%20Racing%202020%204c.eps?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=d72cc68c0b16c0fdb6e8c311a71046a19e91197a6b00ec9284113f58cdc96afd"
+  },
+  "2786044833": {
+    "name": "Meyer Shank Racing 2020 4c Hi.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2786044833/Meyer%20Shank%20Racing%202020%204c%20Hi.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2786044833/Meyer%20Shank%20Racing%202020%204c%20Hi.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=e2842fe5664dbfd94abac86a04341e4bb34f0bda69da7e4e2aa452d2394c270d"
+  },
+  "2786072510": {
+    "name": "Galeon Brandbook.pdf",
+    "ext": ".pdf",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2786072510/Galeon%20Brandbook.pdf",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2786072510/Galeon%20Brandbook.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=9fcdd70ee3b540f751fa618f19b2f83ddf24155bce83f3a8dd68f9420affc152"
+  },
+  "2824426886": {
+    "name": "155501_KENN RICCI_Social Media Creative Support_2024 End Card Rebrand 16-9_08202024_FINAL.mp4",
+    "ext": ".mp4",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2824426886/155501_KENN%20RICCI_Social%20Media%20Creative%20Support_2024%20End%20Card%20Rebrand%2016-9_08202024_FINAL.mp4",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2824426886/155501_KENN%20RICCI_Social%20Media%20Creative%20Support_2024%20End%20Card%20Rebrand%2016-9_08202024_FINAL.mp4?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=c3021163793263b0c9bd9722f1345a29dab04e0ba7beed819f0df83d0060cc9f"
+  },
+  "2824426896": {
+    "name": "155501_KENN RICCI_Social Media Creative Support_2024 End Card Rebrand 9-16_05152024_FINAL copy.mp4",
+    "ext": ".mp4",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2824426896/155501_KENN%20RICCI_Social%20Media%20Creative%20Support_2024%20End%20Card%20Rebrand%209-16_05152024_FINAL%20copy.mp4",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2824426896/155501_KENN%20RICCI_Social%20Media%20Creative%20Support_2024%20End%20Card%20Rebrand%209-16_05152024_FINAL%20copy.mp4?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=82beef89cf0a53dae5a2033d09db6afafb923b62b0b336a0af7f3d1fc6c0189f"
+  },
+  "2848516964": {
+    "name": "master bbw-logo-teal-transparent.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2848516964/master%20bbw-logo-teal-transparent.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2848516964/master%20bbw-logo-teal-transparent.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=1e7c63831dda0bb4ecbf30497367c7d01b88b4fe48c39098029ffe15559fa4a2"
+  },
+  "2848516987": {
+    "name": "master bbw-logo-white-transparent.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2848516987/master%20bbw-logo-white-transparent.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2848516987/master%20bbw-logo-white-transparent.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=fca4628c8d0a28dd9514ae11efb12b80c188d891db9ccf5be788ed116c54a3a2"
+  },
+  "2848516999": {
+    "name": "master bbw-logo-black-transparent.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2848516999/master%20bbw-logo-black-transparent.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2848516999/master%20bbw-logo-black-transparent.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=48a2de068bb9573a83501e2589ce1cf9b5b338f84f0aa0425a8728ee23c765ce"
+  },
+  "2858758141": {
+    "name": "SOLACE Boats Bold WHITE Logo - Boats Updated.ai",
+    "ext": ".ai",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2858758141/SOLACE%20Boats%20Bold%20WHITE%20Logo%20-%20Boats%20Updated.ai",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2858758141/SOLACE%20Boats%20Bold%20WHITE%20Logo%20-%20Boats%20Updated.ai?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=f966ce05b58a286a704a10cc1656a8e83101e63b6cb4547a62590580bc3696a3"
+  },
+  "2883662937": {
+    "name": "Untitled design-89.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2883662937/Untitled%20design-89.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2883662937/Untitled%20design-89.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=4105abba4720afa8f02d63e4603f44ea5b98bfa2a78fffb7d2501a1d0713132a"
+  },
+  "2883717635": {
+    "name": "Logo Vice text 20240412 (1).pdf",
+    "ext": ".pdf",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2883717635/Logo%20Vice%20text%2020240412%20%281%29.pdf",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2883717635/Logo%20Vice%20text%2020240412%20%281%29.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=cc9f022a611b0f8fa24a64f85f4a2437dd38f8cb8c1dcc05c692ac2ab475ec0f"
+  },
+  "2883718159": {
+    "name": "Logo V VICE 20240412 (2).pdf",
+    "ext": ".pdf",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2883718159/Logo%20V%20VICE%2020240412%20%282%29.pdf",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2883718159/Logo%20V%20VICE%2020240412%20%282%29.pdf?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=1776084d05b81c020477603818a7e049696ea807524038b2e9a2877d4a2bb523"
+  },
+  "2916566270": {
+    "name": "GLBF 2026 .jpg",
+    "ext": ".jpg",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2916566270/GLBF%202026%20.jpg",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2916566270/GLBF%202026%20.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=bac15e5966ef7a31d59674fe1e40824c696ac99215e8bc4e1965add03acffb43"
+  },
+  "2916578297": {
+    "name": "GLBF 2026 .eps",
+    "ext": ".eps",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2916578297/GLBF%202026%20.eps",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2916578297/GLBF%202026%20.eps?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=8bc5864ad2f4c17482d949441c6df9443b88582cf7980dade12d6e0398b48ba1"
+  },
+  "2938214263": {
+    "name": "Wylden_RGB_Full-Logo-Clay.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2938214263/Wylden_RGB_Full-Logo-Clay.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2938214263/Wylden_RGB_Full-Logo-Clay.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=f15257376d083800296d2f29241d203c3e5fbb71360ba3467c84dd656fa40508"
+  },
+  "2938214283": {
+    "name": "Wylden_RGB_Full-Logo-Evergreen.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2938214283/Wylden_RGB_Full-Logo-Evergreen.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2938214283/Wylden_RGB_Full-Logo-Evergreen.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=f969e008f3466477307bcd7887f931e2611238d610f429065dc7efc9958f4978"
+  },
+  "2938214306": {
+    "name": "Wylden_RGB_Full-Logo-Moss.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2938214306/Wylden_RGB_Full-Logo-Moss.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2938214306/Wylden_RGB_Full-Logo-Moss.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=fb706d99d1c861c000092f4d98b7312d3ac0448b59bd0434891af6ec82c5e81d"
+  },
+  "2938214307": {
+    "name": "Wylden_RGB_Full-Logo-Cream.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2938214307/Wylden_RGB_Full-Logo-Cream.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2938214307/Wylden_RGB_Full-Logo-Cream.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=e88e9ebb8751ad420a676f4fc76721207c8bb3b7d3ca046487165d2843404a33"
+  },
+  "2938222480": {
+    "name": "Wylden_RGB_Icon-Cream.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2938222480/Wylden_RGB_Icon-Cream.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2938222480/Wylden_RGB_Icon-Cream.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=3009a800dbcd42e186029e3dc9a8977563efccc4593e7dde9ab3f636b2260490"
+  },
+  "2938222485": {
+    "name": "Wylden_RGB_Icon-Clay.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2938222485/Wylden_RGB_Icon-Clay.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2938222485/Wylden_RGB_Icon-Clay.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=68b173899ca31af28ee62dbc93d2698cfc7d719f6d6ba110d6e5fc977c940352"
+  },
+  "2938222492": {
+    "name": "Wylden_RGB_Icon-Evergreen.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2938222492/Wylden_RGB_Icon-Evergreen.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2938222492/Wylden_RGB_Icon-Evergreen.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=7e28cdf6365baa3f46f739a85ca387caee98f65950d398bea3ed95aee8c12690"
+  },
+  "2938222694": {
+    "name": "Wylden_RGB_Icon-Moss.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2938222694/Wylden_RGB_Icon-Moss.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2938222694/Wylden_RGB_Icon-Moss.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=70d3d6bab22b2447f8573c3a5ae3bdd02e190bdf29c38ed5db1c4b0ec7bd29de"
+  },
+  "2945706690": {
+    "name": "23_Bayliner_Logo_NEW_All_CMYK_TM__Blue_Horizontal.jpg",
+    "ext": ".jpg",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2945706690/23_Bayliner_Logo_NEW_All_CMYK_TM__Blue_Horizontal.jpg",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2945706690/23_Bayliner_Logo_NEW_All_CMYK_TM__Blue_Horizontal.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=16a59bff87bd24dbc40d3c269dc2e888cb45545f35f902f3c8493450ad98305d"
+  },
+  "2945706703": {
+    "name": "23_Bayliner_Logo_NEW_All_CMYK_TM__Blue_Emblem copy.jpg",
+    "ext": ".jpg",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2945706703/23_Bayliner_Logo_NEW_All_CMYK_TM__Blue_Emblem%20copy.jpg",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2945706703/23_Bayliner_Logo_NEW_All_CMYK_TM__Blue_Emblem%20copy.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=5fa53e9a2170bf62d97cde6857b3469c92f7da9e2e90d9bc64db8c377986dd6d"
+  },
+  "2945706707": {
+    "name": "23_Bayliner_Logo_NEW_All_CMYK_TM__Navy_Stacked.jpg",
+    "ext": ".jpg",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2945706707/23_Bayliner_Logo_NEW_All_CMYK_TM__Navy_Stacked.jpg",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2945706707/23_Bayliner_Logo_NEW_All_CMYK_TM__Navy_Stacked.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=7de96e8631f7701137ed20ca1884fa64ad5a623cf82eb2209da29ad05da83a5c"
+  },
+  "2945706715": {
+    "name": "23_Bayliner_Logo_NEW_All_CMYK_TM__Navy_Horizontal.jpg",
+    "ext": ".jpg",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2945706715/23_Bayliner_Logo_NEW_All_CMYK_TM__Navy_Horizontal.jpg",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2945706715/23_Bayliner_Logo_NEW_All_CMYK_TM__Navy_Horizontal.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=34f099938e7c1484a507ddcc9298fecd29451e77b40f3fb645bb2609b234c324"
+  },
+  "2945706767": {
+    "name": "BL_SquiggleAnimation.gif",
+    "ext": ".gif",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2945706767/BL_SquiggleAnimation.gif",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2945706767/BL_SquiggleAnimation.gif?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=14189b2a21ce3b7901650986b260856551db2f63665ff6953430a70c14ffdb39"
+  },
+  "2945706936": {
+    "name": "23_Bayliner_Logo_NEW_All_CMYK_TM__Blue_Stacked.eps",
+    "ext": ".eps",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2945706936/23_Bayliner_Logo_NEW_All_CMYK_TM__Blue_Stacked.eps",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2945706936/23_Bayliner_Logo_NEW_All_CMYK_TM__Blue_Stacked.eps?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=dc0defcaff211143833effe6172b25cf1965cd7cd805976948de9cbe273a26ae"
+  },
+  "2945706945": {
+    "name": "23_Bayliner_Logo_NEW_All_CMYK_TM__Navy_Wordmark.jpg",
+    "ext": ".jpg",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2945706945/23_Bayliner_Logo_NEW_All_CMYK_TM__Navy_Wordmark.jpg",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2945706945/23_Bayliner_Logo_NEW_All_CMYK_TM__Navy_Wordmark.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=5f253b306aa529f653f5e8bf1026940acfd57d7f189c5854731dccc15e1b4f59"
+  },
+  "2945706964": {
+    "name": "23_Bayliner_Logo_NEW_All_CMYK_TM__Navy_Emblem.jpg",
+    "ext": ".jpg",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2945706964/23_Bayliner_Logo_NEW_All_CMYK_TM__Navy_Emblem.jpg",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2945706964/23_Bayliner_Logo_NEW_All_CMYK_TM__Navy_Emblem.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=bcd146e68bb9dd3903ba9cc3ae7b98c8d3c161dff1204220966b29577998ff87"
+  },
+  "2945706976": {
+    "name": "23_Bayliner_Logo_NEW_All_CMYK_TM__Blue_White_Horizontal.eps",
+    "ext": ".eps",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2945706976/23_Bayliner_Logo_NEW_All_CMYK_TM__Blue_White_Horizontal.eps",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2945706976/23_Bayliner_Logo_NEW_All_CMYK_TM__Blue_White_Horizontal.eps?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=f7742aa5e352655f3a50258c471b440f89f84f3e08f209e474d045217ed76269"
+  },
+  "2945706983": {
+    "name": "23_Bayliner_Logo_NEW_All_CMYK_TM__Blue_Stacked copy.jpg",
+    "ext": ".jpg",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2945706983/23_Bayliner_Logo_NEW_All_CMYK_TM__Blue_Stacked%20copy.jpg",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2945706983/23_Bayliner_Logo_NEW_All_CMYK_TM__Blue_Stacked%20copy.jpg?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=76c9f89009036e21e388d40880a3bd651f94c1211bcf2eb01a1cab7b0417265a"
+  },
+  "2948204880": {
+    "name": "MYS Logo-010422.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2948204880/MYS%20Logo-010422.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2948204880/MYS%20Logo-010422.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134038Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=50af469414ea6b8be482a202d19a794190f4312a431e3bb4189977d82213d94b"
+  },
+  "2956678959": {
+    "name": "JBYS_Logo_final_Black_Line Art PNG.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2956678959/JBYS_Logo_final_Black_Line%20Art%20PNG.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2956678959/JBYS_Logo_final_Black_Line%20Art%20PNG.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=7bea26665515c8435e3073662c02170d5288ed13277186861f580bb705e30439"
+  },
+  "2956679280": {
+    "name": "JBYS_Logo_final_White_Line Art PNG.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2956679280/JBYS_Logo_final_White_Line%20Art%20PNG.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2956679280/JBYS_Logo_final_White_Line%20Art%20PNG.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=5b49005a3b6f45db8b969d331b6cb62a2a6182258119eaf22687776ebb0f7050"
+  },
+  "2956680748": {
+    "name": "JBYS logo - COLOR copy.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2956680748/JBYS%20logo%20-%20COLOR%20copy.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2956680748/JBYS%20logo%20-%20COLOR%20copy.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=6fc0f44c532090366c864ca768780cce00a4ce37b53d5bf41d239be587db6f55"
+  },
+  "2956759004": {
+    "name": "Screenshot 2026-05-08 at 9.23.54 AM.png",
+    "ext": ".png",
+    "url": "https://nauticalnetwork.monday.com/protected_static/6392469/resources/2956759004/Screenshot%202026-05-08%20at%209.23.54%E2%80%AFAM.png",
+    "public_url": "https://files-monday-com.s3.amazonaws.com/6392469/resources/2956759004/Screenshot%202026-05-08%20at%209.23.54%E2%80%AFAM.png?response-content-disposition=attachment&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4MPVJMFXBU3HSM42%2F20260525%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260525T134036Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=6a495149d9436cc9223a09e0d763ddbde21b8708a0420c4353f98afb6a05176a"
+  }
 }

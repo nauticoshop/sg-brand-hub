@@ -4,12 +4,15 @@
 // brand_logos rows.
 //
 // Run:
-//   node --env-file=.env.local scripts/migrate-logos.mjs
+//   node scripts/migrate-logos.mjs
 
 import { createClient } from "@supabase/supabase-js";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { loadEnv } from "./_load-env.mjs";
+
+loadEnv();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -72,11 +75,13 @@ for (const item of mondayData.items) {
     if (!asset) continue;
     const kind = classify(asset.ext);
     if (kind === "skip") continue;
+    // Use public_url (S3-signed) rather than url (protected_static, requires
+    // Monday cookie auth — 302s to sign-in for API clients).
     list.push({
       assetId: id,
       fileName: asset.name,
       ext: asset.ext,
-      url: asset.url,
+      url: asset.public_url || asset.url,
       kind,
     });
   }
@@ -113,6 +118,8 @@ for (const [mondayName, files] of itemAssets) {
   let order = 0;
   for (const file of files) {
     try {
+      // S3 public_url is pre-signed — fetch with NO auth headers (sending
+      // Authorization breaks the signature and S3 returns 400).
       const resp = await fetch(file.url);
       if (!resp.ok) {
         console.log(`   ✗ Download failed (${resp.status}): ${file.fileName}`);

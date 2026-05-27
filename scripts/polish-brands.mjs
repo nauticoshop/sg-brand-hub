@@ -6,10 +6,13 @@
 // own fields). Infers a tagline + coloring_tone when derivable.
 //
 // Run:
-//   node --env-file=.env.local scripts/polish-brands.mjs
+//   node scripts/polish-brands.mjs
 
 import Anthropic from "@anthropic-ai/sdk";
 import { createClient } from "@supabase/supabase-js";
+import { loadEnv } from "./_load-env.mjs";
+
+loadEnv();
 
 const MODEL = process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-5-20250929";
 

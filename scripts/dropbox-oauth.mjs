@@ -2,25 +2,65 @@
 // One-time Dropbox OAuth flow to get a long-lived refresh token.
 //
 // Usage:
-//   set -a && source .env.local && set +a && node scripts/dropbox-oauth.mjs
+//   node scripts/dropbox-oauth.mjs
 //
 // What it does:
-//   1. Reads DROPBOX_APP_KEY + DROPBOX_APP_SECRET from env
+//   1. Reads DROPBOX_APP_KEY + DROPBOX_APP_SECRET from .env.local
 //   2. Prints an auth URL for you to open in Chrome
 //   3. You approve, Dropbox shows a 'code' on screen
 //   4. You paste the code back into this prompt
 //   5. Script exchanges code → refresh_token and prints it
-//   6. You paste that into DROPBOX_REFRESH_TOKEN in .env.local + Vercel
+//   6. You paste that into DROPBOX_REFRESH_TOKEN in Vercel env vars
 
 import readline from "node:readline/promises";
 import { stdin, stdout } from "node:process";
+import { readFileSync } from "node:fs";
 
-const APP_KEY = process.env.DROPBOX_APP_KEY;
-const APP_SECRET = process.env.DROPBOX_APP_SECRET;
+// Tolerant .env.local reader — works around vercel env pull wrapping long
+// JWT values across multiple physical lines (which breaks `source`).
+function loadDotEnv(path) {
+  const text = readFileSync(path, "utf8");
+  const env = {};
+  const lines = text.split(/\r?\n/);
+  let currentKey = null;
+  let currentVal = "";
+  const keyRe = /^([A-Z_][A-Z0-9_]*)=(.*)$/;
+  const flush = () => {
+    if (currentKey) {
+      let v = currentVal;
+      if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+        v = v.slice(1, -1);
+      }
+      env[currentKey] = v;
+    }
+  };
+  for (const line of lines) {
+    if (line.startsWith("#") || line.trim() === "") {
+      flush();
+      currentKey = null;
+      currentVal = "";
+      continue;
+    }
+    const m = line.match(keyRe);
+    if (m) {
+      flush();
+      currentKey = m[1];
+      currentVal = m[2];
+    } else if (currentKey) {
+      currentVal += line;
+    }
+  }
+  flush();
+  return env;
+}
+
+const env = loadDotEnv(".env.local");
+const APP_KEY = env.DROPBOX_APP_KEY;
+const APP_SECRET = env.DROPBOX_APP_SECRET;
 
 if (!APP_KEY || !APP_SECRET) {
-  console.error("Missing DROPBOX_APP_KEY or DROPBOX_APP_SECRET in env.");
-  console.error("Make sure you ran:  set -a && source .env.local && set +a");
+  console.error("Missing DROPBOX_APP_KEY or DROPBOX_APP_SECRET in .env.local.");
+  console.error("Run `npx vercel env pull .env.local` to refresh, then try again.");
   process.exit(1);
 }
 
