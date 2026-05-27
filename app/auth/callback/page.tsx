@@ -13,7 +13,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
@@ -25,7 +25,7 @@ function isEmailAllowed(email: string | undefined | null) {
   return ALLOWED_DOMAINS.some((d) => lower.endsWith(`@${d}`));
 }
 
-export default function AuthCallbackPage() {
+function CallbackInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [message, setMessage] = useState("Signing you in…");
@@ -94,5 +94,20 @@ export default function AuthCallbackPage() {
     <div className="flex min-h-screen items-center justify-center">
       <div className="text-sm text-muted-foreground">{message}</div>
     </div>
+  );
+}
+
+// useSearchParams() requires a Suspense boundary during static prerendering.
+export default function AuthCallbackPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          <div className="text-sm text-muted-foreground">Signing you in…</div>
+        </div>
+      }
+    >
+      <CallbackInner />
+    </Suspense>
   );
 }
