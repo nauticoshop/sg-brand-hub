@@ -32,7 +32,12 @@ export async function GET(request: Request, { params }: { params: { token: strin
     .select("*")
     .eq("brand_id", brand.id)
     .order("display_order");
-  if (!includeRefs) q = q.neq("logo_type", "reference");
+  if (!includeRefs) {
+    // logo_type is null for normal image logos and 'reference' for PDFs/EPS
+    // etc. Use an OR filter because `neq` against a null value returns NULL,
+    // which Supabase treats as "exclude" — losing every image we want.
+    q = q.or("logo_type.is.null,logo_type.neq.reference");
+  }
   const { data: logos, error: logosErr } = await q;
   if (logosErr) return NextResponse.json({ error: logosErr.message }, { status: 500 });
   if (!logos || logos.length === 0) {

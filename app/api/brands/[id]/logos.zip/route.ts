@@ -22,7 +22,12 @@ export async function GET(request: Request, { params }: { params: { id: string }
   }
 
   let q = supabase.from("brand_logos").select("*").eq("brand_id", params.id).order("display_order");
-  if (!includeRefs) q = q.neq("logo_type", "reference");
+  if (!includeRefs) {
+    // logo_type is null for normal image logos and 'reference' for PDFs/EPS
+    // etc. `neq` against null returns NULL which Supabase treats as exclude,
+    // so we need an explicit OR to keep the nulls.
+    q = q.or("logo_type.is.null,logo_type.neq.reference");
+  }
   const { data: logos, error: logosErr } = await q;
   if (logosErr) return NextResponse.json({ error: logosErr.message }, { status: 500 });
   if (!logos || logos.length === 0) {
