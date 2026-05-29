@@ -28,20 +28,39 @@ function isEmailAllowed(email: string | undefined | null) {
 function CallbackInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [message, setMessage] = useState("Signing you in…");
+  const [debug, setDebug] = useState<{ stage: string; error?: string } | null>(null);
 
   useEffect(() => {
     const supabase = createSupabaseBrowserClient();
     const next = searchParams.get("next") ?? "/dashboard";
 
     async function run() {
+      // Surface Supabase-level errors from the URL fragment (OAuth providers
+      // can return ?error_description=… directly without giving us a code).
+      const hash = typeof window !== "undefined" ? window.location.hash : "";
+      const hashParams = hash.startsWith("#") ? new URLSearchParams(hash.slice(1)) : null;
+      const queryError =
+        searchParams.get("error_description") ||
+        searchParams.get("error") ||
+        hashParams?.get("error_description") ||
+        hashParams?.get("error");
+
+      if (queryError) {
+        setDebug({ stage: "provider returned error", error: queryError });
+        return;
+      }
+
       const code = searchParams.get("code");
 
       // PKCE flow — code in the query string.
       if (code) {
         const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-        if (error || !data.user) {
-          router.replace("/login?error=callback");
+        if (error) {
+          setDebug({ stage: "exchangeCodeForSession", error: error.message });
+          return;
+        }
+        if (!data.user) {
+          setDebug({ stage: "exchangeCodeForSession", error: "no user returned" });
           return;
         }
         if (!isEmailAllowed(data.user.email)) {
@@ -54,9 +73,7 @@ function CallbackInner() {
       }
 
       // Implicit flow — access_token + refresh_token in the URL hash.
-      const hash = typeof window !== "undefined" ? window.location.hash : "";
-      if (hash.startsWith("#")) {
-        const hashParams = new URLSearchParams(hash.slice(1));
+      if (hashParams) {
         const access_token = hashParams.get("access_token");
         const refresh_token = hashParams.get("refresh_token");
         if (access_token && refresh_token) {
@@ -64,8 +81,12 @@ function CallbackInner() {
             access_token,
             refresh_token,
           });
-          if (error || !data.user) {
-            router.replace("/login?error=callback");
+          if (error) {
+            setDebug({ stage: "setSession", error: error.message });
+            return;
+          }
+          if (!data.user) {
+            setDebug({ stage: "setSession", error: "no user returned" });
             return;
           }
           if (!isEmailAllowed(data.user.email)) {
@@ -73,8 +94,6 @@ function CallbackInner() {
             router.replace("/login?error=domain");
             return;
           }
-          // Strip the hash before navigating onwards so it doesn't get
-          // shared/bookmarked accidentally.
           if (typeof window !== "undefined") {
             history.replaceState(null, "", window.location.pathname);
           }
@@ -84,15 +103,29 @@ function CallbackInner() {
       }
 
       // Neither flow gave us anything usable.
-      router.replace("/login?error=callback");
+      setDebug({ stage: "callback", error: "no code or token in URL" });
     }
 
-    run().catch(() => router.replace("/login?error=callback"));
+    run().catch((e) => setDebug({ stage: "unhandled exception", error: String(e?.message ?? e) }));
   }, [router, searchParams]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="text-sm text-muted-foreground">{message}</div>
+    <div className="flex min-h-screen items-center justify-center px-4">
+      <div className="panel max-w-lg p-8">
+        {debug ? (
+          <div className="space-y-4">
+            <div className="text-sm font-semibold">Sign-in failed at: {debug.stage}</div>
+            <div className="rounded-md bg-destructive/5 border border-destructive/20 px-3 py-2 text-xs text-destructive font-mono">
+              {debug.error ?? "unknown"}
+            </div>
+            <a href="/login" className="block text-xs text-accent underline">
+              ← back to login
+            </a>
+          </div>
+        ) : (
+          <div className="text-sm text-muted-foreground">Signing you in…</div>
+        )}
+      </div>
     </div>
   );
 }
