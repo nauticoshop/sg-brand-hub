@@ -77,26 +77,81 @@ comment on view public.brand_directory is
   'this view only — never the brands table directly. Column changes here are '
   'breaking and require coordination.';
 
--- Drop the columns the Brief Tool team had added pre-emptively. Each one
--- duplicates an existing canonical column on `brands` that's owned by Brand
--- Hub. Brief Tool should consume those via the view instead.
+-- ─────────────────────────────────────────────────────────────────────────
+-- Two-way column sync between canonical Brand Hub fields and Brief Tool's
+-- duplicate columns. Brief Tool currently reads + writes these in ~30 places
+-- — refactoring is a separate effort. In the meantime, this trigger keeps
+-- the two sides perfectly in sync so editing either app shows up in both.
 --
--- Column → canonical equivalent:
---   am               → account_manager
---   poc_name         → submitter_name      (primary_contact_name in view)
---   poc_email        → submitter_email     (primary_contact_email in view)
---   poc_num          → submitter_phone     (primary_contact_phone in view)
---   monday_board_id  → client_monday_board_url
---   logo_placement   → belongs in briefs.data_json, NOT on the brand record
+-- Pairs synced:
+--   account_manager  ↔ am
+--   submitter_name   ↔ poc_name
+--   submitter_email  ↔ poc_email
+--   submitter_phone  ↔ poc_num
 --
--- These columns were never written to by Brand Hub code and never displayed
--- in the UI, so dropping them is safe from Brand Hub's perspective. Brief
--- Tool should migrate any reads/writes to the view before this migration
--- ships if it had started using them.
-alter table public.brands
-  drop column if exists am,
-  drop column if exists poc_name,
-  drop column if exists poc_num,
-  drop column if exists poc_email,
-  drop column if exists logo_placement,
-  drop column if exists monday_board_id;
+-- Not synced (different concepts):
+--   monday_board_id (Brief Tool's board reference, not a Brand Hub URL)
+--   logo_placement  (brief-specific, doesn't belong on brand row but okay)
+--
+-- The trigger detects which side of a pair was just updated and copies that
+-- value to the other side. If both sides change in the same UPDATE statement,
+-- the canonical side wins.
+-- ─────────────────────────────────────────────────────────────────────────
+
+create or replace function public.sync_brand_dupe_columns()
+returns trigger as $$
+begin
+  -- account_manager ↔ am
+  if new.account_manager is distinct from old.account_manager then
+    new.am := new.account_manager;
+  elsif new.am is distinct from old.am then
+    new.account_manager := new.am;
+  end if;
+
+  -- submitter_name ↔ poc_name
+  if new.submitter_name is distinct from old.submitter_name then
+    new.poc_name := new.submitter_name;
+  elsif new.poc_name is distinct from old.poc_name then
+    new.submitter_name := new.poc_name;
+  end if;
+
+  -- submitter_email ↔ poc_email
+  if new.submitter_email is distinct from old.submitter_email then
+    new.poc_email := new.submitter_email;
+  elsif new.poc_email is distinct from old.poc_email then
+    new.submitter_email := new.poc_email;
+  end if;
+
+  -- submitter_phone ↔ poc_num
+  if new.submitter_phone is distinct from old.submitter_phone then
+    new.poc_num := new.submitter_phone;
+  elsif new.poc_num is distinct from old.poc_num then
+    new.submitter_phone := new.poc_num;
+  end if;
+
+  return new;
+end;
+$$ language plpgsql;
+
+drop trigger if exists sync_brand_dupes on public.brands;
+create trigger sync_brand_dupes
+  before update on public.brands
+  for each row execute function public.sync_brand_dupe_columns();
+
+-- One-shot backfill: copy whatever each side has into the other for existing
+-- rows so Brief Tool's Clients view immediately shows real values for the
+-- brands imported via Brand Hub.
+update public.brands set
+  am               = coalesce(am,               account_manager),
+  poc_name         = coalesce(poc_name,         submitter_name),
+  poc_email        = coalesce(poc_email,        submitter_email),
+  poc_num          = coalesce(poc_num,          submitter_phone),
+  account_manager  = coalesce(account_manager,  am),
+  submitter_name   = coalesce(submitter_name,   poc_name),
+  submitter_email  = coalesce(submitter_email,  poc_email),
+  submitter_phone  = coalesce(submitter_phone,  poc_num);
+
+-- The 6 duplicate columns (am, poc_name, poc_num, poc_email, monday_board_id,
+-- logo_placement) intentionally REMAIN. They are now synced and safe to use
+-- from either side. A future migration can drop them after Brief Tool has
+-- been fully refactored to use `brand_directory`.
