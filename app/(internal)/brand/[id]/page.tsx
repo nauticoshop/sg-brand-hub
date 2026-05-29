@@ -13,6 +13,8 @@ import { ColorsEditor } from "@/components/brand/colors-editor";
 import { FontsEditor } from "@/components/brand/fonts-editor";
 import { LogosEditor } from "@/components/brand/logos-editor";
 import { ApproveButton } from "@/components/brand/approve-button";
+import { ApprovalChecklist } from "@/components/brand/approval-checklist";
+import { buildApprovalChecklist, isReadyToApprove } from "@/lib/brands/approval-readiness";
 import { PdfLinkField } from "@/components/brand/pdf-link-field";
 import { ShareLinkButton } from "@/components/brand/share-link-button";
 import { DeleteBrandButton } from "@/components/brand/delete-brand-button";
@@ -34,6 +36,15 @@ export default async function BrandDetailPage({ params }: { params: { id: string
   const b = brand as Brand;
   const brandLogos = (logos ?? []) as BrandLogo[];
   const activityLog = (activity ?? []) as BrandActivityLog[];
+
+  // Pre-approve gating. We show the checklist on the page so the AM always
+  // knows what's missing; the Approve button blocks until the required items
+  // are satisfied.
+  const checklist = buildApprovalChecklist(b, brandLogos);
+  const ready = isReadyToApprove(b, brandLogos);
+  const blockedReason = ready
+    ? undefined
+    : `Missing required: ${checklist.required.filter((i) => !i.done).map((i) => i.label).join(", ")}`;
 
   const verticalOptions = [
     "marine",
@@ -78,9 +89,22 @@ export default async function BrandDetailPage({ params }: { params: { id: string
             </Link>
           </Button>
           <DeleteBrandButton brandId={b.id} brandName={b.business_name} />
-          {b.status !== "approved" && <ApproveButton brandId={b.id} />}
+          {b.status !== "approved" && (
+            <ApproveButton brandId={b.id} disabled={!ready} disabledReason={blockedReason} />
+          )}
         </div>
       </div>
+
+      {/* Approval checklist — hidden once brand is approved. */}
+      {b.status !== "approved" && (
+        <div className="mb-8">
+          <ApprovalChecklist
+            required={checklist.required}
+            recommended={checklist.recommended}
+            allRequiredDone={ready}
+          />
+        </div>
+      )}
 
       <Tabs defaultValue="overview">
         <TabsList className="border-b border-border">
