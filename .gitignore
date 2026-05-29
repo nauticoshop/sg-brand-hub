@@ -36,3 +36,10 @@ next-env.d.ts
 # supabase
 supabase/.branches
 supabase/.temp
+
+# scripts: regenerable data caches (run scripts/fetch-monday-*.mjs to rebuild)
+scripts/monday-data.json
+scripts/monday-assets.json
+# one-off operation backups (kept locally if you want them)
+scripts/dedupe-backup-*.json
+scripts/manual-merge-backup-*.json

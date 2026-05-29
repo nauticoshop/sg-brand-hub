@@ -90,7 +90,17 @@ export function IntakeForm() {
     setSubmitting(true);
 
     // Drop empty color/font entries before submitting.
-    const cleanedColors = colors.filter((c) => /^#[0-9A-Fa-f]{6}$/.test(c.hex) && c.hex !== "#000000" || c.name.trim());
+    //
+    // Previously: /^#[0-9A-Fa-f]{6}$/.test(c.hex) && c.hex !== "#000000" || c.name.trim()
+    // which (a) excluded #000000 as if it weren't a legitimate brand color
+    // (Apple, Nike) and (b) had bad operator precedence — a row with a
+    // valid name but malformed hex would pass through and Zod would then
+    // reject the whole submission.
+    //
+    // Now: keep a color iff it has a valid hex AND a non-empty name.
+    const cleanedColors = colors.filter(
+      (c) => c.name.trim().length > 0 && /^#[0-9A-Fa-f]{6}$/.test(c.hex)
+    );
     const cleanedFonts = fonts.filter((f) => f.name.trim().length > 0);
 
     const payload: IntakeInput = {

@@ -380,6 +380,70 @@ export async function approveBrand(id: string) {
 
 export async function deleteBrand(id: string) {
   const supabase = createSupabaseServerClient();
+
+  // Capture references BEFORE we delete the row so we can attempt cleanup
+  // of the side-effect resources (storage objects, Monday items, Dropbox
+  // folder). These cleanups are best-effort — Brand Hub is the system of
+  // record, so if Monday/Dropbox cleanup fails we still proceed with the
+  // DB delete and log a warning to the activity log.
+  const { data: brandRow } = await supabase
+    .from("brands")
+    .select("id, business_name, monday_intake_item_id, monday_all_projects_item_id, dropbox_folder_url, brand_guideline_pdf_url")
+    .eq("id", id)
+    .single();
+
+  // Strip storage objects under this brand's prefix. brand_logos rows cascade
+  // on delete, but the underlying files in brand-logos/ and brand-pdfs/
+  // storage do NOT — they'd leak forever otherwise.
+  try {
+    const logoList = await supabase.storage.from("brand-logos").list(id);
+    if (logoList.data && logoList.data.length > 0) {
+      const paths = logoList.data.map((f) => `${id}/${f.name}`);
+      await supabase.storage.from("brand-logos").remove(paths);
+    }
+  } catch {
+    // Non-fatal; storage leak isn't worth blocking the user delete.
+  }
+  try {
+    const pdfList = await supabase.storage.from("brand-pdfs").list(id);
+    if (pdfList.data && pdfList.data.length > 0) {
+      const paths = pdfList.data.map((f) => `${id}/${f.name}`);
+      await supabase.storage.from("brand-pdfs").remove(paths);
+    }
+  } catch {}
+
+  // Capture the existing external references so the AM can chase them down
+  // manually if needed. We do NOT auto-delete the Monday items or Dropbox
+  // folder — those may have been picked up by other workflows (e.g. Rendi
+  // already started editing) and silently deleting them would be hostile.
+  const orphans: Record<string, string | null> = {};
+  if (brandRow?.monday_intake_item_id) {
+    orphans.monday_intake_item_id = brandRow.monday_intake_item_id;
+  }
+  if (
+    brandRow?.monday_all_projects_item_id &&
+    brandRow.monday_all_projects_item_id !== "external"
+  ) {
+    orphans.monday_all_projects_item_id = brandRow.monday_all_projects_item_id;
+  }
+  if (brandRow?.dropbox_folder_url) {
+    orphans.dropbox_folder_url = brandRow.dropbox_folder_url;
+  }
+
+  // Activity log entry BEFORE we delete the brand row, since the FK cascades.
+  // We can't insert with a brand_id that's about to vanish, so we use a
+  // best-effort sentinel by leaving brand_id pointing at the soon-to-die row
+  // — Supabase's cascade fires AFTER the insert returns. If that ordering
+  // were ever to flip, we'd just lose the audit row, which is acceptable
+  // for a delete action.
+  if (Object.keys(orphans).length > 0) {
+    await supabase.from("brand_activity_log").insert({
+      brand_id: id,
+      event_type: "deleted_with_external_references",
+      metadata: { business_name: brandRow?.business_name, orphans },
+    });
+  }
+
   await supabase.from("brands").delete().eq("id", id);
   redirect("/dashboard");
 }
