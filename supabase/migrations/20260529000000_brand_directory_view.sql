@@ -98,6 +98,12 @@ comment on view public.brand_directory is
 -- the canonical side wins.
 -- ─────────────────────────────────────────────────────────────────────────
 
+-- Two functions: one for UPDATEs (compares NEW vs OLD to detect which side
+-- changed), one for INSERTs (just fills whichever side is null from the
+-- other). Brief Tool's "Add client" flow inserts rows with only the dupe
+-- columns; Brand Hub's intake form inserts with only the canonical columns.
+-- Either way we end up with both sides populated.
+
 create or replace function public.sync_brand_dupe_columns()
 returns trigger as $$
 begin
@@ -133,10 +139,46 @@ begin
 end;
 $$ language plpgsql;
 
+create or replace function public.sync_brand_dupe_columns_on_insert()
+returns trigger as $$
+begin
+  if new.account_manager is null and new.am is not null then
+    new.account_manager := new.am;
+  elsif new.am is null and new.account_manager is not null then
+    new.am := new.account_manager;
+  end if;
+
+  if new.submitter_name is null and new.poc_name is not null then
+    new.submitter_name := new.poc_name;
+  elsif new.poc_name is null and new.submitter_name is not null then
+    new.poc_name := new.submitter_name;
+  end if;
+
+  if new.submitter_email is null and new.poc_email is not null then
+    new.submitter_email := new.poc_email;
+  elsif new.poc_email is null and new.submitter_email is not null then
+    new.poc_email := new.submitter_email;
+  end if;
+
+  if new.submitter_phone is null and new.poc_num is not null then
+    new.submitter_phone := new.poc_num;
+  elsif new.poc_num is null and new.submitter_phone is not null then
+    new.poc_num := new.submitter_phone;
+  end if;
+
+  return new;
+end;
+$$ language plpgsql;
+
 drop trigger if exists sync_brand_dupes on public.brands;
 create trigger sync_brand_dupes
   before update on public.brands
   for each row execute function public.sync_brand_dupe_columns();
+
+drop trigger if exists sync_brand_dupes_insert on public.brands;
+create trigger sync_brand_dupes_insert
+  before insert on public.brands
+  for each row execute function public.sync_brand_dupe_columns_on_insert();
 
 -- One-shot backfill: copy whatever each side has into the other for existing
 -- rows so Brief Tool's Clients view immediately shows real values for the
