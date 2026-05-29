@@ -73,10 +73,39 @@ export async function generateBrandPdfByShareToken(token: string): Promise<Buffe
  * Idempotency: writes to a fixed path `${id}/brand-guidelines.pdf` with
  * upsert=true so re-runs replace rather than orphan. The brand record gets
  * the same public URL each time (Supabase Storage URLs are stable per path).
+ *
+ * Freshness skip: if the brand has an existing PDF URL AND the latest
+ * `pdf_generated` activity log entry is newer than the brand row's
+ * `updated_at`, no fields have changed since the last generation — we
+ * return the existing URL without re-rendering. ~3-5 seconds saved on
+ * a no-op re-approve.
  */
-export async function generateAndSaveBrandPdf(id: string): Promise<string> {
+export async function generateAndSaveBrandPdf(
+  id: string,
+  opts: { force?: boolean } = {}
+): Promise<string> {
   const admin = createSupabaseAdminClient();
   const { brand, logos } = await loadBrand(admin, id);
+
+  if (!opts.force && brand.brand_guideline_pdf_url) {
+    const { data: lastPdf } = await admin
+      .from("brand_activity_log")
+      .select("created_at")
+      .eq("brand_id", id)
+      .eq("event_type", "pdf_generated")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (
+      lastPdf?.created_at &&
+      brand.updated_at &&
+      new Date(lastPdf.created_at).getTime() >= new Date(brand.updated_at).getTime()
+    ) {
+      // PDF on file is at least as fresh as the brand row — skip regen.
+      return brand.brand_guideline_pdf_url;
+    }
+  }
+
   const pdf = await renderToBuffer(BrandPdf({ brand, logos, appUrl: APP_URL }));
 
   const fileName = `${id}/brand-guidelines.pdf`;
