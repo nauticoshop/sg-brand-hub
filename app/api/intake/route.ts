@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { intakeSchema } from "@/app/(public)/intake/schema";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
+import { notifyIntakeSubmission } from "@/lib/notifications/slack";
 
 export async function POST(request: Request) {
   const raw = await request.json();
@@ -69,6 +70,21 @@ export async function POST(request: Request) {
     brand_id: data.id,
     event_type: "submitted",
     metadata: { source: "public_intake", submitter: v.submitter_email },
+  });
+
+  // Notify the team. We DON'T await this — the user's form submit shouldn't
+  // wait on Slack's webhook latency, and the helper swallows errors anyway.
+  // The brand row is already safely persisted at this point.
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || new URL(request.url).origin;
+  notifyIntakeSubmission({
+    brandId: data.id,
+    businessName: v.business_name,
+    submitterName: v.submitter_name,
+    submitterEmail: v.submitter_email,
+    vertical: v.vertical || null,
+    hasLogos: false, // logos are uploaded client-side AFTER this returns
+    hasColors: colors.length > 0,
+    appUrl,
   });
 
   return NextResponse.json({ id: data.id });
