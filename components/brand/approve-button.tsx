@@ -17,10 +17,16 @@ export function ApproveButton({ brandId }: { brandId: string }) {
         return;
       }
       if (res.warnings && res.warnings.length > 0) {
-        toast.warning(
-          `Approved, but ${res.warnings.length} sync issue${res.warnings.length === 1 ? "" : "s"}: ${res.warnings[0]}`,
-          { id: "approve", duration: 8000 }
-        );
+        // Show every warning, not just the first — previously the user would
+        // see "Dropbox failed" and miss that Monday also failed.
+        const heading = `Approved, but ${res.warnings.length} sync issue${
+          res.warnings.length === 1 ? "" : "s"
+        }:`;
+        toast.warning(heading, {
+          id: "approve",
+          duration: 12000,
+          description: res.warnings.map((w) => `• ${w}`).join("\n"),
+        });
         return;
       }
       toast.success("Approved. PDF saved + Monday tasks created.", { id: "approve" });

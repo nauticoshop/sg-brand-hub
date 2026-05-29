@@ -19,6 +19,10 @@ import {
   ALL_PROJECTS_COLUMNS,
 } from "@/lib/monday/client";
 import { ensureBrandFolderTree } from "@/lib/dropbox/client";
+import { generateAndSaveBrandPdf } from "@/lib/pdf/generate";
+
+// Monday board base URL — used to derive client board URL from item IDs.
+const MONDAY_BOARD_BASE_URL = "https://nauticalnetwork.monday.com";
 
 // Display name for the default editor used in @ mentions on Monday updates.
 // Kept in code rather than env to make the HTML mention copy obvious.
@@ -93,6 +97,9 @@ export async function updateBrand(id: string, patch: BrandPatch) {
   });
 
   revalidatePath(`/brand/${id}`);
+  // Dashboard's status pill + last-edited timestamp need to update on every
+  // save — cheap because the page is dynamic anyway.
+  revalidatePath("/dashboard");
 
   // Keep the public share page in sync so external editors see latest content
   // without needing a hard refresh.
@@ -141,11 +148,12 @@ export async function approveBrand(id: string) {
   const allProjectsBoardId = process.env.MONDAY_BOARD_ID_ALL_PROJECTS;
   const defaultEditorId = process.env.MONDAY_DEFAULT_EDITOR_USER_ID;
 
-  // 1) Generate + save the brand guideline PDF.
-  const pdfRes = await fetch(`${appUrl}/api/brands/${id}/pdf?save=1`, { method: "POST" });
-  if (!pdfRes.ok) {
-    const text = await pdfRes.text();
-    return { ok: false as const, error: `PDF generation failed: ${text}` };
+  // 1) Generate + save the brand guideline PDF — runs in-process so no
+  //    same-origin HTTP fetch / cookie loss / RLS surprises. Idempotent.
+  try {
+    await generateAndSaveBrandPdf(id);
+  } catch (e) {
+    return { ok: false as const, error: `PDF generation failed: ${(e as Error).message}` };
   }
 
   // 2) Fetch the fresh brand record (with the new PDF URL).
@@ -330,9 +338,15 @@ export async function approveBrand(id: string) {
         syncWarnings.push(`Couldn't post update: ${(updateErr as Error).message}`);
       }
 
+      // Derive the canonical Monday URL for the new parent item so the
+      // editor's "Monday client board" field auto-fills.
+      const clientBoardUrl = `${MONDAY_BOARD_BASE_URL}/boards/${allProjectsBoardId}/pulses/${parent.id}`;
       await supabase
         .from("brands")
-        .update({ monday_all_projects_item_id: parent.id })
+        .update({
+          monday_all_projects_item_id: parent.id,
+          client_monday_board_url: clientBoardUrl,
+        })
         .eq("id", id);
     } catch (e) {
       syncWarnings.push(`All Projects sync failed: ${(e as Error).message}`);
