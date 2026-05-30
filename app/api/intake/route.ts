@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { intakeSchema } from "@/app/(public)/intake/schema";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
-import { notifyIntakeSubmission } from "@/lib/notifications/slack";
+import { notifyIntakeSubmission } from "@/lib/notifications/intake";
 
 export async function POST(request: Request) {
   const raw = await request.json();
@@ -82,7 +82,6 @@ export async function POST(request: Request) {
     submitterName: v.submitter_name,
     submitterEmail: v.submitter_email,
     vertical: v.vertical || null,
-    hasLogos: false, // logos are uploaded client-side AFTER this returns
     hasColors: colors.length > 0,
     appUrl,
   });
