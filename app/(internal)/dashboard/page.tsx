@@ -7,6 +7,7 @@ import { PageContainer, PageHeader } from "@/components/shell/page-container";
 import { SearchInput } from "@/components/dashboard/search-input";
 import { StatusFilter } from "@/components/dashboard/status-filter";
 import { BrandList } from "@/components/dashboard/brand-list";
+import { BrandsSection } from "@/components/dashboard/brands-section";
 import { InactiveBrands } from "@/components/dashboard/inactive-brands";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Brand, BrandStatus } from "@/types/brand";
@@ -57,6 +58,21 @@ export default async function DashboardPage({
     ? []
     : allBrands.filter((b) => b.engagement_type === "inactive");
 
+  // Bucket the active brands by attention level so the "needs review" pile
+  // is up top where the AM lands. When a user has explicitly filtered to
+  // one status, the buckets collapse naturally (only the matching one has
+  // content).
+  const needsReview = activeBrands.filter((b) =>
+    ["submitted", "in_review", "draft"].includes(b.status)
+  );
+  const approved = activeBrands.filter((b) => b.status === "approved");
+  const archived = activeBrands.filter((b) => b.status === "archived");
+
+  // If a search is active we lose the buckets and show everything matched
+  // in one flat list — search results across statuses are more useful
+  // ungrouped.
+  const isSearching = !!searchParams.q?.trim();
+
   return (
     <PageContainer>
       <PageHeader
@@ -90,7 +106,19 @@ export default async function DashboardPage({
         <StatusFilter />
       </div>
 
-      <BrandList brands={activeBrands} />
+      {isSearching ? (
+        <BrandList brands={activeBrands} />
+      ) : (
+        <>
+          <BrandsSection
+            label="Needs review"
+            description="New intake, draft, or in review — start here."
+            brands={needsReview}
+          />
+          <BrandsSection label="Approved" brands={approved} />
+          <BrandsSection label="Archived" brands={archived} />
+        </>
+      )}
 
       <InactiveBrands brands={inactiveBrands} />
     </PageContainer>
