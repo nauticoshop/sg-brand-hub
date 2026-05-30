@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -56,6 +56,10 @@ export function IntakeForm() {
   ]);
   const [logos, setLogos] = useState<StagedLogo[]>([]);
   const [referenceFiles, setReferenceFiles] = useState<StagedLogo[]>([]);
+  // Honeypot — invisible to humans, bots fill it. If non-empty on submit
+  // the server silently drops the row. See the hidden <input> in the JSX
+  // below and the handler in /api/intake/route.ts.
+  const honeypotRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
@@ -103,12 +107,15 @@ export function IntakeForm() {
     );
     const cleanedFonts = fonts.filter((f) => f.name.trim().length > 0);
 
-    const payload: IntakeInput = {
+    const payload = {
       ...values,
       vertical: vertical || undefined,
       vertical_other: vertical === "other" ? values.vertical_other : undefined,
       colors: cleanedColors,
       fonts: cleanedFonts,
+      // Include the honeypot value so the server can detect bot submissions.
+      // Real human users never see / fill the hidden field.
+      website_alt: honeypotRef.current?.value ?? "",
     };
 
     const res = await fetch("/api/intake", {
@@ -132,6 +139,26 @@ export function IntakeForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="panel divide-y divide-border">
+      {/*
+        Honeypot — visually hidden, tabindex=-1, autocomplete=off, and an
+        aria-hidden label so screen readers skip it. Real humans never see
+        it; bots crawling the DOM will fill it because it looks like a
+        plausible "alternate website" field. Submissions with this value
+        set are silently dropped by /api/intake/route.ts.
+      */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "-10000px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
+        <label htmlFor="website_alt">Alternate website (leave blank)</label>
+        <input
+          ref={honeypotRef}
+          id="website_alt"
+          name="website_alt"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          defaultValue=""
+        />
+      </div>
+
       <div className="px-8 pt-10 pb-2 text-center">
         <Eyebrow>Surroundings Group</Eyebrow>
         <h1 className="mt-3 text-3xl font-semibold tracking-tight">Tell us about your brand.</h1>

@@ -20,6 +20,7 @@ import {
 } from "@/lib/monday/client";
 import { ensureBrandFolderTree } from "@/lib/dropbox/client";
 import { generateAndSaveBrandPdf } from "@/lib/pdf/generate";
+import { alertError } from "@/lib/notifications/alert";
 
 // Monday board base URL — used to derive client board URL from item IDs.
 const MONDAY_BOARD_BASE_URL = "https://nauticalnetwork.monday.com";
@@ -174,6 +175,7 @@ export async function approveBrand(id: string) {
   try {
     await generateAndSaveBrandPdf(id);
   } catch (e) {
+    alertError({ flow: "approve.pdf", brandId: id, error: e });
     return { ok: false as const, error: `PDF generation failed: ${(e as Error).message}` };
   }
 
@@ -391,6 +393,18 @@ export async function approveBrand(id: string) {
     user_id: user?.id,
     metadata: { sync_warnings: syncWarnings.length > 0 ? syncWarnings : undefined },
   });
+
+  // If any sync warnings landed, alert the team — the toast in the UI is
+  // ephemeral, but these need somebody to chase down.
+  if (syncWarnings.length > 0) {
+    alertError({
+      flow: "approve.sync_warnings",
+      brandId: id,
+      brandName: b.business_name,
+      error: `${syncWarnings.length} sync warning(s)`,
+      extras: { warnings: syncWarnings.join(" | ") },
+    });
+  }
 
   revalidatePath(`/brand/${id}`);
   revalidatePath(`/share/${b.share_token}`);

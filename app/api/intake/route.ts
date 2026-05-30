@@ -2,9 +2,28 @@ import { NextResponse } from "next/server";
 import { intakeSchema } from "@/app/(public)/intake/schema";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { notifyIntakeSubmission } from "@/lib/notifications/intake";
+import { alertError } from "@/lib/notifications/alert";
 
 export async function POST(request: Request) {
-  const raw = await request.json();
+  let raw: unknown;
+  try {
+    raw = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+
+  // Honeypot — the public form renders a hidden field named `website_alt`
+  // that real humans never see and bots dutifully fill in. If it's set, we
+  // return success (so the bot doesn't retry with a workaround) but never
+  // create a brand row.
+  if (typeof raw === "object" && raw !== null) {
+    const hp = (raw as Record<string, unknown>).website_alt;
+    if (typeof hp === "string" && hp.trim().length > 0) {
+      console.warn(`[intake] Honeypot triggered, dropping submission silently. value=${hp.slice(0, 40)}`);
+      return NextResponse.json({ id: "honeypot" }, { status: 200 });
+    }
+  }
+
   const parsed = intakeSchema.safeParse(raw);
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
@@ -63,6 +82,12 @@ export async function POST(request: Request) {
     .single();
 
   if (error || !data) {
+    alertError({
+      flow: "intake.insert",
+      brandName: v.business_name,
+      error: error?.message ?? "no row returned",
+      extras: { submitter: v.submitter_email },
+    });
     return NextResponse.json({ error: error?.message ?? "Could not save submission" }, { status: 500 });
   }
 
@@ -73,7 +98,7 @@ export async function POST(request: Request) {
   });
 
   // Notify the team. We DON'T await this — the user's form submit shouldn't
-  // wait on Slack's webhook latency, and the helper swallows errors anyway.
+  // wait on the webhook latency, and the helper swallows errors anyway.
   // The brand row is already safely persisted at this point.
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || new URL(request.url).origin;
   notifyIntakeSubmission({
