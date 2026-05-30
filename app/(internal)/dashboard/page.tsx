@@ -7,6 +7,7 @@ import { PageContainer, PageHeader } from "@/components/shell/page-container";
 import { SearchInput } from "@/components/dashboard/search-input";
 import { StatusFilter } from "@/components/dashboard/status-filter";
 import { BrandList } from "@/components/dashboard/brand-list";
+import { InactiveBrands } from "@/components/dashboard/inactive-brands";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Brand, BrandStatus } from "@/types/brand";
 
@@ -42,7 +43,19 @@ export default async function DashboardPage({
   }
 
   const { data, error } = await query;
-  const brands = (error ? [] : (data ?? [])) as Brand[];
+  const allBrands = (error ? [] : (data ?? [])) as Brand[];
+
+  // Split inactive into a separate collapsed section so the main list stays
+  // focused on active engagements (retainer + project). If the user has
+  // explicitly filtered to "inactive", everything stays in the main list
+  // instead — they came here looking for inactive specifically.
+  const userPickedInactive = searchParams.engagement === "inactive";
+  const activeBrands = userPickedInactive
+    ? allBrands
+    : allBrands.filter((b) => b.engagement_type !== "inactive");
+  const inactiveBrands = userPickedInactive
+    ? []
+    : allBrands.filter((b) => b.engagement_type === "inactive");
 
   return (
     <PageContainer>
@@ -77,7 +90,9 @@ export default async function DashboardPage({
         <StatusFilter />
       </div>
 
-      <BrandList brands={brands} />
+      <BrandList brands={activeBrands} />
+
+      <InactiveBrands brands={inactiveBrands} />
     </PageContainer>
   );
 }
