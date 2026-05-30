@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { unstable_noStore as noStore } from "next/cache";
-import { ChevronDown, Folder, Video, FileText, ExternalLink, Palette } from "lucide-react";
+import { ChevronDown, Folder, ExternalLink, Palette } from "lucide-react";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { isEmailAllowed } from "@/lib/auth/domain";
@@ -166,8 +166,6 @@ export default async function SharePage({ params }: { params: { token: string } 
       {/* RESOURCES — quick-access cards for editors / freelancers */}
       <ResourcesStrip
         dropbox={b.dropbox_folder_url}
-        videoAssets={b.video_assets_folder_url}
-        canvaKit={b.canva_brand_kit_url}
         clientFolder={b.client_asset_folder_url}
       />
 
@@ -388,13 +386,9 @@ function Meta({
 
 function ResourcesStrip({
   dropbox,
-  videoAssets,
-  canvaKit,
   clientFolder,
 }: {
   dropbox: string | null;
-  videoAssets: string | null;
-  canvaKit: string | null;
   clientFolder: string | null;
 }) {
   const items: Array<{ label: string; sub: string; href: string; Icon: typeof Folder }> = [];
@@ -402,25 +396,9 @@ function ResourcesStrip({
   if (dropbox) {
     items.push({
       label: "Brand Asset Library",
-      sub: "Parent Dropbox folder — logos, photos, source files",
+      sub: "Parent Dropbox folder — logos, photos, video assets",
       href: dropbox,
       Icon: Folder,
-    });
-  }
-  if (videoAssets) {
-    items.push({
-      label: "Video Assets",
-      sub: "Intros, outros, lower thirds — Dropbox",
-      href: videoAssets,
-      Icon: Video,
-    });
-  }
-  if (canvaKit) {
-    items.push({
-      label: "Brand Guideline (Canva)",
-      sub: "Original Canva brand kit",
-      href: canvaKit,
-      Icon: FileText,
     });
   }
   if (clientFolder && clientFolder !== dropbox) {

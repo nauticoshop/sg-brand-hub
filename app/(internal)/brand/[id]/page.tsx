@@ -153,8 +153,6 @@ export default async function BrandDetailPage({ params }: { params: { id: string
               <FieldGrid>
                 <PdfLinkField brand={b} className="md:col-span-2" />
                 <EditableField label="Parent Dropbox folder" field="dropbox_folder_url" type="url" initialValue={b.dropbox_folder_url ?? ""} brandId={b.id} onSave={updateBrand} placeholder="https://" />
-                <EditableField label="Video assets folder" field="video_assets_folder_url" type="url" initialValue={b.video_assets_folder_url ?? ""} brandId={b.id} onSave={updateBrand} placeholder="https://" />
-                <EditableField label="Canva brand kit" field="canva_brand_kit_url" type="url" initialValue={b.canva_brand_kit_url ?? ""} brandId={b.id} onSave={updateBrand} placeholder="https://" />
                 <EditableField label="Monday client board" field="client_monday_board_url" type="url" initialValue={b.client_monday_board_url ?? ""} brandId={b.id} onSave={updateBrand} placeholder="https://" />
               </FieldGrid>
             </FormSection>
