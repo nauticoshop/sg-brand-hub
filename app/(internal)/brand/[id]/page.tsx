@@ -70,9 +70,21 @@ export default async function BrandDetailPage({ params }: { params: { id: string
       </div>
 
       <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
-        <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">{b.business_name}</h1>
-          <StatusEditor brandId={b.id} status={b.status} />
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">{b.business_name}</h1>
+            <StatusEditor brandId={b.id} status={b.status} />
+          </div>
+          {b.source_deal_url && (
+            <a
+              href={b.source_deal_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
+            >
+              🤝 From Monday deal — open deal record →
+            </a>
+          )}
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <ShareLinkButton shareToken={b.share_token} />

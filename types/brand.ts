@@ -99,6 +99,9 @@ export type Brand = {
   client_monday_board_url: string | null;
   monday_intake_item_id: string | null;
   monday_all_projects_item_id: string | null;
+  /** Monday deal item that produced this brand draft (Closed Won webhook). */
+  source_deal_id: string | null;
+  source_deal_url: string | null;
   dropbox_folder_url: string | null;
   video_assets_folder_url: string | null;
   client_asset_folder_url: string | null;
