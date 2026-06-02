@@ -14,6 +14,7 @@
 
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import {
+  CONTENT_SERVICE,
   fetchDealSnapshot,
   mapDealTypeToEngagement,
   type DealSnapshot,
@@ -159,7 +160,7 @@ export async function processClosedWonDeal(itemId: string): Promise<ClosedWonRes
   // If the deal had no Service Type tagged (column missing, or empty), fall
   // back to a single "Content" project so the AM at least has something to
   // open. They can change it from the brief.
-  const services: ServiceType[] = deal.services.length > 0 ? deal.services : ["Content"];
+  const services: ServiceType[] = deal.services.length > 0 ? deal.services : [CONTENT_SERVICE];
 
   const projects: ProjectOutcome[] = [];
   const year = inferYear(deal.closeDate);
@@ -255,7 +256,7 @@ async function createProjectForService(args: {
   let dropboxProjectFolderUrl: string | null = null;
   let briefId: string | null = null;
 
-  if (service === "Content") {
+  if (service === CONTENT_SERVICE) {
     // Project Dropbox folder
     if (
       process.env.DROPBOX_REFRESH_TOKEN &&

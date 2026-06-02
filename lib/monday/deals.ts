@@ -31,14 +31,13 @@ export const CONTACT_COLUMNS = {
   company: "text",
 } as const;
 
-export type ServiceType = "Content" | "Social" | "Website" | "Brand Strategy";
-
-export const KNOWN_SERVICE_TYPES: ServiceType[] = [
-  "Content",
-  "Social",
-  "Website",
-  "Brand Strategy",
-];
+// Service Type column is a multi-select Dropdown on Monday. We accept ANY
+// label rather than a fixed allowlist so adding new service offerings on
+// Monday doesn't require a code change. The only label that triggers extra
+// side-effects (Dropbox project folder + Brief Tool seed) is exactly
+// "Content" — everything else just gets a brand_projects row tracked.
+export type ServiceType = string;
+export const CONTENT_SERVICE = "Content" as const;
 
 export type DealSnapshot = {
   itemId: string;
@@ -162,19 +161,15 @@ export async function fetchDealSnapshot(itemId: string): Promise<DealSnapshot> {
   const billingContactId = relatedIds(DEAL_COLUMNS.billingContact)[0] ?? null;
 
   // Service Type — multi-select Dropdown column whose ID we don't know in
-  // advance. Find it on the board by title match.
+  // advance. Find it on the board by title match; accept any label.
   const services: ServiceType[] = (() => {
     const col = item.board?.columns.find(
       (c) => c.title.trim().toLowerCase() === "service type"
     );
     if (!col) return [];
-    const cell = cv.get(col.id);
-    const raw = cell?.text ?? "";
+    const raw = cv.get(col.id)?.text ?? "";
     if (!raw.trim()) return [];
-    return raw
-      .split(",")
-      .map((s) => s.trim())
-      .filter((s): s is ServiceType => (KNOWN_SERVICE_TYPES as string[]).includes(s));
+    return raw.split(",").map((s) => s.trim()).filter(Boolean);
   })();
 
   // 2) Hydrate contact items if linked
