@@ -10,6 +10,10 @@ const PUBLIC_PATHS = [
   "/api/intake",
   "/share",
   "/api/share",
+  // Inbound webhooks from external systems (Monday, etc.) — auth'd at the
+  // route handler level via shared secret / payload verification, not via
+  // the team Supabase session.
+  "/api/webhooks",
 ];
 
 function isPublicPath(pathname: string): boolean {
