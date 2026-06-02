@@ -102,7 +102,6 @@ async function sendAmHeadCard(input: HandoffInput): Promise<void> {
                       {
                         text: "Open brand draft →",
                         onClick: { openLink: { url: brandUrl } },
-                        style: "primary",
                       },
                       {
                         text: "Open Monday deal",
@@ -154,7 +153,6 @@ async function sendCfoCard(input: HandoffInput): Promise<void> {
                       {
                         text: "Open Monday deal",
                         onClick: { openLink: { url: deal.url } },
-                        style: "primary",
                       },
                     ],
                   },
@@ -198,7 +196,6 @@ async function sendTeamCard(input: HandoffInput): Promise<void> {
                       {
                         text: "Open brand draft →",
                         onClick: { openLink: { url: brandUrl } },
-                        style: "primary",
                       },
                     ],
                   },
