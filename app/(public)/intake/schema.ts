@@ -63,6 +63,11 @@ export const intakeSchema = z.object({
   youtube: z.string().optional(),
   tiktok: z.string().optional(),
   linkedin: z.string().optional(),
+
+  // Deal provenance — populated from a pre-stamped link the BD sends
+  // (e.g. /intake?deal_id=12345 after Closed Won). Optional; missing for
+  // organic intakes that come in through the open form.
+  source_deal_id: z.string().optional(),
 });
 
 export type IntakeInput = z.infer<typeof intakeSchema>;

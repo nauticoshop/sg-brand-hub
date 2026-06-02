@@ -33,11 +33,11 @@ export const CONTACT_COLUMNS = {
 
 // Service Type column is a multi-select Dropdown on Monday. We accept ANY
 // label rather than a fixed allowlist so adding new service offerings on
-// Monday doesn't require a code change. The only label that triggers extra
-// side-effects (Dropbox project folder + Brief Tool seed) is exactly
-// "Content" — everything else just gets a brand_projects row tracked.
+// Monday doesn't require a code change. The labels currently surface in the
+// Closed Won notifications (BD + AM cards, CFO billing card) but no longer
+// drive any auto-creation — projects and briefs flow through the intake form
+// and Brief Tool's Project Request modal.
 export type ServiceType = string;
-export const CONTENT_SERVICE = "Content" as const;
 
 export type DealSnapshot = {
   itemId: string;

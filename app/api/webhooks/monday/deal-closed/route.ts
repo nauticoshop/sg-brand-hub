@@ -5,17 +5,22 @@
 //   • The Stage column flipping to "Closed Won".
 //
 // Dispatches by scenario:
-//   - same_deal     : webhook re-fired, do nothing
-//   - new_client    : brand row + parent Dropbox + per-service projects +
-//                     AM Head + CFO + Team broadcast + Credit DM
-//   - existing_client : per-service projects + existing-AM DM + CFO + Credit DM
+//   - same_deal        : webhook re-fired (already dispatched), do nothing
+//   - new_client       : DM BD with pre-stamped intake link + CFO + credit
+//   - returning_client : DM matched AM with project-request deeplink + CFO + credit
 //
-// All long-running side effects (Dropbox, brief seeding) run in-process before
-// we respond; notifications are awaited so Vercel's function shutdown can't
-// cancel in-flight fetches.
+// No brand records are created here. No briefs are seeded. No Dropbox folders
+// are created. Those happen via:
+//   • Intake form submission (creates brand + Dropbox parent folder)
+//   • Brief Tool Project Request modal (creates brief + Monday All Projects item)
+//
+// The webhook just figures out who should act next and pings them.
 
 import { NextResponse } from "next/server";
-import { processClosedWonDeal } from "@/lib/brands/create-from-deal";
+import {
+  classifyClosedWonDeal,
+  recordClosedWonDispatch,
+} from "@/lib/brands/create-from-deal";
 import { dispatchClosedWonNotifications } from "@/lib/notifications/handoff";
 import { alertError } from "@/lib/notifications/alert";
 
@@ -75,20 +80,36 @@ export async function POST(request: Request) {
   }
 
   try {
-    const result = await processClosedWonDeal(pulseId);
+    const result = await classifyClosedWonDeal(pulseId);
+
+    if (result.kind === "same_deal") {
+      return NextResponse.json({
+        ok: true,
+        kind: "same_deal",
+        note: "already dispatched — no action",
+      });
+    }
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || new URL(request.url).origin;
-    const brandUrl = `${appUrl}/brand/${result.brand.id}`;
+    const briefToolUrl =
+      process.env.NEXT_PUBLIC_BRIEF_TOOL_URL || "https://sg-brief-tool-nu.vercel.app";
 
-    await dispatchClosedWonNotifications({ result, brandUrl });
+    await dispatchClosedWonNotifications({ result, appUrl, briefToolUrl });
+
+    // Record that we dispatched — subsequent webhook firings for the same
+    // deal will short-circuit to same_deal.
+    await recordClosedWonDispatch({
+      monday_deal_id: pulseId,
+      brand_id: result.kind === "returning_client" ? result.brand.id : null,
+      kind: result.kind,
+    });
 
     return NextResponse.json({
       ok: true,
       kind: result.kind,
-      brand_id: result.brand.id,
-      business_name: result.brand.business_name,
-      project_count: result.projects.length,
-      service_types: result.projects.map((p) => p.service_type),
+      deal_name: result.deal.itemName,
+      brand_id: result.kind === "returning_client" ? result.brand.id : null,
+      services: result.deal.services,
     });
   } catch (e) {
     alertError({

@@ -1,59 +1,28 @@
-// Closed Won webhook orchestrator. Given a Monday deal item ID, this:
+// Closed Won classifier. Given a Monday deal item ID this:
 //
-//   1. Pulls the full deal snapshot (incl. multi-select Service Type).
-//   2. Decides the scenario:
-//        - same_deal    — webhook re-fired for an already-processed deal
-//        - existing_client — returning client; brand already exists
-//        - new_client   — brand-new business
-//   3. For new clients: creates the brand row + brand parent Dropbox folder.
-//   4. For each Service Type on the deal, creates one brand_projects row:
-//        - Content: also creates the project Dropbox subfolder + seeds a
-//                   Brief Tool draft.
-//        - Social/Website/Brand Strategy: no folder, no brief, just the row.
-//   5. Returns a structured result for the caller to dispatch notifications.
+//   1. Pulls the full deal snapshot (incl. contact info + services).
+//   2. Decides the scenario by checking closed_won_dispatches (idempotency)
+//      and matching against existing brands:
+//        - same_deal        — webhook already dispatched for this deal
+//        - returning_client — brand exists in Brand Hub
+//        - new_client       — no matching brand
+//   3. Returns a structured result for the caller to dispatch notifications.
+//
+// IMPORTANT: This module no longer creates brand rows, Dropbox folders, or
+// briefs. Brands flow through the public intake form (BD sends the link to
+// the client). Briefs and project tracking flow through Brief Tool's Project
+// Request modal (AM/BD fills it in). The webhook just figures out who to
+// notify and the dispatcher pings them.
 
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
-import {
-  CONTENT_SERVICE,
-  fetchDealSnapshot,
-  mapDealTypeToEngagement,
-  type DealSnapshot,
-  type ServiceType,
-} from "@/lib/monday/deals";
-import { ensureBrandFolderTree, ensureProjectFolderTree } from "@/lib/dropbox/client";
-import {
-  brandFromDealItemName,
-  findExistingBrand,
-  projectFromDealItemName,
-} from "@/lib/brands/name-match";
-import { seedBrief } from "@/lib/brief-tool/seed-brief";
+import { fetchDealSnapshot, type DealSnapshot } from "@/lib/monday/deals";
+import { brandFromDealItemName, findExistingBrand } from "@/lib/brands/name-match";
 import type { Brand } from "@/types/brand";
 
-export type ProjectOutcome = {
-  /** brand_projects.id */
-  id: string;
-  service_type: ServiceType;
-  project_name: string;
-  /** Set only for Content. */
-  dropbox_project_folder_url: string | null;
-  /** Set only for Content. */
-  brief_id: string | null;
-};
-
 export type ClosedWonResult =
-  | { kind: "same_deal"; brand: BrandLite; projects: ProjectOutcome[] }
-  | {
-      kind: "new_client";
-      brand: BrandLite;
-      deal: DealSnapshot;
-      projects: ProjectOutcome[];
-    }
-  | {
-      kind: "existing_client";
-      brand: BrandLite;
-      deal: DealSnapshot;
-      projects: ProjectOutcome[];
-    };
+  | { kind: "same_deal"; deal: DealSnapshot; brand: BrandLite | null }
+  | { kind: "new_client"; deal: DealSnapshot }
+  | { kind: "returning_client"; deal: DealSnapshot; brand: BrandLite };
 
 export type BrandLite = Pick<
   Brand,
@@ -67,47 +36,41 @@ export type BrandLite = Pick<
   | "source_deal_url"
 >;
 
-/** Entry point called by the webhook handler. */
-export async function processClosedWonDeal(itemId: string): Promise<ClosedWonResult> {
+const BRAND_COLUMNS =
+  "id, business_name, submitter_name, submitter_email, submitter_phone, account_manager, dropbox_folder_url, source_deal_url";
+
+/** Entry point called by the webhook handler. Read-only — no side effects. */
+export async function classifyClosedWonDeal(itemId: string): Promise<ClosedWonResult> {
   const deal = await fetchDealSnapshot(itemId);
   const admin = createSupabaseAdminClient();
 
-  // ── Scenario detection ──────────────────────────────────────────────────
+  // ── Idempotency ─────────────────────────────────────────────────────────
+  // Have we already dispatched for this deal? If so, return same_deal so the
+  // webhook handler short-circuits.
+  const { data: dispatched } = await admin
+    .from("closed_won_dispatches")
+    .select("brand_id")
+    .eq("monday_deal_id", itemId)
+    .maybeSingle();
 
-  // Same deal re-fired? If we already have brand_projects rows tagged with
-  // this monday_deal_id, the webhook is replaying — return early with no
-  // side effects.
-  const { data: existingProjectRows } = await admin
-    .from("brand_projects")
-    .select("id, brand_id, service_type, project_name, dropbox_project_folder_url, brief_id")
-    .eq("monday_deal_id", itemId);
-
-  if (existingProjectRows && existingProjectRows.length > 0) {
-    const brandId = existingProjectRows[0].brand_id as string;
-    const { data: brand } = await admin
-      .from("brands")
-      .select(
-        "id, business_name, submitter_name, submitter_email, submitter_phone, account_manager, dropbox_folder_url, source_deal_url"
-      )
-      .eq("id", brandId)
-      .single();
-    return {
-      kind: "same_deal",
-      brand: (brand ?? { id: brandId }) as BrandLite,
-      projects: existingProjectRows.map((p) => ({
-        id: p.id as string,
-        service_type: p.service_type as ServiceType,
-        project_name: p.project_name as string,
-        dropbox_project_folder_url: (p.dropbox_project_folder_url as string) ?? null,
-        brief_id: (p.brief_id as string) ?? null,
-      })),
-    };
+  if (dispatched) {
+    let brand: BrandLite | null = null;
+    if (dispatched.brand_id) {
+      const { data } = await admin
+        .from("brands")
+        .select(BRAND_COLUMNS)
+        .eq("id", dispatched.brand_id as string)
+        .maybeSingle();
+      brand = (data as BrandLite | null) ?? null;
+    }
+    return { kind: "same_deal", deal, brand };
   }
 
-  // Try to find an existing brand (returning client).
+  // ── New vs returning ────────────────────────────────────────────────────
   const { data: allBrands } = await admin
     .from("brands")
     .select("id, business_name, website, submitter_email, updated_at");
+
   const matched = findExistingBrand(
     deal.itemName,
     deal.primaryContact?.email ?? null,
@@ -120,213 +83,69 @@ export async function processClosedWonDeal(itemId: string): Promise<ClosedWonRes
     }>
   );
 
-  // ── New-client path: create the brand record + parent Dropbox folder ────
-  let brand: BrandLite;
-  let isNewClient = false;
   if (matched) {
     const { data: full } = await admin
       .from("brands")
-      .select(
-        "id, business_name, submitter_name, submitter_email, submitter_phone, account_manager, dropbox_folder_url, source_deal_url"
-      )
+      .select(BRAND_COLUMNS)
       .eq("id", matched.id)
       .single();
-    brand = full as BrandLite;
-  } else {
-    brand = await createNewBrandFromDeal(deal);
-    isNewClient = true;
+    return { kind: "returning_client", deal, brand: full as BrandLite };
   }
 
-  // Always ensure the brand parent Dropbox folder exists. For new clients
-  // this also creates Assets/Logo, Assets/Video Assets, current year folder.
-  // For returning clients it's typically a no-op (folder already there).
-  if (
-    process.env.DROPBOX_REFRESH_TOKEN &&
-    process.env.DROPBOX_APP_KEY &&
-    process.env.DROPBOX_APP_SECRET
-  ) {
-    try {
-      const tree = await ensureBrandFolderTree(brand.business_name);
-      if (!brand.dropbox_folder_url) {
-        await admin.from("brands").update({ dropbox_folder_url: tree.shareUrl }).eq("id", brand.id);
-        brand = { ...brand, dropbox_folder_url: tree.shareUrl };
-      }
-    } catch (e) {
-      console.error(`[closed-won] brand Dropbox ensure failed: ${(e as Error).message}`);
-    }
-  }
-
-  // ── Per-service project rows ────────────────────────────────────────────
-  // If the deal had no Service Type tagged (column missing, or empty), fall
-  // back to a single "Content" project so the AM at least has something to
-  // open. They can change it from the brief.
-  const services: ServiceType[] = deal.services.length > 0 ? deal.services : [CONTENT_SERVICE];
-
-  const projects: ProjectOutcome[] = [];
-  const year = inferYear(deal.closeDate);
-  const projectBase = projectFromDealItemName(deal.itemName);
-
-  for (const service of services) {
-    const projectName = services.length > 1 ? `${projectBase} - ${service}` : projectBase;
-    const outcome = await createProjectForService({
-      brand,
-      deal,
-      service,
-      projectName,
-      year,
-    });
-    projects.push(outcome);
-  }
-
-  await admin.from("brand_activity_log").insert({
-    brand_id: brand.id,
-    event_type: isNewClient ? "deal_won_new_client" : "deal_won_returning_client",
-    metadata: {
-      monday_deal_id: deal.itemId,
-      monday_deal_url: deal.url,
-      deal_name: deal.itemName,
-      deal_value: deal.dealValue,
-      deal_type: deal.dealType,
-      services,
-      project_ids: projects.map((p) => p.id),
-    },
-  });
-
-  return {
-    kind: isNewClient ? "new_client" : "existing_client",
-    brand,
-    deal,
-    projects,
-  };
+  return { kind: "new_client", deal };
 }
 
-async function createNewBrandFromDeal(deal: DealSnapshot): Promise<BrandLite> {
+/**
+ * Record that we've dispatched notifications for this deal. Called by the
+ * webhook handler after dispatchClosedWonNotifications resolves. Subsequent
+ * webhook firings for the same deal will short-circuit to same_deal.
+ *
+ * Safe on conflict — uses upsert so a race between two concurrent invocations
+ * just collapses to a single row.
+ */
+export async function recordClosedWonDispatch(args: {
+  monday_deal_id: string;
+  brand_id: string | null;
+  kind: "new_client" | "returning_client";
+}): Promise<void> {
   const admin = createSupabaseAdminClient();
-  const businessName =
+  const { error } = await admin
+    .from("closed_won_dispatches")
+    .upsert(
+      {
+        monday_deal_id: args.monday_deal_id,
+        brand_id: args.brand_id,
+        kind: args.kind,
+      },
+      { onConflict: "monday_deal_id" }
+    );
+  if (error) {
+    console.error(`[closed-won] dispatch record failed: ${error.message}`);
+  }
+}
+
+/**
+ * Best-effort name extraction for a brand we don't have yet (new_client).
+ * Used in notification copy.
+ */
+export function newClientBusinessName(deal: DealSnapshot): string {
+  return (
     brandFromDealItemName(deal.itemName) ||
     deal.primaryContact?.company ||
     deal.itemName ||
-    "Untitled brand";
-
-  const note = [
-    `🤝 Auto-created from Monday deal "${deal.itemName}".`,
-    deal.dealValue != null ? `Deal value: $${deal.dealValue.toLocaleString()}.` : null,
-    deal.dealType ? `Deal type: ${deal.dealType}.` : null,
-    deal.closeDate ? `Closed: ${deal.closeDate}.` : null,
-    deal.bd ? `BD: ${deal.bd}.` : null,
-    deal.dealIdentifiers.length > 0 ? `Credit: ${deal.dealIdentifiers.join(", ")}.` : null,
-    `Monday deal: ${deal.url}`,
-  ]
-    .filter(Boolean)
-    .join("\n");
-
-  const { data, error } = await admin
-    .from("brands")
-    .insert({
-      business_name: businessName,
-      submitter_name: deal.primaryContact?.name ?? null,
-      submitter_email: deal.primaryContact?.email ?? null,
-      submitter_phone: deal.primaryContact?.phone ?? null,
-      engagement_type: mapDealTypeToEngagement(deal.dealType),
-      internal_notes: note,
-      source_deal_id: deal.itemId,
-      source_deal_url: deal.url,
-      status: "submitted" as const,
-    })
-    .select(
-      "id, business_name, submitter_name, submitter_email, submitter_phone, account_manager, dropbox_folder_url, source_deal_url"
-    )
-    .single();
-  if (error || !data) throw new Error(`Brand insert failed: ${error?.message ?? "no row"}`);
-  return data as BrandLite;
-}
-
-async function createProjectForService(args: {
-  brand: BrandLite;
-  deal: DealSnapshot;
-  service: ServiceType;
-  projectName: string;
-  year: number;
-}): Promise<ProjectOutcome> {
-  const { brand, deal, service, projectName, year } = args;
-  const admin = createSupabaseAdminClient();
-
-  // Per (deal × service) idempotency — the unique index on the table guards
-  // against double inserts on webhook retries.
-  let dropboxProjectFolderUrl: string | null = null;
-  let briefId: string | null = null;
-
-  if (service === CONTENT_SERVICE) {
-    // Project Dropbox folder
-    if (
-      process.env.DROPBOX_REFRESH_TOKEN &&
-      process.env.DROPBOX_APP_KEY &&
-      process.env.DROPBOX_APP_SECRET
-    ) {
-      try {
-        const tree = await ensureProjectFolderTree(brand.business_name, year, projectName);
-        dropboxProjectFolderUrl = tree.shareUrl;
-      } catch (e) {
-        console.error(`[closed-won] project Dropbox failed: ${(e as Error).message}`);
-      }
-    }
-    // Brief seed
-    try {
-      briefId = await seedBrief({
-        brand,
-        projectName,
-        deal,
-      });
-    } catch (e) {
-      console.error(`[closed-won] brief seed failed: ${(e as Error).message}`);
-    }
-  }
-
-  const { data, error } = await admin
-    .from("brand_projects")
-    .insert({
-      brand_id: brand.id,
-      monday_deal_id: deal.itemId,
-      service_type: service,
-      project_name: projectName,
-      year,
-      deal_value: deal.dealValue,
-      deal_type: deal.dealType,
-      dropbox_project_folder_url: dropboxProjectFolderUrl,
-      brief_id: briefId,
-    })
-    .select("id")
-    .single();
-  if (error || !data) throw new Error(`brand_projects insert failed: ${error?.message ?? "no row"}`);
-
-  return {
-    id: data.id as string,
-    service_type: service,
-    project_name: projectName,
-    dropbox_project_folder_url: dropboxProjectFolderUrl,
-    brief_id: briefId,
-  };
-}
-
-/** Derive the year folder from the deal's close date; fall back to current year. */
-function inferYear(closeDate: string | null): number {
-  if (closeDate) {
-    const y = Number(closeDate.slice(0, 4));
-    if (Number.isFinite(y) && y > 2020 && y < 2100) return y;
-  }
-  return new Date().getFullYear();
+    "New client"
+  );
 }
 
 /**
  * Suggest a first billing date for a retainer based on the rule:
  * "next 1st or 15th that's at least 5 business days after the close date."
- * Useful for the CFO card on retainer closes.
+ * Used on the CFO card.
  */
 export function suggestFirstBillingDate(closeDate: string | null): string | null {
   if (!closeDate) return null;
   const close = new Date(closeDate + "T00:00:00Z");
   if (Number.isNaN(close.getTime())) return null;
-  // Add 5 business days to the close date
   let d = new Date(close);
   let added = 0;
   while (added < 5) {
@@ -334,7 +153,6 @@ export function suggestFirstBillingDate(closeDate: string | null): string | null
     const dow = d.getUTCDay();
     if (dow !== 0 && dow !== 6) added += 1;
   }
-  // Now advance to the next 1 or 15 (whichever comes first)
   while (d.getUTCDate() !== 1 && d.getUTCDate() !== 15) {
     d.setUTCDate(d.getUTCDate() + 1);
   }

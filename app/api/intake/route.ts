@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { intakeSchema } from "@/app/(public)/intake/schema";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { notifyIntakeSubmission } from "@/lib/notifications/intake";
+import { notifyAmHeadAssignmentNeeded } from "@/lib/notifications/handoff";
+import { fetchDealSnapshot } from "@/lib/monday/deals";
+import type { BrandLite } from "@/lib/brands/create-from-deal";
 import { alertError } from "@/lib/notifications/alert";
 
 export async function POST(request: Request) {
@@ -42,6 +45,14 @@ export async function POST(request: Request) {
     use_case: f.use_case?.trim() || (f.role === "primary" ? "Headlines, titles" : "Body copy"),
   }));
 
+  // If the intake came from a BD's pre-stamped Closed Won link
+  // (/intake?deal_id=…), wire it back to the Monday deal so the brand record
+  // links to the deal in the UI and downstream tooling can reconcile.
+  const sourceDealId = v.source_deal_id?.trim() || null;
+  const sourceDealUrl = sourceDealId
+    ? `https://nauticalnetwork.monday.com/pulses/${sourceDealId}`
+    : null;
+
   const supabase = createSupabaseAdminClient();
   const { data, error } = await supabase
     .from("brands")
@@ -74,6 +85,9 @@ export async function POST(request: Request) {
       tiktok: v.tiktok || null,
       linkedin: v.linkedin || null,
 
+      source_deal_id: sourceDealId,
+      source_deal_url: sourceDealUrl,
+
       colors,
       fonts,
       status: "submitted",
@@ -94,7 +108,11 @@ export async function POST(request: Request) {
   await supabase.from("brand_activity_log").insert({
     brand_id: data.id,
     event_type: "submitted",
-    metadata: { source: "public_intake", submitter: v.submitter_email },
+    metadata: {
+      source: sourceDealId ? "closed_won_intake_link" : "public_intake",
+      submitter: v.submitter_email,
+      ...(sourceDealId ? { monday_deal_id: sourceDealId } : {}),
+    },
   });
 
   // Notify the team. We DON'T await this — the user's form submit shouldn't
@@ -110,6 +128,37 @@ export async function POST(request: Request) {
     hasColors: colors.length > 0,
     appUrl,
   });
+
+  // If the intake came from a Closed Won deal-stamped link, fire a DM to
+  // Justin (AM Head) so he can assign an AM. Fetch the deal snapshot fresh
+  // — we need it to include deal context in the card. We DO await this so
+  // Vercel doesn't kill the fetch on serverless shutdown.
+  if (sourceDealId) {
+    try {
+      const deal = await fetchDealSnapshot(sourceDealId);
+      const brandLite: BrandLite = {
+        id: data.id as string,
+        business_name: v.business_name,
+        submitter_name: v.submitter_name,
+        submitter_email: v.submitter_email,
+        submitter_phone: v.submitter_phone || null,
+        account_manager: null,
+        dropbox_folder_url: null,
+        source_deal_url: sourceDealUrl,
+      };
+      await notifyAmHeadAssignmentNeeded({ brand: brandLite, deal, appUrl });
+    } catch (e) {
+      // Don't fail the intake response if the notification flow has issues —
+      // the brand row is safely persisted and the team can still see it on
+      // the dashboard via notifyIntakeSubmission above.
+      alertError({
+        flow: "intake.am_head_dm",
+        brandName: v.business_name,
+        error: e,
+        extras: { source_deal_id: sourceDealId },
+      });
+    }
+  }
 
   return NextResponse.json({ id: data.id });
 }

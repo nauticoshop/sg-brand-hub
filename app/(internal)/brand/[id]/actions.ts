@@ -21,6 +21,9 @@ import {
 import { ensureBrandFolderTree } from "@/lib/dropbox/client";
 import { generateAndSaveBrandPdf } from "@/lib/pdf/generate";
 import { alertError } from "@/lib/notifications/alert";
+import { notifyAmAssigned } from "@/lib/notifications/handoff";
+import { fetchDealSnapshot } from "@/lib/monday/deals";
+import type { BrandLite } from "@/lib/brands/create-from-deal";
 
 // Monday board base URL — used to derive client board URL from item IDs.
 const MONDAY_BOARD_BASE_URL = "https://nauticalnetwork.monday.com";
@@ -72,20 +75,23 @@ type BrandPatch = Partial<{
 export async function updateBrand(id: string, patch: BrandPatch) {
   const supabase = createSupabaseServerClient();
 
+  // Snapshot prior state so we can:
+  //   (a) auto-flip status to in_review on first edit, AND
+  //   (b) detect the account_manager null→set transition on deal-sourced
+  //       brands, which triggers an AM-assigned DM to the newly assigned AM.
+  const { data: priorRow } = await supabase
+    .from("brands")
+    .select("status, account_manager, source_deal_id, business_name, submitter_name, submitter_email, submitter_phone, dropbox_folder_url, source_deal_url")
+    .eq("id", id)
+    .single();
+
   // Auto-flip: if this edit didn't include a status change, and the brand is
   // still sitting in `submitted` or `draft`, the AM is actively working on
   // it now — bump to `in_review`. One-shot transition, happens silently on
   // the first edit after a public form submission.
   let effectivePatch: BrandPatch = patch;
-  if (!patch.status) {
-    const { data: current } = await supabase
-      .from("brands")
-      .select("status")
-      .eq("id", id)
-      .single();
-    if (current?.status === "submitted" || current?.status === "draft") {
-      effectivePatch = { ...patch, status: "in_review" };
-    }
+  if (!patch.status && (priorRow?.status === "submitted" || priorRow?.status === "draft")) {
+    effectivePatch = { ...patch, status: "in_review" };
   }
 
   const { error } = await supabase.from("brands").update(effectivePatch).eq("id", id);
@@ -96,6 +102,43 @@ export async function updateBrand(id: string, patch: BrandPatch) {
     event_type: "edited",
     metadata: { fields: Object.keys(patch) },
   });
+
+  // AM-assigned DM:
+  //   • Brand has a source_deal_id (i.e. came from Closed Won)
+  //   • Patch is setting account_manager from empty → non-empty
+  //   • Fetch the live deal snapshot so the DM carries full context
+  // We await this so the serverless function doesn't get killed mid-fetch.
+  const priorAm = priorRow?.account_manager?.trim() ?? "";
+  const newAm = patch.account_manager?.trim() ?? "";
+  const isFirstAssignment = !priorAm && !!newAm;
+  if (isFirstAssignment && priorRow?.source_deal_id) {
+    try {
+      const deal = await fetchDealSnapshot(priorRow.source_deal_id);
+      const brandLite: BrandLite = {
+        id,
+        business_name: priorRow.business_name as string,
+        submitter_name: (priorRow.submitter_name as string | null) ?? null,
+        submitter_email: (priorRow.submitter_email as string | null) ?? null,
+        submitter_phone: (priorRow.submitter_phone as string | null) ?? null,
+        account_manager: newAm,
+        dropbox_folder_url: (priorRow.dropbox_folder_url as string | null) ?? null,
+        source_deal_url: (priorRow.source_deal_url as string | null) ?? null,
+      };
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "";
+      const briefToolUrl =
+        process.env.NEXT_PUBLIC_BRIEF_TOOL_URL ?? "https://sg-brief-tool-nu.vercel.app";
+      await notifyAmAssigned({ brand: brandLite, deal, appUrl, briefToolUrl });
+    } catch (e) {
+      // Don't fail the brand save — the AM was assigned successfully, the
+      // DM is just a nice-to-have. Log loudly so we can debug.
+      alertError({
+        flow: "brand.am_assigned_dm",
+        brandName: priorRow.business_name as string,
+        error: e,
+        extras: { brand_id: id, source_deal_id: priorRow.source_deal_id, assigned_am: newAm },
+      });
+    }
+  }
 
   revalidatePath(`/brand/${id}`);
   // Dashboard's status pill + last-edited timestamp need to update on every

@@ -42,7 +42,19 @@ function FieldHelper({ children }: { children: React.ReactNode }) {
   return <p className="-mt-1 text-xs leading-relaxed text-muted-foreground">{children}</p>;
 }
 
-export function IntakeForm() {
+export type IntakePrefill = {
+  business_name?: string;
+  submitter_name?: string;
+  submitter_email?: string;
+};
+
+export function IntakeForm({
+  dealId = null,
+  prefill = {},
+}: {
+  dealId?: string | null;
+  prefill?: IntakePrefill;
+} = {}) {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [vertical, setVertical] = useState("");
@@ -67,6 +79,11 @@ export function IntakeForm() {
     formState: { errors },
   } = useForm<IntakeInput>({
     resolver: zodResolver(intakeSchema),
+    defaultValues: {
+      business_name: prefill.business_name ?? "",
+      submitter_name: prefill.submitter_name ?? "",
+      submitter_email: prefill.submitter_email ?? "",
+    },
   });
 
   async function uploadFiles(brandId: string, files: StagedLogo[], kind: "logo" | "reference") {
@@ -113,6 +130,9 @@ export function IntakeForm() {
       vertical_other: vertical === "other" ? values.vertical_other : undefined,
       colors: cleanedColors,
       fonts: cleanedFonts,
+      // If the BD sent a pre-stamped link with ?deal_id=, carry it through so
+      // the server can tie the resulting brand row to the Monday deal.
+      source_deal_id: dealId ?? undefined,
       // Include the honeypot value so the server can detect bot submissions.
       // Real human users never see / fill the hidden field.
       website_alt: honeypotRef.current?.value ?? "",

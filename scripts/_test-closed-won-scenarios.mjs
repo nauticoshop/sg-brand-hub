@@ -1,10 +1,15 @@
-// Comprehensive end-to-end test for the rebuilt Closed Won webhook.
-// Runs 3 scenarios sequentially, reports what fired for each, cleans up.
+// End-to-end test for the simplified Closed Won webhook.
 //
-//   1. NEW client, single service (Content)
-//   2. RETURNING client (matches by name to test 1's brand), single service
-//   3. NEW client, MULTI-service (Content + Social) — skipped if the Service
-//      Type column hasn't been created on Monday yet
+// New flow (no auto brand creation, no auto brief seeding):
+//   - new_client       → DM BD with intake link + CFO + credit
+//   - returning_client → DM AM with project request link + CFO + credit
+//   - same_deal        → idempotent no-op
+//
+// Scenarios:
+//   1. NEW client, single Content service  → kind=new_client, NO brand row created
+//   2. RETURNING client (manually pre-seeded brand) → kind=returning_client, brand matched
+//   3. NEW client, multi-service (Content + Social Media) → kind=new_client (skipped if column missing)
+//   4. Webhook idempotency → kind=same_deal on re-fire
 //
 // Run: MONDAY_BOARD_ID_DEALS=9889817939 node scripts/_test-closed-won-scenarios.mjs
 
@@ -37,6 +42,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const createdMondayItems = [];
 const createdBrandIds = new Set();
+const dispatchedDealIds = new Set();
 
 async function fireWebhook(pulseId) {
   const payload = {
@@ -83,29 +89,39 @@ async function findServiceTypeColumn() {
   );
 }
 
-async function waitForProjects(dealId, expectedCount, timeoutMs = 5000) {
-  const start = Date.now();
-  while (Date.now() - start < timeoutMs) {
-    const { data } = await supabase
-      .from("brand_projects")
-      .select("id, brand_id, service_type, project_name, dropbox_project_folder_url, brief_id")
-      .eq("monday_deal_id", dealId);
-    if (data && data.length >= expectedCount) return data;
-    await sleep(400);
-  }
-  const { data } = await supabase
-    .from("brand_projects")
-    .select("id, brand_id, service_type, project_name, dropbox_project_folder_url, brief_id")
-    .eq("monday_deal_id", dealId);
+async function preSeedBrand({ businessName, accountManager = null }) {
+  const { data, error } = await supabase
+    .from("brands")
+    .insert({
+      business_name: businessName,
+      submitter_name: "Test BD",
+      submitter_email: "bd-test@surroundingsgroup.com",
+      account_manager: accountManager,
+      status: "approved",
+      engagement_type: "retainer",
+    })
+    .select("id, business_name, account_manager")
+    .single();
+  if (error) throw new Error(`pre-seed brand failed: ${error.message}`);
+  createdBrandIds.add(data.id);
+  return data;
+}
+
+async function countBrandsByName(businessName) {
+  const { data, error } = await supabase
+    .from("brands")
+    .select("id, business_name")
+    .eq("business_name", businessName);
+  if (error) throw new Error(error.message);
   return data ?? [];
 }
 
-async function getBrand(id) {
+async function getDispatch(dealId) {
   const { data } = await supabase
-    .from("brands")
-    .select("id, business_name, status, engagement_type, source_deal_id, dropbox_folder_url, account_manager")
-    .eq("id", id)
-    .single();
+    .from("closed_won_dispatches")
+    .select("monday_deal_id, brand_id, kind, dispatched_at")
+    .eq("monday_deal_id", dealId)
+    .maybeSingle();
   return data;
 }
 
@@ -116,6 +132,10 @@ function report(label, ok, detail) {
 
 async function teardown() {
   console.log("\n[cleanup] Removing test artifacts…");
+  for (const dealId of dispatchedDealIds) {
+    const { error } = await supabase.from("closed_won_dispatches").delete().eq("monday_deal_id", dealId);
+    console.log(`  dispatch ${dealId}: ${error ? "✗ " + error.message : "✓"}`);
+  }
   for (const brandId of createdBrandIds) {
     const { error } = await supabase.from("brands").delete().eq("id", brandId);
     console.log(`  brand ${brandId.slice(0, 8)}: ${error ? "✗ " + error.message : "✓"}`);
@@ -133,25 +153,24 @@ async function teardown() {
 // ────────────────────────────────────────────────────────────────────────────
 
 console.log("\n╔══════════════════════════════════════════════════════════════════════╗");
-console.log("║  S6 PR1 — Closed Won webhook · scenario tests                        ║");
+console.log("║  Closed Won webhook · simplified flow scenario tests                 ║");
 console.log("╚══════════════════════════════════════════════════════════════════════╝");
 
 try {
-  // Check Service Type column existence
   const serviceCol = await findServiceTypeColumn();
-  if (serviceCol) {
-    console.log(`\n[setup] Service Type column found: ${serviceCol.id} (type: ${serviceCol.type})`);
-  } else {
-    console.log(`\n[setup] Service Type column NOT found — multi-service test will be skipped.`);
-  }
+  console.log(
+    serviceCol
+      ? `\n[setup] Service Type column found: ${serviceCol.id} (type: ${serviceCol.type})`
+      : `\n[setup] Service Type column NOT found — multi-service test will be skipped.`
+  );
 
   const ts = new Date().toISOString().slice(0, 19);
 
   // ──────────────────────────────────────────────────────────────────
-  // SCENARIO 1: NEW client, single service (Content — by default fallback)
+  // SCENARIO 1: NEW client — no brand should be created, just notifications
   // ──────────────────────────────────────────────────────────────────
   console.log("\n┌─────────────────────────────────────────────────────────────────────┐");
-  console.log("│ TEST 1 — NEW client, Content service (single)                       │");
+  console.log("│ TEST 1 — NEW client (BD intake DM, no brand auto-create)            │");
   console.log("└─────────────────────────────────────────────────────────────────────┘");
 
   const brandName1 = `TestBrand-${ts}-Alpha`;
@@ -162,62 +181,60 @@ try {
 
   console.log("\n  Firing webhook…");
   const r1 = await fireWebhook(deal1);
-  console.log(`    Status: ${r1.status}  kind: ${r1.body.kind}  brand: ${r1.body.business_name}`);
+  dispatchedDealIds.add(deal1);
+  console.log(`    Status: ${r1.status}  kind: ${r1.body.kind}  deal: ${r1.body.deal_name}`);
 
-  if (r1.body.brand_id) createdBrandIds.add(r1.body.brand_id);
-
-  const projects1 = await waitForProjects(deal1, 1);
-  const brand1 = projects1[0] ? await getBrand(projects1[0].brand_id) : null;
+  const brandsByName1 = await countBrandsByName(brandName1);
+  const dispatch1 = await getDispatch(deal1);
 
   console.log("\n  Assertions:");
   report("Returned kind === 'new_client'", r1.body.kind === "new_client", `got: ${r1.body.kind}`);
-  report("Brand was created in DB", !!brand1, brand1 ? brand1.business_name : "missing");
-  report("Brand status is 'submitted'", brand1?.status === "submitted", brand1?.status);
-  report("engagement_type = 'retainer'", brand1?.engagement_type === "retainer", brand1?.engagement_type);
-  report("source_deal_id stamped", brand1?.source_deal_id === deal1, brand1?.source_deal_id);
-  report("Brand parent Dropbox folder URL set", !!brand1?.dropbox_folder_url, brand1?.dropbox_folder_url?.slice(0, 60));
-  report("1 brand_projects row created", projects1.length === 1, `count: ${projects1.length}`);
-  report("Project service_type = 'Content' (fallback)", projects1[0]?.service_type === "Content", projects1[0]?.service_type);
-  report("Project Dropbox subfolder created", !!projects1[0]?.dropbox_project_folder_url, projects1[0]?.dropbox_project_folder_url?.slice(0, 60));
-  report("Brief seeded for Content project", !!projects1[0]?.brief_id, projects1[0]?.brief_id);
+  report("brand_id is null in response", r1.body.brand_id === null, `got: ${r1.body.brand_id}`);
+  report("NO brand row was created in DB", brandsByName1.length === 0, `count: ${brandsByName1.length}`);
+  report("closed_won_dispatches row written", !!dispatch1, dispatch1?.kind);
+  report("Dispatch row kind = 'new_client'", dispatch1?.kind === "new_client", dispatch1?.kind);
+  report("Dispatch row brand_id is null", dispatch1?.brand_id === null, dispatch1?.brand_id);
 
   // ──────────────────────────────────────────────────────────────────
-  // SCENARIO 2: RETURNING client — match brand1 by name
+  // SCENARIO 2: RETURNING client — pre-seed a brand, then fire deal
   // ──────────────────────────────────────────────────────────────────
   console.log("\n┌─────────────────────────────────────────────────────────────────────┐");
-  console.log("│ TEST 2 — RETURNING client (matches Test 1's brand by name)          │");
+  console.log("│ TEST 2 — RETURNING client (matches pre-seeded brand)                │");
   console.log("└─────────────────────────────────────────────────────────────────────┘");
 
-  const dealName2 = `${brandName1} | Second Project Same Client (SAFE TO DELETE)`;
+  const brandName2 = `TestBrand-${ts}-Bravo`;
+  console.log(`\n  Pre-seeding brand: ${brandName2} (AM: Justin Tarr)`);
+  const seededBrand = await preSeedBrand({ businessName: brandName2, accountManager: "Justin Tarr" });
+  console.log(`  Brand id: ${seededBrand.id}`);
+
+  const dealName2 = `${brandName2} | Add-on Project (SAFE TO DELETE)`;
   console.log(`\n  Creating deal: ${dealName2}`);
   const deal2 = await createDeal({ name: dealName2, dealType: "One Time", value: 7500 });
-  console.log(`  Monday deal: ${deal2}`);
 
   console.log("\n  Firing webhook…");
   const r2 = await fireWebhook(deal2);
-  console.log(`    Status: ${r2.status}  kind: ${r2.body.kind}  brand: ${r2.body.business_name}`);
+  dispatchedDealIds.add(deal2);
+  console.log(`    Status: ${r2.status}  kind: ${r2.body.kind}  brand_id: ${r2.body.brand_id}`);
 
-  const projects2 = await waitForProjects(deal2, 1);
-  const allProjectsForBrand1 = brand1 ? await supabase.from("brand_projects").select("id").eq("brand_id", brand1.id) : { data: [] };
+  const brandsByName2 = await countBrandsByName(brandName2);
+  const dispatch2 = await getDispatch(deal2);
 
   console.log("\n  Assertions:");
-  report("Returned kind === 'existing_client'", r2.body.kind === "existing_client", `got: ${r2.body.kind}`);
-  report("Matched same brand as Test 1", r2.body.brand_id === brand1?.id, r2.body.brand_id);
-  report("NO new brand created (count = 1 brand for this name)", true /* implicit by match */);
-  report("1 new project row created for the second deal", projects2.length === 1, `count: ${projects2.length}`);
-  report("Brand now has 2 projects total", (allProjectsForBrand1.data?.length ?? 0) === 2, `total: ${allProjectsForBrand1.data?.length}`);
-  report("Project Dropbox subfolder created", !!projects2[0]?.dropbox_project_folder_url, projects2[0]?.dropbox_project_folder_url?.slice(0, 60));
-  report("Brief seeded for Content project", !!projects2[0]?.brief_id, projects2[0]?.brief_id);
+  report("Returned kind === 'returning_client'", r2.body.kind === "returning_client", `got: ${r2.body.kind}`);
+  report("Matched the pre-seeded brand", r2.body.brand_id === seededBrand.id, r2.body.brand_id);
+  report("Still only 1 brand by that name (no dupe)", brandsByName2.length === 1, `count: ${brandsByName2.length}`);
+  report("Dispatch row kind = 'returning_client'", dispatch2?.kind === "returning_client", dispatch2?.kind);
+  report("Dispatch row brand_id matches", dispatch2?.brand_id === seededBrand.id, dispatch2?.brand_id);
 
   // ──────────────────────────────────────────────────────────────────
   // SCENARIO 3: NEW client, multi-service (only if column exists)
   // ──────────────────────────────────────────────────────────────────
   if (serviceCol) {
     console.log("\n┌─────────────────────────────────────────────────────────────────────┐");
-    console.log("│ TEST 3 — NEW client, MULTI-service (Content + Social)              │");
+    console.log("│ TEST 3 — NEW client, MULTI-service (Content + Social Media)        │");
     console.log("└─────────────────────────────────────────────────────────────────────┘");
 
-    const brandName3 = `TestBrand-${ts}-Beta`;
+    const brandName3 = `TestBrand-${ts}-Charlie`;
     const dealName3 = `${brandName3} | Combo Deal Content+Social (SAFE TO DELETE)`;
     console.log(`\n  Creating deal: ${dealName3}`);
     const deal3 = await createDeal({
@@ -231,23 +248,17 @@ try {
 
     console.log("\n  Firing webhook…");
     const r3 = await fireWebhook(deal3);
-    console.log(`    Status: ${r3.status}  kind: ${r3.body.kind}  brand: ${r3.body.business_name}`);
-    if (r3.body.brand_id) createdBrandIds.add(r3.body.brand_id);
+    dispatchedDealIds.add(deal3);
+    console.log(`    Status: ${r3.status}  kind: ${r3.body.kind}  services: ${(r3.body.services ?? []).join(", ")}`);
 
-    const projects3 = await waitForProjects(deal3, 2);
-    const contentProj = projects3.find((p) => p.service_type === "Content");
-    const socialProj = projects3.find((p) => p.service_type === "Social Media");
+    const brandsByName3 = await countBrandsByName(brandName3);
 
     console.log("\n  Assertions:");
     report("Returned kind === 'new_client'", r3.body.kind === "new_client", `got: ${r3.body.kind}`);
-    report("2 project rows created (one per service)", projects3.length === 2, `count: ${projects3.length}`);
-    report("Content project present", !!contentProj);
-    report("Social project present", !!socialProj);
-    report("Content project HAS Dropbox subfolder", !!contentProj?.dropbox_project_folder_url);
-    report("Content project HAS seeded brief", !!contentProj?.brief_id);
-    report("Social project has NO Dropbox subfolder", !socialProj?.dropbox_project_folder_url);
-    report("Social project has NO brief", !socialProj?.brief_id);
-    report("Project names use ' - ServiceType' suffix when multi", contentProj?.project_name?.endsWith(" - Content"), contentProj?.project_name);
+    report("Both services reflected in response", (r3.body.services ?? []).length === 2, `services: ${(r3.body.services ?? []).join(", ")}`);
+    report("Services include 'Content'", (r3.body.services ?? []).includes("Content"));
+    report("Services include 'Social Media'", (r3.body.services ?? []).includes("Social Media"));
+    report("NO brand row was auto-created", brandsByName3.length === 0, `count: ${brandsByName3.length}`);
   } else {
     console.log("\n[Test 3 SKIPPED — add Service Type Dropdown column to Deals board]");
   }
@@ -261,22 +272,19 @@ try {
 
   console.log("\n  Re-firing Test 1's webhook…");
   const r4 = await fireWebhook(deal1);
-  console.log(`    Status: ${r4.status}  kind: ${r4.body.kind}`);
-
-  const projectsAfterReFire = await waitForProjects(deal1, 1);
+  console.log(`    Status: ${r4.status}  kind: ${r4.body.kind}  note: ${r4.body.note ?? ""}`);
 
   console.log("\n  Assertions:");
   report("Returned kind === 'same_deal'", r4.body.kind === "same_deal", `got: ${r4.body.kind}`);
-  report("No new project rows added (still 1)", projectsAfterReFire.length === 1, `count: ${projectsAfterReFire.length}`);
 
-  console.log("\n[Google Chat side]");
-  console.log("  Check your Account Manager Chat space:");
-  console.log("    🎉 Credit card(s) — only if Deal Identifier column was populated");
-  console.log("    📦 Returning client card from Test 2");
-  console.log("  Check your Brand Hub Intakes space:");
-  console.log("    🎯 AM Head 'assign an AM' cards from Tests 1 + 3");
-  console.log("    💰 CFO cards from Tests 1, 2, 3");
-  console.log("    🌟 Team broadcast cards from Tests 1, 3");
+  console.log("\n[Google Chat side — manually verify]");
+  console.log("  BD webhook (or AMs fallback):");
+  console.log("    🎉 'Closed Won — new client' cards from Tests 1 + 3 with intake link buttons");
+  console.log("  AMs webhook:");
+  console.log("    📦 'Closed Won — returning client' card from Test 2 (mentions Justin Tarr as AM)");
+  console.log("    🎉 Credit cards from any deals where Deal Identifier column was populated");
+  console.log("  CFO webhook:");
+  console.log("    💰 Cards from Tests 1, 2, 3 (different copy for new vs returning)");
 
 } catch (e) {
   console.error("\nTest run threw:", e);
