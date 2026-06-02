@@ -1,9 +1,139 @@
-# SG client lifecycle — Brand Hub + Brief Tool
+# SG client lifecycle — Sales → Brand Hub → Brief Tool
 
 This is the end-to-end flow a client travels through, from first lead to
-shipped deliverable. Brand Hub owns brand identity (one-time setup per
-client). Brief Tool owns per-project briefs (many per client, each spawning
-a shoot → edit → revision → deliver loop).
+shipped deliverable. Four phases:
+
+- **Phase 0 — Sales** (Monday: Prospecting Reach Outs + Deals - new boards)
+- **Phase 1 — Onboarding** (Brand Hub intake)
+- **Phase 2 — Brand identity** (Brand Hub editor + Approve & Sync)
+- **Phase 3 — Per-project briefs** (Brief Tool, looped for each project)
+
+Brand Hub owns brand identity (one-time setup per client). Brief Tool owns
+per-project briefs (many per client, each spawning a shoot → edit → revision
+→ deliver loop).
+
+Detailed diagrams: [sales-flow.png](./sales-flow.png) ·
+[workflow.png](./workflow.png) · [brief-flow.png](./brief-flow.png)
+
+---
+
+## Phase 0 — Sales pipeline (prospect → close)
+
+Owned by Phallon (BD) with assists from anyone on the team — the deal
+identifier is tracked separately from the BD/AE so the originator always
+gets credit even when Phallon runs the close.
+
+```mermaid
+flowchart TB
+    classDef src fill:#fce7f3,stroke:#db2777,color:#831843
+    classDef prospect fill:#fef3c7,stroke:#d97706,color:#78350f
+    classDef deal fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    classDef proposal fill:#ede9fe,stroke:#7c3aed,color:#4c1d95
+    classDef closed fill:#d1fae5,stroke:#10b981,color:#064e3b
+    classDef lost fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
+    classDef handoff fill:#fef9c3,stroke:#ca8a04,color:#713f12
+
+    subgraph Sources[" 0A · LEAD SOURCES "]
+        Web[Website contact]
+        Ref[Referral]
+        Outbound[Cold outreach]
+        Events[Boat shows / events]
+        IG[Instagram DMs]
+    end
+
+    subgraph Pros[" 0B · PROSPECTING REACH OUTS · Monday board "]
+        ProsItem[Prospect row:<br/>BD · Lead Source · contact info]
+        MoveStatus{Ready for<br/>discovery?}
+    end
+
+    Web --> ProsItem
+    Ref --> ProsItem
+    Outbound --> ProsItem
+    Events --> ProsItem
+    IG --> ProsItem
+    ProsItem --> MoveStatus
+
+    subgraph Active[" 1 · DEAL PIPELINE · Monday Deals - new board "]
+        Discovery[Discovery Set]
+        Caps[Capabilities Review]
+        ProposalSent[Proposal Sent<br/>via Proposify]
+        Negotiation[Negotiation]
+    end
+
+    MoveStatus -->|yes| Discovery
+    Discovery --> Caps --> ProposalSent --> Negotiation --> Outcome{Outcome}
+
+    Outcome -->|Not now| Nurture[Nurture]
+    Outcome -->|No fit| Lost[Lost]
+    Outcome -->|Signed in Proposify| ClosedWon[(Closed Won)]
+
+    subgraph Handoff[" 2 · HANDOFF "]
+        Invoice[CFO notified →<br/>QuickBooks invoice]
+        Route{Deal Type?}
+        RetAM[Retainer AM assigned]
+        ProjAM[One-time Project AM assigned]
+        Welcome[Welcome + next steps]
+    end
+
+    ClosedWon --> Invoice
+    ClosedWon --> Route
+    Route -->|Recurring| RetAM
+    Route -->|One Time| ProjAM
+    RetAM --> Welcome
+    ProjAM --> Welcome
+    Welcome --> BrandHub[(➡️ BRAND HUB intake)]
+
+    class Web,Ref,Outbound,Events,IG src
+    class ProsItem,MoveStatus prospect
+    class Discovery,Caps deal
+    class ProposalSent,Negotiation proposal
+    class ClosedWon,RetAM,ProjAM,Welcome,Invoice handoff
+    class Nurture handoff
+    class Lost lost
+    class BrandHub closed
+```
+
+### What's in the Deals board today
+
+Pipeline stages (`Stage` column): **Discovery Set → Capabilities Review → Proposal Sent → Negotiation**
+
+Group buckets (the rows move between groups as outcomes land): **Active Deals · Nurture · Lost · Closed Won**
+
+Each deal carries:
+- **BD / AE** — Phallon owns most, but Stephen, Billy, Arial, Austin also work deals
+- **Deal Identifier** — separate column, tracks credit for whoever brought in the lead even if Phallon runs the close
+- **Deal Value $** + **Close Probability %** + **Close Date** for forecasting
+- **Deal Rank** — Tier 1 (High Urgency) → Tier 4 (Cold / Stalled)
+- **Deal Type** — One Time vs. Recurring (this is what determines retainer vs. one-off AM assignment downstream)
+- **Lead Source** — Network · Call In · Returning · Email · etc.
+- **Primary Contact + Billing Contact** — board-relation links to Contacts - new
+- **Proposal Section + Template + Proposal Creation** status columns — workflow around the Proposify document
+- Linked **subitems** track multi-step deal work
+
+### The close → kickoff handoff (manual today)
+
+1. Proposify document signed → BD updates deal to Closed Won group
+2. BD pings AM Head to assign an AM
+   - **Recurring** → Retainer AM
+   - **One Time** → One-time Project AM
+3. CFO is notified out of band → sends invoice via QuickBooks
+4. BD/AM sends welcome + next-steps package to client
+5. Kickoff call scheduled
+6. **Brand Hub intake** kicks off (Phase 1 below)
+
+### Manual gaps in the sales side
+
+| Letter | Gap | Why it costs time |
+|---|---|---|
+| **S1** | Lead source de-dup | A prospect can come in from referral *and* IG DM; merging records is manual |
+| **S2** | Prospect → Deal lift | Moving from Prospecting Reach Outs to Deals - new is a manual "Move to Deal" status click |
+| **S3** | Proposify document tracking | Proposal Section / Template / Creation status columns are typed by hand, not synced from Proposify |
+| **S4** | Closed Won → AM Head | BD has to remember to ping AM Head + flag Deal Type for routing |
+| **S5** | Closed Won → CFO | Invoice trigger is manual notification, not a webhook |
+| **S6** | Closed Won → Brand Hub | Nobody auto-creates the brand draft from the deal — AM starts intake from scratch |
+| **S7** | Credit attribution | Deal Identifier captures who brought the lead, but commission/credit math happens offline |
+
+---
 
 ---
 

@@ -1,0 +1,107 @@
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: "#dbeafe"
+    primaryTextColor: "#1c1917"
+    primaryBorderColor: "#3b82f6"
+    lineColor: "#78716c"
+    fontFamily: "system-ui, -apple-system, sans-serif"
+---
+flowchart TB
+    classDef src fill:#fce7f3,stroke:#db2777,color:#831843
+    classDef prospect fill:#fef3c7,stroke:#d97706,color:#78350f
+    classDef deal fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    classDef proposal fill:#ede9fe,stroke:#7c3aed,color:#4c1d95
+    classDef closed fill:#d1fae5,stroke:#10b981,color:#064e3b
+    classDef lost fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
+    classDef handoff fill:#fef9c3,stroke:#ca8a04,color:#713f12
+    classDef gap fill:#fef2f2,stroke:#dc2626,color:#7f1d1d,stroke-dasharray: 6 4
+
+    %% PHASE 0A — Lead sources
+    subgraph Sources[" 0A · LEAD SOURCES — any team member can identify "]
+        Web[Inbound from<br/>website contact]
+        Ref[Referral<br/>existing client / partner]
+        Outbound[Cold outreach<br/>email · LinkedIn · DM]
+        Events[Boat shows<br/>industry events]
+        IG[Instagram DMs<br/>inbound social]
+        Other[Other<br/>networking · calls]
+    end
+
+    %% PHASE 0B — Prospecting board
+    subgraph Pros[" 0B · PROSPECTING REACH OUTS · Monday board "]
+        ProsItem[Prospect added<br/>· BD assigned<br/>· Lead Source tagged<br/>· Contact captured: name<br/>  email · phone · company<br/>· Next-Touch date set]
+        Linked[Linked to<br/>Contacts board]
+        MoveStatus{Ready to<br/>move to Deal?}
+    end
+
+    Web --> ProsItem
+    Ref --> ProsItem
+    Outbound --> ProsItem
+    Events --> ProsItem
+    IG --> ProsItem
+    Other --> ProsItem
+    ProsItem --> Linked
+    Linked --> MoveStatus
+
+    %% PHASE 1 — Deal qualification
+    subgraph Active[" 1 · ACTIVE DEALS · Phallon (BD) runs · stages "]
+        Discovery[Discovery Set<br/>first call scheduled]
+        Caps[Capabilities Review<br/>fit + scope being worked]
+        ProposalSent[Proposal Sent<br/>Proposify out to client]
+        Negotiation[Negotiation<br/>terms · pricing · scope<br/>back-and-forth]
+    end
+
+    MoveStatus -->|yes| Discovery
+    Discovery --> Caps
+    Caps --> ProposalSent
+    ProposalSent --> Negotiation
+
+    %% Deal metadata captured throughout
+    DealMeta[Deal record carries:<br/>· Deal Value $<br/>· Close Probability %<br/>· Close Date<br/>· Deal Rank Tier 1-4<br/>· Deal Type: One Time / Recurring<br/>· Deal Identifier — who gets credit<br/>· Primary + Billing Contact links]
+
+    Discovery -.- DealMeta
+    Caps -.- DealMeta
+    ProposalSent -.- DealMeta
+    Negotiation -.- DealMeta
+
+    %% Outcomes
+    Negotiation --> Outcome{Outcome}
+
+    %% Nurture or Lost
+    Outcome -->|Not now| Nurture[Nurture group<br/>cooling · revisit later<br/>Next-Touch reminder]
+    Outcome -->|No fit / lost| Lost[Lost group<br/>reason captured]
+
+    %% Closed Won
+    Outcome -->|Signed contract<br/>via Proposify| ClosedWon[(Closed Won)]
+
+    %% Handoff to onboarding
+    subgraph Handoff[" 2 · CLOSED → ONBOARDING HANDOFF "]
+        GapInvoice[CFO notified<br/>invoice sent via QuickBooks]
+        GapTypeRoute{Deal Type?}
+        RetainerAM[Retainer AM<br/>assigned to client<br/>by AM Head]
+        ProjectAM[One-time Project AM<br/>assigned by AM Head]
+        Welcome[Welcome + next-steps<br/>package sent to client]
+        Kickoff[Kickoff scheduled]
+    end
+
+    ClosedWon --> GapInvoice
+    ClosedWon --> GapTypeRoute
+    GapTypeRoute -->|Recurring = Retainer| RetainerAM
+    GapTypeRoute -->|One Time = Project| ProjectAM
+    RetainerAM --> Welcome
+    ProjectAM --> Welcome
+    Welcome --> Kickoff
+
+    %% Handoff to Brand Hub
+    Kickoff --> BrandHub[(➡️ BRAND HUB<br/>intake / new brand<br/>see workflow.md)]
+
+    %% Class assignments
+    class Web,Ref,Outbound,Events,IG,Other src
+    class ProsItem,Linked,MoveStatus prospect
+    class Discovery,Caps,DealMeta deal
+    class ProposalSent,Negotiation proposal
+    class ClosedWon,RetainerAM,ProjectAM,Welcome,Kickoff,GapInvoice handoff
+    class Nurture handoff
+    class Lost lost
+    class BrandHub closed
