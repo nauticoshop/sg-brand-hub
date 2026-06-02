@@ -1,29 +1,24 @@
-// Monday → Brand Hub webhook for the "Closed Won" handoff.
+// Monday → Brand Hub webhook for the Closed Won handoff.
 //
-// Fires when a deal item moves into the Closed Won group (or its Stage column
-// flips to Closed Won — both signals are handled). Pulls full deal context
-// from Monday, creates a brand draft in Brand Hub pre-populated with the
-// client info, then pings AM Head + CFO + the team via Google Chat so the
-// post-close handoff happens automatically.
+// Fires on either:
+//   • An item moving into the Closed Won group (group_mkv5cdzh), OR
+//   • The Stage column flipping to "Closed Won".
 //
-// Setup on the Monday side (one-time):
-//   1. Open the Deals - new board (id 9889817939)
-//   2. Integrations → Webhooks → "Add integration"
-//   3. Trigger: "When an item is moved to a group" OR "When a status changes"
-//   4. URL: https://sg-brand-hub.vercel.app/api/webhooks/monday/deal-closed
-//   5. Monday issues a verification challenge on first connect; this handler
-//      echoes it back to complete the handshake.
+// Dispatches by scenario:
+//   - same_deal     : webhook re-fired, do nothing
+//   - new_client    : brand row + parent Dropbox + per-service projects +
+//                     AM Head + CFO + Team broadcast + Credit DM
+//   - existing_client : per-service projects + existing-AM DM + CFO + Credit DM
 //
-// Idempotency: createBrandFromDeal checks for an existing brand row keyed by
-// source_deal_id before inserting. Safe to re-fire.
+// All long-running side effects (Dropbox, brief seeding) run in-process before
+// we respond; notifications are awaited so Vercel's function shutdown can't
+// cancel in-flight fetches.
 
 import { NextResponse } from "next/server";
-import { createBrandFromDeal } from "@/lib/brands/create-from-deal";
-import { notifyClosedWonHandoff } from "@/lib/notifications/handoff";
+import { processClosedWonDeal } from "@/lib/brands/create-from-deal";
+import { dispatchClosedWonNotifications } from "@/lib/notifications/handoff";
 import { alertError } from "@/lib/notifications/alert";
 
-// Monday's webhook payload shape — varies by trigger but always includes
-// `event` for actual events and `challenge` for the initial handshake.
 type MondayWebhook =
   | { challenge: string }
   | {
@@ -39,7 +34,7 @@ type MondayWebhook =
       };
     };
 
-const CLOSED_WON_GROUP_ID = "group_mkv5cdzh"; // verified via _explore-monday-deals.mjs
+const CLOSED_WON_GROUP_ID = "group_mkv5cdzh";
 const CLOSED_WON_STATUS_LABELS = ["Closed Won", "Won", "Closed-Won"];
 
 export async function POST(request: Request) {
@@ -61,11 +56,6 @@ export async function POST(request: Request) {
   }
   const event = body.event;
 
-  // We only care about two event shapes:
-  //   1. move_pulse_into_group → groupId === CLOSED_WON_GROUP_ID
-  //   2. update_column_value on the Stage status column where the new label
-  //      is "Closed Won" (different teams may also move the row vs. flip the
-  //      status — handle both)
   const isMoveToClosed =
     event.type === "move_pulse_into_group" && event.groupId === CLOSED_WON_GROUP_ID;
 
@@ -85,30 +75,20 @@ export async function POST(request: Request) {
   }
 
   try {
-    const result = await createBrandFromDeal(pulseId);
+    const result = await processClosedWonDeal(pulseId);
 
-    // Skip pings if this was a duplicate event (brand already existed) so we
-    // don't spam Google Chat every time Monday re-emits.
-    //
-    // IMPORTANT: await the notifications. On Vercel serverless, returning a
-    // response shuts down the function context and in-flight fetches inside
-    // a fire-and-forget promise can be cancelled before completing.
-    if (!result.alreadyExisted) {
-      const appUrl = process.env.NEXT_PUBLIC_APP_URL || new URL(request.url).origin;
-      const brandUrl = `${appUrl}/brand/${result.brandId}`;
-      await notifyClosedWonHandoff({
-        brandId: result.brandId,
-        businessName: result.businessName,
-        brandUrl,
-        deal: result.deal,
-      });
-    }
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || new URL(request.url).origin;
+    const brandUrl = `${appUrl}/brand/${result.brand.id}`;
+
+    await dispatchClosedWonNotifications({ result, brandUrl });
 
     return NextResponse.json({
       ok: true,
-      brand_id: result.brandId,
-      business_name: result.businessName,
-      already_existed: result.alreadyExisted,
+      kind: result.kind,
+      brand_id: result.brand.id,
+      business_name: result.brand.business_name,
+      project_count: result.projects.length,
+      service_types: result.projects.map((p) => p.service_type),
     });
   } catch (e) {
     alertError({
@@ -120,8 +100,6 @@ export async function POST(request: Request) {
   }
 }
 
-// Monday's `value` for a status column change has shape
-// { label: { text: "Closed Won", ... }, ... } — defensively unwrap.
 function extractStatusLabel(value: unknown): string | null {
   if (!value || typeof value !== "object") return null;
   const v = value as Record<string, unknown>;

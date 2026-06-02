@@ -1,0 +1,82 @@
+// Fetch Monday teams + members. Used to source the "Account Managers"
+// dropdown on the brand editor — whoever's in the team in Monday is
+// assignable as an AM in Brand Hub, zero deploys required.
+
+const MONDAY_API_URL = "https://api.monday.com/v2";
+
+function token(): string {
+  const t = process.env.MONDAY_API_TOKEN;
+  if (!t) throw new Error("MONDAY_API_TOKEN is not set");
+  return t;
+}
+
+async function mondayFetch<T>(query: string, variables?: Record<string, unknown>): Promise<T> {
+  const res = await fetch(MONDAY_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token(),
+      "API-Version": "2024-10",
+    },
+    body: JSON.stringify({ query, variables }),
+  });
+  if (!res.ok) {
+    throw new Error(`Monday API HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`);
+  }
+  const body = (await res.json()) as { data?: T; errors?: Array<{ message: string }> };
+  if (body.errors?.length) throw new Error(`Monday: ${body.errors.map((e) => e.message).join("; ")}`);
+  if (!body.data) throw new Error("Monday returned no data");
+  return body.data;
+}
+
+export type TeamMember = {
+  id: string;
+  name: string;
+  email: string | null;
+};
+
+const AM_TEAM_NAME = "Account Managers";
+
+/** Cached in-process so the dropdown doesn't re-query on every page render. */
+let cache: { at: number; members: TeamMember[] } | null = null;
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
+export async function fetchAccountManagers(opts: { force?: boolean } = {}): Promise<TeamMember[]> {
+  if (!opts.force && cache && Date.now() - cache.at < CACHE_TTL_MS) {
+    return cache.members;
+  }
+
+  const data = await mondayFetch<{
+    teams: Array<{
+      id: string;
+      name: string;
+      users: Array<{ id: string; name: string; email: string | null }>;
+    }>;
+  }>(`query { teams { id name users { id name email } } }`);
+
+  const team = data.teams.find((t) => t.name.trim().toLowerCase() === AM_TEAM_NAME.toLowerCase());
+  if (!team) {
+    // No team configured — return empty list so the dropdown is just empty.
+    // The caller can fall back to free-text if needed.
+    cache = { at: Date.now(), members: [] };
+    return [];
+  }
+
+  const members = team.users.map((u) => ({
+    id: u.id,
+    name: u.name,
+    email: u.email,
+  }));
+  cache = { at: Date.now(), members };
+  return members;
+}
+
+/** Look up an AM by name (case-insensitive, trims whitespace). Returns the
+ *  Monday TeamMember or null. Used for routing notifications — given a
+ *  brand's free-text account_manager value, find the Monday user. */
+export async function findAmByName(name: string | null | undefined): Promise<TeamMember | null> {
+  if (!name?.trim()) return null;
+  const lower = name.trim().toLowerCase();
+  const members = await fetchAccountManagers();
+  return members.find((m) => m.name.trim().toLowerCase() === lower) ?? null;
+}

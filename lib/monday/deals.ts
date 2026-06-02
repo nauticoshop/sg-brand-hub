@@ -31,6 +31,15 @@ export const CONTACT_COLUMNS = {
   company: "text",
 } as const;
 
+export type ServiceType = "Content" | "Social" | "Website" | "Brand Strategy";
+
+export const KNOWN_SERVICE_TYPES: ServiceType[] = [
+  "Content",
+  "Social",
+  "Website",
+  "Brand Strategy",
+];
+
 export type DealSnapshot = {
   itemId: string;
   itemName: string;
@@ -42,6 +51,9 @@ export type DealSnapshot = {
   dealValue: number | null;
   closeDate: string | null;
   leadSource: string | null;
+  /** Multi-select Service Type tags on the deal. Empty array if the column
+   *  doesn't exist on the board yet (Service Type column is optional). */
+  services: ServiceType[];
   primaryContact: ContactSnapshot | null;
   billingContact: ContactSnapshot | null;
 };
@@ -89,12 +101,17 @@ async function mondayFetch<T>(query: string, variables?: Record<string, unknown>
 export async function fetchDealSnapshot(itemId: string): Promise<DealSnapshot> {
   const dealsBoardId = process.env.MONDAY_BOARD_ID_DEALS;
 
-  // 1) Deal item + column values
+  // 1) Deal item + column values (+ board columns so we can find the
+  //    Service Type column by name — its ID isn't known until the user
+  //    creates the column on Monday's UI).
   const data = await mondayFetch<{
     items: Array<{
       id: string;
       name: string;
-      board: { id: string } | null;
+      board: {
+        id: string;
+        columns: Array<{ id: string; title: string; type: string | null }>;
+      } | null;
       column_values: Array<{ id: string; text: string | null; value: string | null }>;
     }>;
   }>(
@@ -102,7 +119,7 @@ export async function fetchDealSnapshot(itemId: string): Promise<DealSnapshot> {
       items(ids: $ids) {
         id
         name
-        board { id }
+        board { id columns { id title type } }
         column_values { id text value }
       }
     }`,
@@ -144,6 +161,22 @@ export async function fetchDealSnapshot(itemId: string): Promise<DealSnapshot> {
   const primaryContactId = relatedIds(DEAL_COLUMNS.primaryContact)[0] ?? null;
   const billingContactId = relatedIds(DEAL_COLUMNS.billingContact)[0] ?? null;
 
+  // Service Type — multi-select Dropdown column whose ID we don't know in
+  // advance. Find it on the board by title match.
+  const services: ServiceType[] = (() => {
+    const col = item.board?.columns.find(
+      (c) => c.title.trim().toLowerCase() === "service type"
+    );
+    if (!col) return [];
+    const cell = cv.get(col.id);
+    const raw = cell?.text ?? "";
+    if (!raw.trim()) return [];
+    return raw
+      .split(",")
+      .map((s) => s.trim())
+      .filter((s): s is ServiceType => (KNOWN_SERVICE_TYPES as string[]).includes(s));
+  })();
+
   // 2) Hydrate contact items if linked
   const contactIds = [primaryContactId, billingContactId].filter(Boolean) as string[];
   const contacts = contactIds.length > 0 ? await fetchContacts(contactIds) : new Map<string, ContactSnapshot>();
@@ -159,6 +192,7 @@ export async function fetchDealSnapshot(itemId: string): Promise<DealSnapshot> {
     dealValue: num(DEAL_COLUMNS.dealValue),
     closeDate: text(DEAL_COLUMNS.closeDate),
     leadSource: text(DEAL_COLUMNS.leadSource),
+    services,
     primaryContact: primaryContactId ? contacts.get(primaryContactId) ?? null : null,
     billingContact: billingContactId ? contacts.get(billingContactId) ?? null : null,
   };

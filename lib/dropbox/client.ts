@@ -219,3 +219,112 @@ export async function ensureBrandFolderTree(businessName: string): Promise<{
 
   return { parentPath, shareUrl };
 }
+
+/**
+ * Per-project folder template — only created for Content service deals. Other
+ * service types (Social, Website, Brand Strategy) skip this step.
+ *
+ *   /NN x SG/[Brand]/[Year]/[Project Name]/
+ *     ├── Deliverables/
+ *     │   ├── Micro content/
+ *     │   ├── Photos/
+ *     │   └── Videos/
+ *     ├── Drafts/
+ *     └── Raw files/
+ *         ├── Photo selects/
+ *         └── Video files/
+ *             ├── Camera A/
+ *             └── Drone/
+ */
+function projectSubfolders(): string[] {
+  return [
+    "Deliverables",
+    "Deliverables/Micro content",
+    "Deliverables/Photos",
+    "Deliverables/Videos",
+    "Drafts",
+    "Raw files",
+    "Raw files/Photo selects",
+    "Raw files/Video files",
+    "Raw files/Video files/Camera A",
+    "Raw files/Video files/Drone",
+  ];
+}
+
+/**
+ * Idempotent: creates /NN x SG/[Brand]/[Year]/[Project Name]/ and its full
+ * subfolder tree. Returns a shareable Dropbox URL for the project folder.
+ *
+ * Assumes the brand parent folder already exists (call ensureBrandFolderTree
+ * first when needed). The Year folder is created if missing.
+ */
+export async function ensureProjectFolderTree(
+  businessName: string,
+  year: number,
+  projectName: string
+): Promise<{ projectPath: string; shareUrl: string }> {
+  const dbx = await getRootedClient();
+  const brandFolder = safeName(businessName);
+  const yearFolder = String(year);
+  const projectFolder = safeName(projectName);
+  const projectPath = `${CLIENTS_ROOT}/${brandFolder}/${yearFolder}/${projectFolder}`;
+
+  // Include the year folder + project parent so we create any missing rungs.
+  const allPaths = [
+    `${CLIENTS_ROOT}/${brandFolder}/${yearFolder}`,
+    projectPath,
+    ...projectSubfolders().map((sub) => `${projectPath}/${sub}`),
+  ];
+
+  for (const path of allPaths) {
+    try {
+      await dbx.filesCreateFolderV2({ path, autorename: false });
+    } catch (innerErr: unknown) {
+      const errObj = innerErr as { error?: unknown; status?: number; message?: string };
+      const errAny = errObj.error as
+        | { error_summary?: string; user_message?: { text?: string } }
+        | string
+        | undefined;
+      let summary: string;
+      if (typeof errAny === "string") summary = errAny;
+      else if (errAny && typeof errAny === "object") {
+        summary =
+          errAny.error_summary ??
+          errAny.user_message?.text ??
+          JSON.stringify(errAny).slice(0, 500);
+      } else summary = errObj.message ?? String(innerErr);
+      if (/path\/conflict|already_exists|path_conflict/i.test(summary)) continue;
+      throw new Error(
+        `Project folder create failed for "${path}" (HTTP ${errObj.status ?? "?"}): ${summary}`
+      );
+    }
+  }
+
+  // Share link for the project folder itself.
+  let shareUrl: string;
+  try {
+    const linkRes = await dbx.sharingCreateSharedLinkWithSettings({ path: projectPath });
+    shareUrl = linkRes.result.url;
+  } catch (e: unknown) {
+    const errObj = e as { error?: { error_summary?: string }; message?: string };
+    const summary = errObj.error?.error_summary ?? errObj.message ?? String(e);
+    try {
+      const existing = await dbx.sharingListSharedLinks({
+        path: projectPath,
+        direct_only: true,
+      });
+      const link = existing.result.links[0];
+      if (!link) throw new Error(`Couldn't create or find shared link: ${summary}`);
+      shareUrl = link.url;
+    } catch (innerErr) {
+      const innerSummary =
+        (innerErr as { error?: { error_summary?: string }; message?: string }).error
+          ?.error_summary ?? (innerErr as { message?: string }).message ?? String(innerErr);
+      throw new Error(
+        `Project shared link failed: ${summary}. Fallback list failed: ${innerSummary}`
+      );
+    }
+  }
+
+  return { projectPath, shareUrl };
+}
