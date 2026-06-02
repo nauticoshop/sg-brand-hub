@@ -1,0 +1,73 @@
+---
+config:
+  theme: base
+  themeVariables:
+    primaryColor: "#fef9c3"
+    primaryTextColor: "#1c1917"
+    primaryBorderColor: "#ca8a04"
+    lineColor: "#78716c"
+    fontFamily: "system-ui, -apple-system, sans-serif"
+---
+flowchart TB
+    classDef tool fill:#fef9c3,stroke:#ca8a04,color:#713f12
+    classDef gap fill:#fee2e2,stroke:#dc2626,color:#7f1d1d,stroke-dasharray: 6 4
+    classDef external fill:#e7e5e4,stroke:#78716c,color:#1c1917
+    classDef brand fill:#ede9fe,stroke:#7c3aed,color:#5b21b6
+
+    Hub[(Brand Hub<br/>brand_directory view)]
+    GapA[A · Intake<br/>info pulled from<br/>client email · Monday<br/>request · sales call<br/>manually retyped]
+
+    Hub --> Create
+    GapA --> Create
+
+    Create[1 · Create Brief<br/>· Project Overview<br/>· Mission & Opportunity<br/>· Deliverables: video/photo/<br/>  graphic/micro-content<br/>· Brand Notes auto-pulled<br/>· Attachments 50 MB cap<br/>· Logistics notes]
+
+    Create --> GapB
+
+    GapB[B · Creator assignment<br/>free-text typed<br/>each time]
+
+    GapB --> Monday
+
+    Monday[2 · Project Request → Monday<br/>· Monday item created<br/>· One sub-item per deliverable<br/>· Each carries Task Type<br/>· Link back to brief]
+
+    Monday --> GapC
+
+    GapC[C · Scheduling<br/>email ping-pong to<br/>lock shoot date]
+
+    GapC --> Cal
+
+    Cal[3 · Calendar Invite → Google Calendar<br/>· Shoot event created<br/>· Attendees auto-resolved<br/>  creators + AM + client POC]
+
+    Cal --> Share
+
+    Share[4 · Share Link → Creator<br/>Public brief URL<br/>no login required]
+
+    Share --> Shoot[🎬 Shoot day]
+
+    Shoot --> Direction[Creator adds post-shoot:<br/>· Dropbox raw-files link<br/>· Editing direction<br/>· Music direction<br/>· Per-deliverable creator notes<br/>rich-text formatting]
+
+    Direction --> Submit[5 · Submit Direction<br/>· Flips Monday sub-item to<br/>'Ready to Edit'<br/>· Project Coordinator notified]
+
+    Submit --> Edit[✂️ Editor works the deliverable]
+
+    Edit --> Webhook[6 · Webhook<br/>Monday status changes<br/>auto-return/advance the item]
+
+    Webhook --> ReviewQ{Edit ready?}
+
+    ReviewQ -->|Revision needed| Rev
+    ReviewQ -->|Approved internally| GapD
+
+    Rev[7 · Revision request<br/>· New Monday sub-item<br/>· Move group<br/>· Notify owner<br/>· Deliverable link + attachment]
+
+    Rev --> Edit
+
+    GapD[D · Final delivery to client<br/>+ client approval / sign-off<br/>NOT IN TOOL TODAY]
+
+    GapD --> GapE
+
+    GapE[E · Status visibility<br/>spread across Monday +<br/>tool + email — no single<br/>'where does everything stand']
+
+    class Hub brand
+    class Create,Monday,Cal,Share,Direction,Submit,Webhook,Rev tool
+    class GapA,GapB,GapC,GapD,GapE gap
+    class Shoot,Edit external
