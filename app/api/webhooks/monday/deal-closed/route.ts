@@ -89,10 +89,14 @@ export async function POST(request: Request) {
 
     // Skip pings if this was a duplicate event (brand already existed) so we
     // don't spam Google Chat every time Monday re-emits.
+    //
+    // IMPORTANT: await the notifications. On Vercel serverless, returning a
+    // response shuts down the function context and in-flight fetches inside
+    // a fire-and-forget promise can be cancelled before completing.
     if (!result.alreadyExisted) {
       const appUrl = process.env.NEXT_PUBLIC_APP_URL || new URL(request.url).origin;
       const brandUrl = `${appUrl}/brand/${result.brandId}`;
-      notifyClosedWonHandoff({
+      await notifyClosedWonHandoff({
         brandId: result.brandId,
         businessName: result.businessName,
         brandUrl,

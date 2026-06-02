@@ -58,10 +58,13 @@ async function postCard(webhook: string, card: unknown, label: string): Promise<
       body: JSON.stringify(card),
     });
     if (!res.ok) {
-      console.error(`${label} webhook ${res.status}: ${await res.text().catch(() => "")}`);
+      const body = await res.text().catch(() => "");
+      console.error(`[handoff/${label}] webhook ${res.status}: ${body.slice(0, 400)}`);
+    } else {
+      console.log(`[handoff/${label}] posted ✓`);
     }
   } catch (e) {
-    console.error(`${label} webhook failed: ${(e as Error).message}`);
+    console.error(`[handoff/${label}] failed: ${(e as Error).message}`);
   }
 }
 
