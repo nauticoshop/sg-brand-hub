@@ -1,37 +1,33 @@
 "use client";
 import { useState } from "react";
-import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
-import { isEmailAllowed } from "@/lib/auth/domain";
+
+// Login is Google-only as of 2026-05-30. The team is fully on Google Workspace
+// (both @surroundingsgroup.com and @nauticalnetwork.com) so the magic-link
+// fallback wasn't worth the maintenance burden. If you ever need to add it
+// back, the server-side signInWithOtp + /auth/callback PKCE handler are still
+// in place — just re-add the email form UI.
 
 export function LoginCard({ error, next }: { error?: string; next?: string }) {
-  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
-  const [sent, setSent] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
-
-  function buildRedirectTo() {
-    const redirectTo = new URL("/auth/callback", window.location.origin);
-    if (next) redirectTo.searchParams.set("next", next);
-    return redirectTo.toString();
-  }
 
   async function handleGoogle() {
     setFormError(null);
-    setGoogleLoading(true);
+    setLoading(true);
     const supabase = createSupabaseBrowserClient();
-    // Domain allow-list is enforced server-side in /auth/callback — any Google
-    // account can start the flow, but only @surroundingsgroup.com or
+    const redirectTo = new URL("/auth/callback", window.location.origin);
+    if (next) redirectTo.searchParams.set("next", next);
+
+    // Domain allow-list is enforced server-side in /auth/callback — any
+    // Google account can start the flow, but only @surroundingsgroup.com or
     // @nauticalnetwork.com addresses are accepted at callback.
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: buildRedirectTo(),
+        redirectTo: redirectTo.toString(),
         queryParams: {
           access_type: "offline",
           prompt: "select_account",
@@ -40,63 +36,9 @@ export function LoginCard({ error, next }: { error?: string; next?: string }) {
     });
     if (oauthError) {
       setFormError(oauthError.message);
-      setGoogleLoading(false);
+      setLoading(false);
     }
     // No need to clear loading on success — we're being redirected away.
-  }
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setFormError(null);
-
-    if (!isEmailAllowed(email)) {
-      setFormError(
-        "That email isn't on an approved domain. Use your @surroundingsgroup.com or @nauticalnetwork.com address."
-      );
-      return;
-    }
-
-    setLoading(true);
-    const supabase = createSupabaseBrowserClient();
-
-    const { error: otpError } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: buildRedirectTo(),
-      },
-    });
-
-    setLoading(false);
-
-    if (otpError) {
-      setFormError(otpError.message);
-      return;
-    }
-    setSent(true);
-  }
-
-  if (sent) {
-    return (
-      <div className="panel w-full max-w-md p-10 text-center">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-accent-soft">
-          <Mail className="h-5 w-5 text-accent" />
-        </div>
-        <h1 className="mt-4 text-2xl font-semibold tracking-tight">Check your inbox.</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          We sent a sign-in link to <span className="font-medium text-foreground">{email}</span>.
-          Click it from this device to finish signing in.
-        </p>
-        <button
-          onClick={() => {
-            setSent(false);
-            setEmail("");
-          }}
-          className="mt-6 text-xs text-muted-foreground underline-offset-2 hover:underline"
-        >
-          Use a different email
-        </button>
-      </div>
-    );
   }
 
   return (
@@ -109,57 +51,31 @@ export function LoginCard({ error, next }: { error?: string; next?: string }) {
         </p>
       </div>
 
-      {/* Google sign-in — preferred path, no rate limit. */}
-      <div className="mt-8">
+      <div className="mt-8 flex flex-col gap-3">
         <Button
           type="button"
-          variant="outline"
           size="lg"
           className="w-full"
           onClick={handleGoogle}
-          disabled={googleLoading || loading}
+          disabled={loading}
         >
           <GoogleIcon className="mr-2 h-4 w-4" />
-          {googleLoading ? "Redirecting…" : "Continue with Google"}
-        </Button>
-      </div>
-
-      {/* Divider */}
-      <div className="my-6 flex items-center gap-3">
-        <div className="h-px flex-1 bg-border" />
-        <span className="text-xs uppercase tracking-wider text-muted-foreground">or</span>
-        <div className="h-px flex-1 bg-border" />
-      </div>
-
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="email">Work email</Label>
-          <Input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@surroundingsgroup.com"
-            required
-            autoComplete="email"
-          />
-        </div>
-        <Button type="submit" disabled={loading || googleLoading || !email} size="lg" className="w-full">
-          {loading ? "Sending link…" : "Email me a sign-in link"}
+          {loading ? "Redirecting…" : "Continue with Google"}
         </Button>
         <p className="text-center text-xs text-muted-foreground">
-          Restricted to @surroundingsgroup.com and @nauticalnetwork.com
+          Restricted to @surroundingsgroup.com and @nauticalnetwork.com Google
+          Workspace accounts.
         </p>
-      </form>
+      </div>
 
       {(formError || error === "domain") && (
         <div className="mt-6 rounded-lg border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">
-          {formError ?? "That email isn't on an approved domain."}
+          {formError ?? "That Google account isn't on an approved domain."}
         </div>
       )}
       {error === "callback" && (
         <div className="mt-6 rounded-lg border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">
-          That sign-in link expired or was invalid. Request a new one.
+          Sign-in didn't complete. Try clicking Continue with Google again.
         </div>
       )}
     </div>
