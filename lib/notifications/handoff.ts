@@ -5,7 +5,7 @@
 //   1. Deal hits Closed Won → webhook fires:
 //      - NEW client       → DM BD with pre-stamped intake link
 //      - RETURNING client → DM AM (or AM Head fallback) with project-request
-//                           deeplink + full deal context
+//                           deeplink + deal context
 //      Both: CFO billing card + credit DM
 //
 //   2. Client submits intake at /intake?deal_id=… → /api/intake calls
@@ -22,6 +22,13 @@
 //   GOOGLE_CHAT_AMS_WEBHOOK_URL      — Account Managers space
 //   GOOGLE_CHAT_CFO_WEBHOOK_URL      — CFO / Sales handoff space
 //
+// Card design rules (kept tight on purpose):
+//   • Title carries the punch line (scenario + amount when applicable).
+//   • Empty fields don't render at all — no "—" placeholders.
+//   • Group related facts into one line ("$4,500 · Recurring") not two.
+//   • ≤4 fact widgets per card. Body sentence only when there's a real
+//     "next step" the recipient needs to read.
+//
 // Each post awaits its fetch so Vercel doesn't kill the function before the
 // card lands. Per-post errors are logged but never thrown.
 
@@ -33,18 +40,16 @@ import {
   type ClosedWonResult,
 } from "@/lib/brands/create-from-deal";
 
-const AM_HEAD_NAME = "Justin Tarr"; // fallback for returning clients with no AM assigned
+const AM_HEAD_NAME = "Justin Tarr";
 
 export type DispatchInput = {
   result: ClosedWonResult;
-  /** Public origin for the Brand Hub (used to build intake / brand links). */
   appUrl: string;
-  /** Public origin for Brief Tool (used to build project request deeplinks). */
   briefToolUrl: string;
 };
 
 export async function dispatchClosedWonNotifications(input: DispatchInput): Promise<void> {
-  if (input.result.kind === "same_deal") return; // dedup — nothing to do
+  if (input.result.kind === "same_deal") return;
 
   const tasks: Array<Promise<void>> = [];
 
@@ -56,7 +61,6 @@ export async function dispatchClosedWonNotifications(input: DispatchInput): Prom
     tasks.push(sendCfoCard({ ...input, businessName: input.result.brand.business_name, newClient: false }));
   }
 
-  // Credit DM fires for both scenarios.
   tasks.push(sendCreditDm(input));
 
   await Promise.allSettled(tasks);
@@ -66,30 +70,45 @@ export async function dispatchClosedWonNotifications(input: DispatchInput): Prom
 // Format helpers
 // ────────────────────────────────────────────────────────────────────────────
 
-function dealValueLine(deal: DealSnapshot): string {
-  return deal.dealValue != null ? `$${deal.dealValue.toLocaleString()}` : "—";
+/** "$4,500" / null when value is missing. */
+function money(value: number | null | undefined): string | null {
+  if (value == null) return null;
+  return `$${value.toLocaleString()}`;
 }
 
-function primaryContactLine(deal: DealSnapshot): string {
-  if (!deal.primaryContact) return "—";
-  const c = deal.primaryContact;
-  return [c.name, c.email, c.phone].filter(Boolean).join(" · ");
+/** True iff deal type contains "recurring". */
+function isRecurring(deal: DealSnapshot): boolean {
+  return /recurring/i.test(deal.dealType ?? "");
 }
 
-function billingContactLine(deal: DealSnapshot): string {
-  if (!deal.billingContact) return "—";
-  const c = deal.billingContact;
-  return [c.name, c.email, c.phone].filter(Boolean).join(" · ");
+/** "$4,500/mo" for retainers, "$4,500" otherwise, null if no value. */
+function amountWithCadence(deal: DealSnapshot): string | null {
+  const m = money(deal.dealValue);
+  if (!m) return null;
+  return isRecurring(deal) ? `${m}/mo` : m;
 }
 
-function servicesLine(deal: DealSnapshot): string {
-  if (deal.services.length === 0) return "—";
-  return deal.services.join(", ");
+/** "Recurring" or "One Time" or "—". Used only when title doesn't carry it. */
+function dealTypeShort(deal: DealSnapshot): string | null {
+  if (!deal.dealType) return null;
+  return isRecurring(deal) ? "Recurring" : deal.dealType;
 }
 
-function dealTypeLabel(deal: DealSnapshot): string {
-  if (!deal.dealType) return "—";
-  return /recurring/i.test(deal.dealType) ? "Retainer (recurring)" : deal.dealType;
+/** "$4,500 · Recurring" — one-line summary. Null if no value AND no type. */
+function dealOneLiner(deal: DealSnapshot): string | null {
+  const amt = amountWithCadence(deal);
+  const type = dealTypeShort(deal);
+  if (!amt && !type) return null;
+  if (!amt) return type;
+  if (!type) return amt;
+  return `${amt} · ${type}`;
+}
+
+/** "Jane Doe · jane@brand.com" — drops missing parts; null if nothing. */
+function contactOneLine(c: DealSnapshot["primaryContact"]): string | null {
+  if (!c) return null;
+  const parts = [c.name, c.email, c.phone].filter((s): s is string => !!s && s.trim().length > 0);
+  return parts.length > 0 ? parts.join(" · ") : null;
 }
 
 function intakeLinkForDeal(appUrl: string, deal: DealSnapshot): string {
@@ -103,11 +122,11 @@ function intakeLinkForDeal(appUrl: string, deal: DealSnapshot): string {
 }
 
 function projectRequestLink(briefToolUrl: string, businessName: string): string {
-  // Brief Tool's briefs dashboard filtered to this client. The AM clicks
-  // "New project request" from there to open the modal — the modal picks
-  // up the brand context from the filter.
-  // TODO(brief-tool): support query-param prefill on the modal itself
-  // (services, value, deal_type) so this link can fully pre-fill the form.
+  // Brief Tool's briefs dashboard filtered to this client. AM clicks "New
+  // project request" from there to open the modal — the modal picks up the
+  // brand context from the filter.
+  // TODO(brief-tool): query-param prefill on the modal itself (services,
+  // value, deal_type) so this can fully pre-fill the form.
   const params = new URLSearchParams({ client: businessName });
   return `${briefToolUrl.replace(/\/$/, "")}/?${params.toString()}`;
 }
@@ -116,22 +135,28 @@ function brandUrlFor(appUrl: string, brandId: string): string {
   return `${appUrl.replace(/\/$/, "")}/brand/${brandId}`;
 }
 
-/** Common deal-context widgets used in every "do the project request" card. */
-function dealContextWidgets(deal: DealSnapshot): Array<Record<string, unknown> | null> {
-  return [
-    { decoratedText: { topLabel: "Services sold", text: servicesLine(deal) } },
-    { decoratedText: { topLabel: "Deal value", text: dealValueLine(deal) } },
-    { decoratedText: { topLabel: "Deal type", text: dealTypeLabel(deal) } },
-    deal.closeDate ? { decoratedText: { topLabel: "Close date", text: deal.closeDate } } : null,
-    { decoratedText: { topLabel: "BD", text: deal.bd ?? "—" } },
-    deal.dealIdentifiers.length > 0
-      ? { decoratedText: { topLabel: "Credit", text: deal.dealIdentifiers.join(", ") } }
-      : null,
-    { decoratedText: { topLabel: "Primary contact", text: primaryContactLine(deal) } },
-    deal.billingContact
-      ? { decoratedText: { topLabel: "Billing contact", text: billingContactLine(deal) } }
-      : null,
-  ];
+/**
+ * A single fact widget. Returns null when value is empty so the caller can
+ * .filter(Boolean) and skip rendering an empty row. This is how we avoid
+ * the "—" placeholder spam in earlier card revisions.
+ */
+function field(label: string, value: string | null | undefined): Record<string, unknown> | null {
+  if (!value || !value.trim()) return null;
+  return { decoratedText: { topLabel: label, text: value } };
+}
+
+/** Free-text body line — null on empty. */
+function body(text: string | null | undefined): Record<string, unknown> | null {
+  if (!text || !text.trim()) return null;
+  return { decoratedText: { text } };
+}
+
+function buttonList(buttons: Array<{ text: string; url: string }>): Record<string, unknown> {
+  return {
+    buttonList: {
+      buttons: buttons.map((b) => ({ text: b.text, onClick: { openLink: { url: b.url } } })),
+    },
+  };
 }
 
 async function postCard(webhook: string | undefined, card: unknown, label: string): Promise<void> {
@@ -155,6 +180,29 @@ async function postCard(webhook: string | undefined, card: unknown, label: strin
   }
 }
 
+/** Wrap widgets + cardId into the standard cardsV2 envelope. */
+function buildCard(args: {
+  cardId: string;
+  title: string;
+  subtitle?: string | null;
+  widgets: Array<Record<string, unknown> | null>;
+}): unknown {
+  return {
+    cardsV2: [
+      {
+        cardId: args.cardId,
+        card: {
+          header: {
+            title: args.title,
+            ...(args.subtitle ? { subtitle: args.subtitle } : {}),
+          },
+          sections: [{ widgets: args.widgets.filter(Boolean) }],
+        },
+      },
+    ],
+  };
+}
+
 // ────────────────────────────────────────────────────────────────────────────
 // New client — DM the BD with the pre-stamped intake link
 // ────────────────────────────────────────────────────────────────────────────
@@ -171,53 +219,29 @@ async function sendBdIntakeDm(args: {
   const deal = args.result.deal;
   const intakeUrl = intakeLinkForDeal(args.appUrl, deal);
   const businessName = newClientBusinessName(deal);
+  const contactName = deal.primaryContact?.name ?? "your client";
 
-  const card = {
-    cardsV2: [
-      {
-        cardId: `bd-intake-${deal.itemId}`,
-        card: {
-          header: {
-            title: `🎉 Closed Won — new client`,
-            subtitle: `${businessName}${deal.bd ? ` · ${deal.bd}` : ""}`,
-          },
-          sections: [
-            {
-              widgets: [
-                {
-                  decoratedText: {
-                    topLabel: "Next step",
-                    text: `Send this intake link to ${deal.primaryContact?.name ?? "your client"}. Once they submit, Justin gets pinged to assign an AM.`,
-                  },
-                },
-                ...dealContextWidgets(deal),
-                {
-                  buttonList: {
-                    buttons: [
-                      { text: "Copy intake link →", onClick: { openLink: { url: intakeUrl } } },
-                      { text: "Open Monday deal", onClick: { openLink: { url: deal.url } } },
-                    ],
-                  },
-                },
-                {
-                  decoratedText: {
-                    topLabel: "Intake link",
-                    text: intakeUrl,
-                    wrapText: true,
-                  },
-                },
-              ].filter(Boolean),
-            },
-          ],
-        },
-      },
+  const card = buildCard({
+    cardId: `bd-intake-${deal.itemId}`,
+    title: `🎉 New client — send intake link`,
+    subtitle: deal.bd ? `${businessName} · ${deal.bd}` : businessName,
+    widgets: [
+      body(`Send this to ${contactName} to start their brand profile.`),
+      field("Deal", dealOneLiner(deal)),
+      field("Services", deal.services.length > 0 ? deal.services.join(", ") : null),
+      field("Primary contact", contactOneLine(deal.primaryContact)),
+      buttonList([
+        { text: "Open intake link →", url: intakeUrl },
+        { text: "Open Monday deal", url: deal.url },
+      ]),
+      field("Link to copy", intakeUrl),
     ],
-  };
+  });
   await postCard(webhook, card, "BD intake");
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// Returning client — DM the AM with full deal context + project request link
+// Returning client — DM the AM with deal context + project request deeplink
 // ────────────────────────────────────────────────────────────────────────────
 
 async function sendAmProjectRequestDm(args: {
@@ -232,56 +256,37 @@ async function sendAmProjectRequestDm(args: {
   const deal = result.deal;
   const brand = result.brand;
   const am = brand.account_manager?.trim() || null;
-  const brandUrl = brandUrlFor(appUrl, brand.id);
-  const projectUrl = projectRequestLink(briefToolUrl, brand.business_name);
 
   const subtitle = am
     ? `${brand.business_name} · AM: ${am}`
-    : `${brand.business_name} · No AM assigned — ${AM_HEAD_NAME}, please assign`;
+    : `${brand.business_name} · No AM — ${AM_HEAD_NAME} to assign`;
 
-  const card = {
-    cardsV2: [
-      {
-        cardId: `am-project-request-${deal.itemId}`,
-        card: {
-          header: {
-            title: `📦 Closed Won — returning client`,
-            subtitle,
-          },
-          sections: [
-            {
-              widgets: [
-                {
-                  decoratedText: {
-                    topLabel: "Next step",
-                    text: am
-                      ? `${am} — open a project request in Brief Tool to put this on the schedule. Deal details below.`
-                      : `${AM_HEAD_NAME} — assign an AM, then they should open a project request in Brief Tool.`,
-                  },
-                },
-                { decoratedText: { topLabel: "Deal", text: deal.itemName } },
-                ...dealContextWidgets(deal),
-                {
-                  buttonList: {
-                    buttons: [
-                      { text: "Open project request →", onClick: { openLink: { url: projectUrl } } },
-                      { text: "Open brand", onClick: { openLink: { url: brandUrl } } },
-                      { text: "Open Monday deal", onClick: { openLink: { url: deal.url } } },
-                    ],
-                  },
-                },
-              ].filter(Boolean),
-            },
-          ],
-        },
-      },
+  const bodyText = am
+    ? `${am} — open the project request to put this on the schedule.`
+    : `${AM_HEAD_NAME} — assign an AM, they'll be DM'd to take it from there.`;
+
+  const card = buildCard({
+    cardId: `am-project-request-${deal.itemId}`,
+    title: `📦 Returning client — new deal`,
+    subtitle,
+    widgets: [
+      body(bodyText),
+      field("Deal", dealOneLiner(deal)),
+      field("Services", deal.services.length > 0 ? deal.services.join(", ") : null),
+      field("Primary contact", contactOneLine(deal.primaryContact)),
+      field("BD", deal.bd),
+      buttonList([
+        { text: "Open project request →", url: projectRequestLink(briefToolUrl, brand.business_name) },
+        { text: "Open brand", url: brandUrlFor(appUrl, brand.id) },
+        { text: "Open Monday deal", url: deal.url },
+      ]),
     ],
-  };
+  });
   await postCard(webhook, card, "AM project request");
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// CFO card (both new + returning, different copy)
+// CFO card — billing-focused, both new + returning
 // ────────────────────────────────────────────────────────────────────────────
 
 async function sendCfoCard(args: {
@@ -294,75 +299,59 @@ async function sendCfoCard(args: {
   const webhook =
     process.env.GOOGLE_CHAT_CFO_WEBHOOK_URL || process.env.GOOGLE_CHAT_INTAKE_WEBHOOK_URL;
   const deal = args.result.deal;
-  const isRecurring = /recurring/i.test(deal.dealType ?? "");
+  const recurring = isRecurring(deal);
+  const amount = amountWithCadence(deal); // "$4,500/mo" / "$9,000" / null
 
-  const billingLine =
-    isRecurring && deal.closeDate
-      ? `${dealValueLine(deal)}/mo — first billing ${suggestFirstBillingDate(deal.closeDate) ?? "TBD"}`
-      : `${dealValueLine(deal)} — invoice now`;
-
-  const title = args.newClient
-    ? isRecurring
-      ? "💰 Closed Won — set up monthly billing"
-      : "💰 Closed Won — invoice ready"
-    : `💰 Existing client — new ${isRecurring ? "retainer add-on" : "invoice"}`;
-
-  const buttons: Array<{ text: string; onClick: { openLink: { url: string } } }> = [
-    { text: "Open Monday deal", onClick: { openLink: { url: deal.url } } },
-  ];
-  if (args.result.kind === "returning_client") {
-    buttons.push({
-      text: "Open brand",
-      onClick: { openLink: { url: brandUrlFor(args.appUrl, args.result.brand.id) } },
-    });
+  // Title carries scenario + amount.
+  let title: string;
+  if (args.newClient) {
+    if (recurring) {
+      title = amount ? `💰 New retainer — ${amount}` : `💰 New retainer`;
+    } else {
+      title = amount ? `💰 New invoice — ${amount}` : `💰 New invoice`;
+    }
+  } else {
+    if (recurring) {
+      title = amount ? `💰 Retainer add-on — ${amount}` : `💰 Retainer add-on`;
+    } else {
+      title = amount ? `💰 New invoice — ${amount}` : `💰 New invoice`;
+    }
   }
 
-  const card = {
-    cardsV2: [
-      {
-        cardId: `cfo-${deal.itemId}`,
-        card: {
-          header: {
-            title,
-            subtitle: args.businessName,
-          },
-          sections: [
-            {
-              widgets: [
-                { decoratedText: { topLabel: "Amount", text: billingLine } },
-                { decoratedText: { topLabel: "Services", text: servicesLine(deal) } },
-                { decoratedText: { topLabel: "Deal type", text: deal.dealType ?? "—" } },
-                { decoratedText: { topLabel: "Close date", text: deal.closeDate ?? "—" } },
-                {
-                  decoratedText: {
-                    topLabel: "Billing contact",
-                    text:
-                      billingContactLine(deal) !== "—"
-                        ? billingContactLine(deal)
-                        : primaryContactLine(deal),
-                  },
-                },
-                args.newClient
-                  ? {
-                      decoratedText: {
-                        topLabel: "Note",
-                        text: "Brand record will be created once the client submits the intake form.",
-                      },
-                    }
-                  : null,
-                { buttonList: { buttons } },
-              ].filter(Boolean),
-            },
-          ],
-        },
-      },
+  // Billing contact falls back to primary contact if billing isn't set.
+  const billing =
+    contactOneLine(deal.billingContact) ?? contactOneLine(deal.primaryContact);
+
+  // First billing date only matters for retainers with a close date.
+  const firstBilling =
+    recurring && deal.closeDate ? suggestFirstBillingDate(deal.closeDate) : null;
+
+  const buttons: Array<{ text: string; url: string }> = [
+    { text: "Open Monday deal", url: deal.url },
+  ];
+  if (args.result.kind === "returning_client") {
+    buttons.push({ text: "Open brand", url: brandUrlFor(args.appUrl, args.result.brand.id) });
+  }
+
+  const card = buildCard({
+    cardId: `cfo-${deal.itemId}`,
+    title,
+    subtitle: args.businessName,
+    widgets: [
+      firstBilling ? body(`First billing: ${firstBilling}`) : null,
+      field("Services", deal.services.length > 0 ? deal.services.join(", ") : null),
+      field("Billing contact", billing),
+      args.newClient
+        ? body(`Brand record will be created when the client submits the intake form.`)
+        : null,
+      buttonList(buttons),
     ],
-  };
+  });
   await postCard(webhook, card, "CFO");
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// Credit DM for deal identifiers (both new + returning)
+// Credit DM (skipped if no identifiers on the deal)
 // ────────────────────────────────────────────────────────────────────────────
 
 async function sendCreditDm(args: { result: ClosedWonResult }): Promise<void> {
@@ -378,46 +367,24 @@ async function sendCreditDm(args: { result: ClosedWonResult }): Promise<void> {
       ? args.result.brand.business_name
       : newClientBusinessName(deal);
 
-  const card = {
-    cardsV2: [
-      {
-        cardId: `credit-${deal.itemId}`,
-        card: {
-          header: {
-            title: `🎉 Credit: deal closed`,
-            subtitle: `${businessName} — ${dealValueLine(deal)}`,
-          },
-          sections: [
-            {
-              widgets: [
-                {
-                  decoratedText: {
-                    topLabel: "Credit to",
-                    text: deal.dealIdentifiers.join(", "),
-                  },
-                },
-                deal.bd ? { decoratedText: { topLabel: "Run by (BD)", text: deal.bd } } : null,
-                { decoratedText: { topLabel: "Deal", text: deal.itemName } },
-                {
-                  buttonList: {
-                    buttons: [
-                      { text: "Open Monday deal", onClick: { openLink: { url: deal.url } } },
-                    ],
-                  },
-                },
-              ].filter(Boolean),
-            },
-          ],
-        },
-      },
+  const amount = money(deal.dealValue);
+  const subtitle = amount ? `${businessName} · ${amount}` : businessName;
+
+  const card = buildCard({
+    cardId: `credit-${deal.itemId}`,
+    title: `🎉 Credit — deal closed`,
+    subtitle,
+    widgets: [
+      field("Credit to", deal.dealIdentifiers.join(", ")),
+      field("BD", deal.bd),
+      buttonList([{ text: "Open Monday deal", url: deal.url }]),
     ],
-  };
+  });
   await postCard(webhook, card, "Credit");
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// Step 2 — Client submitted intake on a deal-sourced link → DM Justin
-//          (AM Head) so he can assign an AM.
+// Step 2 — Client submitted intake → DM Justin to assign an AM
 // ────────────────────────────────────────────────────────────────────────────
 
 export type AmHeadAssignmentInput = {
@@ -434,50 +401,32 @@ export async function notifyAmHeadAssignmentNeeded(
     process.env.GOOGLE_CHAT_INTAKE_WEBHOOK_URL;
 
   const { brand, deal, appUrl } = input;
-  const brandUrl = brandUrlFor(appUrl, brand.id);
-  const isRecurring = /recurring/i.test(deal.dealType ?? "");
-  const flavor = isRecurring ? "retainer" : "one-off";
+  const flavor = isRecurring(deal) ? "retainer" : "one-off";
+  const amount = amountWithCadence(deal);
+  const subtitle = amount ? `${brand.business_name} · ${amount}` : brand.business_name;
 
-  const card = {
-    cardsV2: [
-      {
-        cardId: `am-head-assign-${deal.itemId}`,
-        card: {
-          header: {
-            title: `🎯 New ${flavor} client — assign an AM`,
-            subtitle: `${brand.business_name} · ${dealValueLine(deal)}${isRecurring ? "/mo" : ""}`,
-          },
-          sections: [
-            {
-              widgets: [
-                {
-                  decoratedText: {
-                    topLabel: "Status",
-                    text: `Client just submitted the intake form. ${AM_HEAD_NAME}, assign an AM in the brand editor — they'll be DM'd automatically to open the project request.`,
-                  },
-                },
-                ...dealContextWidgets(deal),
-                {
-                  buttonList: {
-                    buttons: [
-                      { text: "Open brand → assign AM", onClick: { openLink: { url: brandUrl } } },
-                      { text: "Open Monday deal", onClick: { openLink: { url: deal.url } } },
-                    ],
-                  },
-                },
-              ].filter(Boolean),
-            },
-          ],
-        },
-      },
+  const card = buildCard({
+    cardId: `am-head-assign-${deal.itemId}`,
+    title: `🎯 Assign AM — new ${flavor} client`,
+    subtitle,
+    widgets: [
+      body(
+        `Client just submitted intake. ${AM_HEAD_NAME}, assign an AM in the brand editor — they'll be DM'd to take over.`
+      ),
+      field("Services", deal.services.length > 0 ? deal.services.join(", ") : null),
+      field("Primary contact", contactOneLine(deal.primaryContact)),
+      field("BD", deal.bd),
+      buttonList([
+        { text: "Open brand → assign AM", url: brandUrlFor(appUrl, brand.id) },
+        { text: "Open Monday deal", url: deal.url },
+      ]),
     ],
-  };
+  });
   await postCard(webhook, card, "AM Head assign");
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// Step 3 — Justin assigned an AM to a deal-sourced brand → DM that AM with
-//          deal context + project-request deeplink.
+// Step 3 — Justin assigned an AM → DM that AM with deal context + project link
 // ────────────────────────────────────────────────────────────────────────────
 
 export type AmAssignedInput = {
@@ -493,46 +442,24 @@ export async function notifyAmAssigned(input: AmAssignedInput): Promise<void> {
 
   const { brand, deal, appUrl, briefToolUrl } = input;
   const am = brand.account_manager?.trim();
-  if (!am) return; // shouldn't be called with empty AM, but bail just in case
+  if (!am) return;
 
-  const brandUrl = brandUrlFor(appUrl, brand.id);
-  const projectUrl = projectRequestLink(briefToolUrl, brand.business_name);
-
-  const card = {
-    cardsV2: [
-      {
-        cardId: `am-assigned-${deal.itemId}-${brand.id}`,
-        card: {
-          header: {
-            title: `👋 You're up — new client assigned`,
-            subtitle: `${brand.business_name} · AM: ${am}`,
-          },
-          sections: [
-            {
-              widgets: [
-                {
-                  decoratedText: {
-                    topLabel: "Next step",
-                    text: `${am} — open a project request in Brief Tool to put this on the schedule. Full deal details below so you can fill it out in one go.`,
-                  },
-                },
-                { decoratedText: { topLabel: "Deal", text: deal.itemName } },
-                ...dealContextWidgets(deal),
-                {
-                  buttonList: {
-                    buttons: [
-                      { text: "Open project request →", onClick: { openLink: { url: projectUrl } } },
-                      { text: "Open brand", onClick: { openLink: { url: brandUrl } } },
-                      { text: "Open Monday deal", onClick: { openLink: { url: deal.url } } },
-                    ],
-                  },
-                },
-              ].filter(Boolean),
-            },
-          ],
-        },
-      },
+  const card = buildCard({
+    cardId: `am-assigned-${deal.itemId}-${brand.id}`,
+    title: `👋 You're up — ${brand.business_name}`,
+    subtitle: `AM: ${am}`,
+    widgets: [
+      body(`${am} — open the project request to put this on the schedule.`),
+      field("Deal", dealOneLiner(deal)),
+      field("Services", deal.services.length > 0 ? deal.services.join(", ") : null),
+      field("Primary contact", contactOneLine(deal.primaryContact)),
+      field("BD", deal.bd),
+      buttonList([
+        { text: "Open project request →", url: projectRequestLink(briefToolUrl, brand.business_name) },
+        { text: "Open brand", url: brandUrlFor(appUrl, brand.id) },
+        { text: "Open Monday deal", url: deal.url },
+      ]),
     ],
-  };
+  });
   await postCard(webhook, card, "AM assigned");
 }
