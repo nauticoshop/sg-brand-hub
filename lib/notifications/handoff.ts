@@ -39,8 +39,82 @@ import {
   type BrandLite,
   type ClosedWonResult,
 } from "@/lib/brands/create-from-deal";
+import { findUserByName, mention, postUpdate } from "@/lib/monday/client";
 
 const AM_HEAD_NAME = "Justin Tarr";
+
+/**
+ * Kill switch for the entire Closed Won handoff system (Chat cards + Monday
+ * @mentions). Set HANDOFF_NOTIFICATIONS_DISABLED=true in Vercel to silence
+ * everything without ripping out code. The webhook still classifies the deal
+ * and writes the dispatch row — we just skip all outbound notifications.
+ *
+ * Use this while iterating on the design. To re-enable, unset the env var
+ * (or set it to anything other than "true") and redeploy.
+ */
+function notificationsDisabled(): boolean {
+  return process.env.HANDOFF_NOTIFICATIONS_DISABLED === "true";
+}
+
+/**
+ * Look up the personal Google Chat DM webhook for a given AM. We keep the
+ * map in a single env var (GOOGLE_CHAT_AM_DM_WEBHOOKS) as JSON so new AMs
+ * are a Vercel env edit, not a code change:
+ *
+ *   GOOGLE_CHAT_AM_DM_WEBHOOKS={"Billy Pavlock":"https://...","Phallon Ray":"..."}
+ *
+ * Returns null when no mapping exists for that AM. Callers should then
+ * decide whether to fall back to the group webhook, skip the Chat ping
+ * entirely, or warn.
+ *
+ * Name matching is case-insensitive + trim-tolerant so a "Billy Pavlock "
+ * with trailing whitespace still matches.
+ */
+function getAmDmWebhook(amName: string | null | undefined): string | null {
+  if (!amName) return null;
+  const raw = process.env.GOOGLE_CHAT_AM_DM_WEBHOOKS;
+  if (!raw) return null;
+  try {
+    const map = JSON.parse(raw) as Record<string, string>;
+    const needle = amName.trim().toLowerCase();
+    for (const [key, value] of Object.entries(map)) {
+      if (key.trim().toLowerCase() === needle && typeof value === "string") {
+        return value;
+      }
+    }
+  } catch (e) {
+    console.error(
+      `[handoff] GOOGLE_CHAT_AM_DM_WEBHOOKS is not valid JSON: ${(e as Error).message}`
+    );
+  }
+  return null;
+}
+
+/**
+ * Post a Monday update on the deal item that @mentions the assigned AM.
+ * Lets the AM see the handoff in their Monday inbox in addition to (or
+ * instead of) the Google Chat DM. Best-effort — logs and swallows on any
+ * failure since the brand assignment already succeeded by the time we get
+ * here.
+ */
+async function tagAmOnMondayDeal(args: {
+  dealId: string;
+  amName: string;
+  bodyHtml: string;
+}): Promise<void> {
+  try {
+    const user = await findUserByName(args.amName);
+    if (!user) {
+      console.warn(`[handoff/monday-tag] no Monday user matched "${args.amName}" — skipping update`);
+      return;
+    }
+    const body = `${mention(user.id, user.name)} ${args.bodyHtml}`;
+    await postUpdate({ itemId: args.dealId, body });
+    console.log(`[handoff/monday-tag] tagged ${user.name} on deal ${args.dealId} ✓`);
+  } catch (e) {
+    console.error(`[handoff/monday-tag] failed: ${(e as Error).message}`);
+  }
+}
 
 export type DispatchInput = {
   result: ClosedWonResult;
@@ -50,6 +124,10 @@ export type DispatchInput = {
 
 export async function dispatchClosedWonNotifications(input: DispatchInput): Promise<void> {
   if (input.result.kind === "same_deal") return;
+  if (notificationsDisabled()) {
+    console.log(`[handoff] HANDOFF_NOTIFICATIONS_DISABLED=true — skipping all cards for ${input.result.deal.itemId}`);
+    return;
+  }
 
   const tasks: Array<Promise<void>> = [];
 
@@ -249,13 +327,28 @@ async function sendAmProjectRequestDm(args: {
   appUrl: string;
   briefToolUrl: string;
 }): Promise<void> {
-  const webhook =
-    process.env.GOOGLE_CHAT_AMS_WEBHOOK_URL || process.env.GOOGLE_CHAT_INTAKE_WEBHOOK_URL;
-
   const { result, appUrl, briefToolUrl } = args;
   const deal = result.deal;
   const brand = result.brand;
   const am = brand.account_manager?.trim() || null;
+
+  // Routing:
+  //   • AM is set and has a DM webhook  → DM the AM only
+  //   • AM is set but no DM webhook     → fall back to AMs group (better
+  //                                       than dropping the card; we still
+  //                                       tag on Monday so they're notified)
+  //   • AM is null                      → fall back to AMs group so Justin
+  //                                       (in there) sees it and can assign
+  let webhook: string | undefined;
+  if (am) {
+    webhook =
+      getAmDmWebhook(am) ??
+      process.env.GOOGLE_CHAT_AMS_WEBHOOK_URL ??
+      process.env.GOOGLE_CHAT_INTAKE_WEBHOOK_URL;
+  } else {
+    webhook =
+      process.env.GOOGLE_CHAT_AMS_WEBHOOK_URL ?? process.env.GOOGLE_CHAT_INTAKE_WEBHOOK_URL;
+  }
 
   const subtitle = am
     ? `${brand.business_name} · AM: ${am}`
@@ -282,7 +375,18 @@ async function sendAmProjectRequestDm(args: {
       ]),
     ],
   });
-  await postCard(webhook, card, "AM project request");
+
+  // Fire Chat card + Monday @mention in parallel — both best-effort.
+  await Promise.allSettled([
+    postCard(webhook, card, "AM project request"),
+    am
+      ? tagAmOnMondayDeal({
+          dealId: deal.itemId,
+          amName: am,
+          bodyHtml: `You're the AM on this returning client — open the project request in Brief Tool to put it on the schedule. <a href="${projectRequestLink(briefToolUrl, brand.business_name)}">Open project request</a>`,
+        })
+      : Promise.resolve(),
+  ]);
 }
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -396,6 +500,10 @@ export type AmHeadAssignmentInput = {
 export async function notifyAmHeadAssignmentNeeded(
   input: AmHeadAssignmentInput
 ): Promise<void> {
+  if (notificationsDisabled()) {
+    console.log(`[handoff] HANDOFF_NOTIFICATIONS_DISABLED=true — skipping AM Head card for ${input.brand.id}`);
+    return;
+  }
   const webhook =
     process.env.GOOGLE_CHAT_AM_HEAD_WEBHOOK_URL ||
     process.env.GOOGLE_CHAT_INTAKE_WEBHOOK_URL;
@@ -437,12 +545,20 @@ export type AmAssignedInput = {
 };
 
 export async function notifyAmAssigned(input: AmAssignedInput): Promise<void> {
-  const webhook =
-    process.env.GOOGLE_CHAT_AMS_WEBHOOK_URL || process.env.GOOGLE_CHAT_INTAKE_WEBHOOK_URL;
-
+  if (notificationsDisabled()) {
+    console.log(`[handoff] HANDOFF_NOTIFICATIONS_DISABLED=true — skipping AM-assigned card for ${input.brand.id}`);
+    return;
+  }
   const { brand, deal, appUrl, briefToolUrl } = input;
   const am = brand.account_manager?.trim();
   if (!am) return;
+
+  // Prefer AM's personal DM webhook; fall back to AMs group so the card
+  // doesn't disappear into the void if the AM hasn't set up their DM yet.
+  const webhook =
+    getAmDmWebhook(am) ??
+    process.env.GOOGLE_CHAT_AMS_WEBHOOK_URL ??
+    process.env.GOOGLE_CHAT_INTAKE_WEBHOOK_URL;
 
   const card = buildCard({
     cardId: `am-assigned-${deal.itemId}-${brand.id}`,
@@ -461,5 +577,14 @@ export async function notifyAmAssigned(input: AmAssignedInput): Promise<void> {
       ]),
     ],
   });
-  await postCard(webhook, card, "AM assigned");
+
+  // Fire Chat card + Monday @mention in parallel.
+  await Promise.allSettled([
+    postCard(webhook, card, "AM assigned"),
+    tagAmOnMondayDeal({
+      dealId: deal.itemId,
+      amName: am,
+      bodyHtml: `You're assigned as the AM. Open the project request in Brief Tool to put this on the schedule. <a href="${projectRequestLink(briefToolUrl, brand.business_name)}">Open project request</a>`,
+    }),
+  ]);
 }
