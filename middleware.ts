@@ -14,6 +14,9 @@ const PUBLIC_PATHS = [
   // route handler level via shared secret / payload verification, not via
   // the team Supabase session.
   "/api/webhooks",
+  // Dev/test endpoints — gated on a bearer token at the route level (the
+  // service-role key), not via the team session.
+  "/api/dev",
 ];
 
 function isPublicPath(pathname: string): boolean {
