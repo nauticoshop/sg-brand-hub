@@ -4,6 +4,7 @@ import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { notifyIntakeSubmission } from "@/lib/notifications/intake";
 import { notifyAmHeadAssignmentNeeded } from "@/lib/notifications/handoff";
 import { fetchDealSnapshot } from "@/lib/monday/deals";
+import { ensureBrandFolderTree } from "@/lib/dropbox/client";
 import type { BrandLite } from "@/lib/brands/create-from-deal";
 import { alertError } from "@/lib/notifications/alert";
 
@@ -114,6 +115,37 @@ export async function POST(request: Request) {
       ...(sourceDealId ? { monday_deal_id: sourceDealId } : {}),
     },
   });
+
+  // Create the brand's parent Dropbox folder right away so the AM has
+  // somewhere to drop files the moment they pick up the record — rather
+  // than waiting for the approve step.
+  //
+  // Layout: /NN x SG/{Brand}/ with Assets/Logo, Assets/Video Assets, and
+  // the current year subfolder.
+  //
+  // Best-effort: we DO await it so Vercel doesn't kill the function mid-
+  // fetch, but a failure won't block the brand row (already persisted).
+  if (
+    process.env.DROPBOX_REFRESH_TOKEN &&
+    process.env.DROPBOX_APP_KEY &&
+    process.env.DROPBOX_APP_SECRET
+  ) {
+    try {
+      const tree = await ensureBrandFolderTree(v.business_name);
+      await supabase
+        .from("brands")
+        .update({ dropbox_folder_url: tree.shareUrl })
+        .eq("id", data.id);
+    } catch (e) {
+      console.error(`[intake] Dropbox folder creation failed: ${(e as Error).message}`);
+      alertError({
+        flow: "intake.dropbox",
+        brandName: v.business_name,
+        error: e,
+        extras: { brand_id: data.id as string },
+      });
+    }
+  }
 
   // Notify the team. We DON'T await this — the user's form submit shouldn't
   // wait on the webhook latency, and the helper swallows errors anyway.
